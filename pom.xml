@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.grupo01.java6</groupId>
-    <artifactId>FAAL</artifactId>
+    <artifactId>faal</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>buenaspracticas</name>
-    <description>FAAL</description>
+    <name>faal</name>
+    <description>faal</description>
     <url/>
     <licenses>
         <license/>
