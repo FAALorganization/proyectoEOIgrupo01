@@ -76,6 +76,13 @@ public class DefaultController {
         return "calendario"; // View name
     }
 
+    @GetMapping("/tareas")
+    public String ListTask()
+    {
+
+        return "tareas"; // View name
+    }
+
     /**
      * Gestiona las solicitudes GET para obtener y mostrar la lista de entidades protegidas.
      * Añade las entidades obtenidas del repositorio al modelo para renderizarlas en la vista correspondiente.
