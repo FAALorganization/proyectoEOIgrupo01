@@ -75,6 +75,12 @@ public class DefaultController {
 
         return "calendario"; // View name
     }
+    @GetMapping("/login2")
+    public String showLogin()
+    {
+
+        return "login"; // View name
+    }
 
     @GetMapping("/tareas")
     public String ListTask()
