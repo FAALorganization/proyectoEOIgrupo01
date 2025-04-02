@@ -75,6 +75,8 @@ public class DefaultController {
 
         return "calendario"; // View name
     }
+
+
     @GetMapping("/login2")
     public String showLogin()
     {
