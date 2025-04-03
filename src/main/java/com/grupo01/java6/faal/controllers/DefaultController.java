@@ -85,7 +85,7 @@ public class DefaultController {
     }
 
     @GetMapping("/tareas")
-    public String ListTask()
+    public String listTask()
     {
 
         return "tareas"; // View name
