@@ -91,6 +91,13 @@ public class DefaultController {
         return "tareas"; // View name
     }
 
+    @GetMapping("/documentacion")
+    public String showDocumentation()
+    {
+
+        return "documentacion"; // View name
+    }
+
     /**
      * Gestiona las solicitudes GET para obtener y mostrar la lista de entidades protegidas.
      * Añade las entidades obtenidas del repositorio al modelo para renderizarlas en la vista correspondiente.
