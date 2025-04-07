@@ -111,14 +111,6 @@ public class DefaultController {
         return "creacionTicket"; // View name
     }
 
-
-    @GetMapping("/login2")
-    public String showLogin()
-    {
-
-        return "login"; // View name
-    }
-
     @GetMapping("/tareas")
     public String listTask()
     {
@@ -143,6 +135,13 @@ public class DefaultController {
     {
 
         return "perfil"; // View name
+    }
+
+    @GetMapping("/login")
+    public String showLogin()
+    {
+
+        return "login"; // View name
     }
 
     /**
