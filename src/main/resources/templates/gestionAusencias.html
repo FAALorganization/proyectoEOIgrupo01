@@ -12,7 +12,7 @@
 
 
     
-    <title>Gestión de Incidencias</title>
+    <title>Gestión de Ausencias</title>
 </head>
 <body id="body-pd" class="bg-light">
   <header class="header" id="header">
@@ -23,7 +23,7 @@
           <div class="nav_list">
               <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
               <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
-              <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
+              <a th:href="@{/checking}" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
               <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
               <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa-solid fa-file-pen"></i>
@@ -58,7 +58,7 @@
             </div>
             <div class="day-mode-container">
                 <div class="day-mode-buttons">
-                  <a th:href="@{/gestionARes.html}">
+                  <a th:href="@{/gestionARes}">
                     <button class="button-29 General" role="button">Gestionar Ausencias</button>
                   </a>
                   <button class="button-29 General" role="button">Mandar recordatorio</button>

@@ -41,7 +41,6 @@ counter = 0;
 const buttonNav = document.getElementById("header-toggle");
 buttonNav.addEventListener("click", function(){
 
-    let counter;
     if (counter%2 === 0){
         document.querySelectorAll(".nav_name").forEach(link =>{
             link.style.color = "white";
