@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{css/gestionVRes.css}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+
+
+    
+    <title>Gestión de ausencias Responsable</title>
+</head>
+<body id="body-pd" class="bg-light">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div class="nav_list">
+                <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
+                <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
+                <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-file-pen"></i>
+                    <span class="nav_name">Gestión</span>
+
+                </a>
+
+                <!-- Menú Dropdown -->
+                <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
+                    <li><a class="dropdown-item" href="#">Gestión de Tareas</a></li>
+                    <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Vacaciones</a></li>
+                    <li><a class="dropdown-item" th:href="@{/gestionAusencias}">Gestión Ausencias</a></li>
+                </ul>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
+                <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
+
+            </div>
+        </nav>
+    </div>
+    <!--Container Main start-->
+    <div class="height-100 container-personal">
+        <div class="container-personal-lista">
+            <div class="tabla-usuarios-grupo-container">
+              <div class="tabla-usuarios">
+                <div class="header-usuarios">
+                  <p>Selección de Usuario</p>
+                </div>
+                <div class="content-usuarios">
+                  <div class="usuario-info">
+                    <div class="imagen-container">
+                      <div class="circle-decorative1">
+                        <div class="circle-decorative2">
+                          <div class="mini-circle"></div>
+                          <div class="circle-decorativePNG">
+                            <img src="./perfil.png" alt="perfil">   
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="personal-info">
+                      <span class="nombre">Nombre usuario</span> 
+                    </div>
+                  </div>
+                  <div class="usuario-info">
+                    <div class="imagen-container">
+                      <div class="circle-decorative1">
+                        <div class="circle-decorative2">
+                          <div class="circle-decorativePNG">
+                            <img src="./perfil.png" alt="perfil">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="personal-info">
+                      <span class="nombre">Nombre usuario</span> 
+                    </div>
+                  </div>
+                  <div class="usuario-info">
+                    <div class="imagen-container">
+                      <div class="circle-decorative1">
+                        <div class="circle-decorative2">
+                          <div class="circle-decorativePNG">
+                            <img src="./perfil.png" alt="perfil">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="personal-info">
+                      <span class="nombre">Nombre usuario</span> 
+                    </div>
+                  </div>
+                  <div class="usuario-info">
+                    <div class="imagen-container">
+                      <div class="circle-decorative1">
+                        <div class="circle-decorative2">
+                          <div class="circle-decorativePNG">
+                            <img src="./perfil.png" alt="perfil">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="personal-info">
+                      <span class="nombre">Nombre usuario</span> 
+                    </div>
+                  </div>
+                  <div class="usuario-info">
+                    <div class="imagen-container">
+                      <div class="circle-decorative1">
+                        <div class="circle-decorative2">
+                          <div class="circle-decorativePNG">
+                            <img src="./perfil.png" alt="perfil">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="personal-info">
+                      <span class="nombre">Nombre usuario</span> 
+                    </div>
+                  </div>
+                  <div class="usuario-info">
+                    <div class="imagen-container">
+                      <div class="circle-decorative1">
+                        <div class="circle-decorative2">
+                          <div class="circle-decorativePNG">
+                            <img src="./perfil.png" alt="perfil">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="personal-info">
+                      <span class="nombre">Nombre usuario</span> 
+                    </div>
+                  </div>
+                  <div class="usuario-info">
+                    <div class="imagen-container">
+                      <div class="circle-decorative1">
+                        <div class="circle-decorative2">
+                          <div class="circle-decorativePNG">
+                            <img src="./perfil.png" alt="perfil">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="personal-info">
+                      <span class="nombre">Nombre usuario</span> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mini-calendario-container">
+              <div class="calendar-container">
+                <div class="calendar-header">
+                  <button class="nav-button" id="prevMonth">&lt;</button>
+                  <div class="month-year" id="monthYearLabel">Abril 2025</div>
+                  <button class="nav-button" id="nextMonth">&gt;</button>
+                  <select id="yearSelect"></select>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                  <!-- Grid dinámica -->
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>  
+   
+  
+
+    <!--Container Main end-->
+    <script th:src="@{js/gestionVRes.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{css/creacionTicket.css}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+
+
+    
+    <title>Crear Ticket</title>
+</head>
+<body id="body-pd" class="bg-light">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div class="nav_list">
+                <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
+                <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
+                <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-file-pen"></i>
+                    <span class="nav_name">Gestión</span>
+
+                </a>
+
+                <!-- Menú Dropdown -->
+                <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
+                    <li><a class="dropdown-item" href="#">Gestión de Tareas</a></li>
+                    <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Vacaciones</a></li>
+                    <li><a class="dropdown-item" th:href="@{/gestionAusencias}">Gestión Ausencias</a></li>
+                </ul>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
+                <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
+
+            </div>
+        </nav>
+    </div>
+    <!--Container Main start-->
+    <div class="container">
+        <div class="container-visible">
+            <div class="container-personal">
+                <div class="input-container">
+                    <input type="text" id="name" placeholder=" " required>
+                    <label for="name">Nombre</label>
+                </div>
+                <div class="input-container">
+                    <input type="text" id="lname" placeholder=" " required>
+                    <label for="lname">Apellidos</label>
+                </div>
+                <div class="input-container">
+                    <input type="text" id="idgroup" placeholder=" " required>
+                    <label for="idgroup">ID grupo</label>
+                </div>
+            </div>
+
+            <div class="container-prioridad">
+                <div class="prioridades">
+                    <p>Selecciona Prioridad </p>
+                    <span class="baja">Baja</span>
+                    <span class="media">Media</span>
+                    <span class="alta">Alta</span>
+                </div>
+                <div class="tipo-problema">
+                    
+                    <select name="tipo" id="tipo" required >
+                        <option value="" disabled selected hidden>Motivo del reporte</option>
+                        <!--Tecnologia-->
+                        <optgroup label="Tecnología">
+                            <option value="software">Software</option>
+                            <option value="hardware">Hardware</option>
+                            <option value="red">Red y Conectividad</option>
+                            <option value="correo">Correo Electrónico</option>
+                            <option value="system">Sistema Interno</option>
+                        </optgroup>
+                        
+
+                        <!--Infraestructura y Oficina-->
+                        <optgroup label="Infraestructura y Oficina">
+                            <option value="workspace">Espacio de Trabajo</option>
+                            <option value="general">Servicios Generales</option>
+                            <option value="security">Accesos y Seguridad</option>
+                        </optgroup>
+                        
+
+                        <!--Recursos Humanos y Administracion-->
+                        <optgroup label="Recursos Humanos y Administración">
+                            <option value="nomina">Nómina y Beneficios</option>
+                            <option value="permisos">Vacaciones y Permisos</option>
+                            <option value="oficina">Material de Oficina</option>
+                            <option value="politica">Cumplimiento y Política</option>
+                        </optgroup>
+        
+                        <!--Otro (especificar en descripción)-->
+                        <option value="otro">Otro...</option>
+                    </select>
+                </div>
+            </div> 
+            
+            <textarea id="description" maxlength="300" placeholder="Máximo 300 caracteres..."></textarea>
+            <button class="enviar-form">Enviar</button>
+        </div>
+        
+        
+    </div>
+    <!--Container Main end-->
+    <script th:src="@{js/creacionTicket.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</body>
+</html>
