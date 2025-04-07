@@ -138,18 +138,18 @@ public class DefaultController {
         return "documentacion"; // View name
     }
 
-    @GetMapping("/chat")
-    public String showChat()
-    {
-
-        return "chat"; // View name
-    }
-
     @GetMapping("/perfil")
     public String showPerfil()
     {
 
         return "perfil"; // View name
+    }
+
+    @GetMapping("/chat")
+    public String showChat()
+    {
+
+        return "chat"; // View name
     }
 
     /**
