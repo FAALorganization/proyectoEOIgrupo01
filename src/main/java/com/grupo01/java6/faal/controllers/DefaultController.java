@@ -143,6 +143,7 @@ public class DefaultController {
     {
 
         return "chat"; // View name
+    }
 
     @GetMapping("/login")
     public String showLogin()
