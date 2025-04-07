@@ -125,7 +125,12 @@ public class DefaultController {
 
         return "tareas"; // View name
     }
-
+    @GetMapping("/checkin")
+    public String showCheckin()
+    {
+         return "checkin"; // View name
+    }
+  
     @GetMapping("/documentacion")
     public String showDocumentation()
     {
