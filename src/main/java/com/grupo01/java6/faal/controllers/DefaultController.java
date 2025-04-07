@@ -76,6 +76,41 @@ public class DefaultController {
         return "calendario"; // View name
     }
 
+    @GetMapping("/gestionVacaciones")
+    public String showgestionVacaciones()
+    {
+
+        return "gestionVacaciones"; // View name
+    }
+
+    @GetMapping("/gestionAusencias")
+    public String showgestionAusencias()
+    {
+
+        return "gestionAusencias"; // View name
+    }
+
+    @GetMapping("/gestionARes")
+    public String showgestionARes()
+    {
+
+        return "gestionARes"; // View name
+    }
+
+    @GetMapping("/gestionVRes")
+    public String showgestionVRes()
+    {
+
+        return "gestionVRes"; // View name
+    }
+
+    @GetMapping("/creacionTicket")
+    public String showcreacionTicket()
+    {
+
+        return "creacionTicket"; // View name
+    }
+
 
     @GetMapping("/login2")
     public String showLogin()
@@ -85,10 +120,29 @@ public class DefaultController {
     }
 
     @GetMapping("/tareas")
-    public String ListTask()
+    public String listTask()
     {
 
         return "tareas"; // View name
+    }
+    @GetMapping("/checkin")
+    public String showCheckin()
+    {
+         return "checkin"; // View name
+    }
+  
+    @GetMapping("/documentacion")
+    public String showDocumentation()
+    {
+
+        return "documentacion"; // View name
+    }
+
+    @GetMapping("/perfil")
+    public String showPerfil()
+    {
+
+        return "perfil"; // View name
     }
 
     /**
