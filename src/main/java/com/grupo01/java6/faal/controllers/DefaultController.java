@@ -125,12 +125,20 @@ public class DefaultController {
     }
 
     @GetMapping("/tareas")
-    public String tareas ()
-    public String listTask()
+    public String showtareas()
     {
 
         return "tareas"; // View name
     }
+
+    @GetMapping("/tareasJefe")
+    public String showtareasJefe()
+    {
+
+        return "tareasJefe"; // View name
+    }
+
+
     @GetMapping("/checkin")
     public String showCheckin()
     {
