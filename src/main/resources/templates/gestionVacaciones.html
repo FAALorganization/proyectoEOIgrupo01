@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{css/calendario.css}">
+    <link rel="stylesheet" th:href="@{css/gestionVacaciones.css}">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
@@ -12,7 +12,7 @@
 
 
     
-    <title>Calendario</title>
+    <title>Gestión de Vacaciones</title>
 </head>
 <body id="body-pd" class="bg-light">
     <header class="header" id="header">
@@ -49,9 +49,12 @@
     <!--Container Main start-->
     <div class="height-100 calendar-container">
         <div class="calendar-options" >
-            <div class="general-individual">
-                <button class="button-29 General" role="button">General</button>
-                <button class="button-29" role="button">Individual</button>
+            <div class="Contadores">
+                <ul class="lista-contadores">
+                    <li class="disfrutados">X</li>
+                    <li class="xdisfrutar">Y</li>
+                    <li class="xaprobar">Z</li>
+                </ul>
             </div>
             <div class="actual-date">
                 <!--<a class="left-button" id="left-button"><i class="fa-solid fa-arrow-left fa-3x"></i></a>-->
@@ -60,9 +63,32 @@
             </div>
             <div class="day-mode-container">
                 <div class="day-mode-buttons">
+                    <a th:href="@{/gestionVRes}">
+                        <button class="button-29" role="button">Gestionar Vacaciones</button>
+                    </a>
                     
-                    <button class="button-29" id="week-button" role="button">Week</button>
-                    <button class="button-29" id="month-button" role="button">Month</button>
+                    <button class="button-29" role="button">Privado</button>
+                    <button class="button-29 general-mode" role="button">
+                        General
+                        <div class="general-dropdown">
+                            <div class="user-dropdown">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Usuario ejemplo</span>
+                            </div>
+                            <div class="user-dropdown">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Usuario ejemplo</span>
+                            </div>
+                            <div class="user-dropdown">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Usuario ejemplo</span>
+                            </div>
+                            <div class="user-dropdown">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Usuario ejemplo</span>
+                            </div>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -136,20 +162,11 @@
             </div>
         </div>
     </div>  
-  <!-- Modal -->
-  <div class="modal-background" id="modal-container">
-    <div class="modal-container" id="modal-content">
-        <button class="close-btn" id="close-modal">&times;</button>
-        <h1>Modal title</h1>
-        <hr>
-        <p>No hay tareas disponibles.</p>
-      </div>
-  </div> 
+   
   
 
     <!--Container Main end-->
-
-    <script th:src="@{js/calendario.js}"></script>
+    <script th:src="@{js/gestionVacaciones.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     

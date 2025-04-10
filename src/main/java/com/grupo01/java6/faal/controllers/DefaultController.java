@@ -89,19 +89,82 @@ public class DefaultController {
 
         return "ticket"; // View name
     }
-
-    @GetMapping("/login2")
-    public String showLogin()
+    @GetMapping("/gestionVacaciones")
+    public String showgestionVacaciones()
     {
 
-        return "login"; // View name
+        return "gestionVacaciones"; // View name
+    }
+
+    @GetMapping("/gestionAusencias")
+    public String showgestionAusencias()
+    {
+
+        return "gestionAusencias"; // View name
+    }
+
+    @GetMapping("/gestionARes")
+    public String showgestionARes()
+    {
+
+        return "gestionARes"; // View name
+    }
+
+    @GetMapping("/gestionVRes")
+    public String showgestionVRes()
+    {
+
+        return "gestionVRes"; // View name
+    }
+
+    @GetMapping("/creacionTicket")
+    public String showcreacionTicket()
+    {
+
+        return "creacionTicket"; // View name
     }
 
     @GetMapping("/tareas")
     public String tareas ()
+    public String listTask()
     {
 
         return "tareas"; // View name
+    }
+    @GetMapping("/checkin")
+    public String showCheckin()
+    {
+         return "checkin"; // View name
+    }
+  
+    @GetMapping("/documentacion")
+    public String showDocumentation()
+    {
+
+        return "documentacion"; // View name
+    }
+
+    @GetMapping("/perfil")
+    public String showPerfil()
+    {
+
+        return "perfil"; // View name
+    }
+
+
+    @GetMapping("/chat")
+    public String showChat()
+    {
+
+        return "chat"; // View name
+    }
+
+    @GetMapping("/login")
+    public String showLogin()
+    {
+
+        return "login"; // View name
+ 
     }
 
     /**
