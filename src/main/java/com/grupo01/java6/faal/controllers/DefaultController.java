@@ -112,6 +112,20 @@ public class DefaultController {
     }
 
 
+    @GetMapping("/forum")
+    public String showForum()
+    {
+
+        return "forum"; // View name
+    }
+
+    @GetMapping("/ticket")
+    public String showticket()
+    {
+
+        return "ticket"; // View name
+    }
+
     @GetMapping("/login2")
     public String showLogin()
     {
@@ -121,6 +135,8 @@ public class DefaultController {
 
     @GetMapping("/tareas")
     public String listTask()
+
+    public String tareas ()
     {
 
         return "tareas"; // View name
