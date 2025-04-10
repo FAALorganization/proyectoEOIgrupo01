@@ -76,6 +76,19 @@ public class DefaultController {
         return "calendario"; // View name
     }
 
+    @GetMapping("/forum")
+    public String showForum()
+    {
+
+        return "forum"; // View name
+    }
+
+    @GetMapping("/ticket")
+    public String showticket()
+    {
+
+        return "ticket"; // View name
+    }
     @GetMapping("/gestionVacaciones")
     public String showgestionVacaciones()
     {
@@ -112,6 +125,7 @@ public class DefaultController {
     }
 
     @GetMapping("/tareas")
+    public String tareas ()
     public String listTask()
     {
 
