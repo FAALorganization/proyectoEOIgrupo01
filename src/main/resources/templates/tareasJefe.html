@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Añadir Tarea</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+
+<h2 class="text-center mb-4">📝 Añadir tarea a:</h2>
+
+<div class="card shadow p-4 mb-4">
+  <form id="taskForm" class="mb-4">
+    <!-- Selección de usuario -->
+    <div class="mb-3">
+      <label for="userSelect" class="form-label"><strong>Selecciona un usuario:</strong></label>
+      <select class="form-select" id="userSelect" required>
+        <option value="" disabled selected>Elige un usuario</option>
+        <option value="usuario1">Usuario 1</option>
+        <option value="usuario2">Usuario 2</option>
+        <option value="usuario3">Usuario 3</option>
+      </select>
+    </div>
+
+    <!-- Nombre de la tarea -->
+    <div class="mb-3">
+      <label for="taskName" class="form-label"><strong>Nombre de la tarea:</strong></label>
+      <input type="text" class="form-control" id="taskName" required>
+    </div>
+
+    <!-- Descripción de la tarea -->
+    <div class="mb-3">
+      <label for="taskDesc" class="form-label"><strong>Descripción:</strong></label>
+      <textarea class="form-control" id="taskDesc" rows="3" required></textarea>
+    </div>
+
+    <!-- Botón para agregar tarea -->
+    <div class="text-end">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Añadir Tarea
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Volver -->
+<div class="text-center">
+  <a th:href="@{tareas.html}" class="btn btn-secondary">
+    <i class="bi bi-arrow-left-circle"></i> Volver a Lista de Tareas
+  </a>
+</div>
+
+
+<script th:src="@{js/tareasJefe.js}"></script>
+
+</body>
+</html>
