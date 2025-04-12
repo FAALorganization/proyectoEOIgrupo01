@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat de Usuarios</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Grupal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{css/chat.css}">
@@ -18,10 +18,10 @@
 <div class="l-navbar" id="nav-bar">
     <nav class="nav">
         <div class="nav_list">
-            <a href="./home.html" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
             <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
             <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
-            <a href="./calendario.html" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
             <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-file-pen"></i>
                 <span class="nav_name">Gestión</span>
@@ -31,12 +31,12 @@
             <!-- Menú Dropdown -->
             <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
                 <li><a class="dropdown-item" href="#">Gestión de Tareas</a></li>
-                <li><a class="dropdown-item" href="./gestionVacaciones.html">Gestión Vacaciones</a></li>
-                <li><a class="dropdown-item" href="./gestionIncidencias.html">Gestión Incidencias</a></li>
+                <li><a class="dropdown-item" href="#">Gestión Vacaciones</a></li>
+                <li><a class="dropdown-item" href="#">Gestión Incidencias</a></li>
             </ul>
             <a href="#" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
             <a href="#" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
-            <a th:href="@{/chat}" class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
             <a href="#" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
             <a href="#" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
 
@@ -44,75 +44,50 @@
     </nav>
 </div>
 
-<div class="container mt-5">
-    <div class="row">
-        <!-- Lista de usuarios -->
-        <div class="col-md-4">
-            <h3>Usuarios</h3>
-            <ul class="list-group user-list">
-                <li class="list-group-item" onclick="toggleUserChat('Usuario 1')">Usuario 1</li>
-                <li class="list-group-item" onclick="toggleUserChat('Usuario 2')">Usuario 2</li>
-                <li class="list-group-item" onclick="toggleUserChat('Usuario 3')">Usuario 3</li>
-            </ul>
-            <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#createGroupChatModal">Crear Chat Grupal</button>
+<div class="bg-[#f5f7fa] text-gray-800 flex justify-center items-center h-screen pt-16">
+
+    <div class="w-full max-w-6xl h-[90vh] flex rounded-xl overflow-hidden shadow-lg border border-gray-200">
+        <!-- Panel de Usuarios -->
+        <div class="w-1/4 bg-white p-4 flex flex-col">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-blue-500">Chats</h2>
+            </div>
+            <div id="userList" class="flex-1 space-y-2 overflow-y-auto"></div>
+            <button onclick="openGroupModal()" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-2xl hover:bg-blue-600">
+                Crear chat grupal
+            </button>
         </div>
 
-        <!-- Área para chats -->
-        <div class="col-md-8">
-            <h3 id="chat-title">Por favor, seleccione una opción de Chat.</h3>
-
-            <div class="chat-tabs" id="chat-tabs"></div>
-
-            <div class="chat-container">
-                <div class="chat-box" id="chat-box"></div>
-                <input type="text" class="form-control" id="message-input" placeholder="Escribe tu mensaje...">
-                <button class="btn btn-success mt-2" onclick="sendMessage()">Enviar mensaje</button>
+        <!-- Panel de Chat -->
+        <div class="w-3/4 p-6 flex flex-col bg-white">
+            <div id="chatHeader" class="text-xl font-semibold mb-2 text-blue-600"></div>
+            <div id="chatBox" class="bg-gray-100 rounded-2xl p-4 mb-4 h-[75%] overflow-y-auto border border-gray-200">
+                <p class="text-center text-gray-400">Selecciona un usuario para comenzar a chatear</p>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para crear el chat grupal -->
-<div class="modal fade" id="createGroupChatModal" tabindex="-1" role="dialog" aria-labelledby="createGroupChatModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createGroupChatModalLabel">Crear Chat Grupal</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="group-chat-users">Selecciona usuarios para el chat grupal:</label>
-                    <ul class="list-group" id="group-chat-users">
-                        <li class="list-group-item">
-                            <input type="checkbox" class="user-checkbox" id="user1"> Usuario 1
-                        </li>
-                        <li class="list-group-item">
-                            <input type="checkbox" class="user-checkbox" id="user2"> Usuario 2
-                        </li>
-                        <li class="list-group-item">
-                            <input type="checkbox" class="user-checkbox" id="user3"> Usuario 3
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="createGroupChat()">Crear Chat Grupal</button>
+            <div class="flex">
+                <input id="messageInput" type="text" placeholder="Escribe un mensaje..." class="flex-1 p-3 rounded-l-2xl border border-gray-300 focus:outline-none" />
+                <button onclick="sendMessage()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 rounded-r-2xl">Enviar</button>
             </div>
         </div>
     </div>
+
+    <!-- Modal para grupo -->
+    <div id="groupModal" class="fixed inset-0 backdrop-blur-sm flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-xl shadow-lg w-96">
+            <h2 class="text-lg font-semibold mb-4">Selecciona usuarios para el chat grupal</h2>
+            <div id="groupUserList" class="space-y-2 max-h-60 overflow-y-auto mb-4"></div>
+            <input id="groupNameInput" type="text" placeholder="Nombre del grupo" class="w-full mb-4 p-2 border rounded" />
+            <div class="flex justify-end gap-2">
+                <button onclick="createGroupChat()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Crear</button>
+                <button onclick="closeGroupModal()" class="text-gray-600 hover:underline">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{js/chat.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<script th:src="@{js/chat.js}"></script>
 
 </body>
-</html>>
+</html>

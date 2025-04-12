@@ -56,114 +56,132 @@ buttonNav.addEventListener("click", function(){
     }
 });
 
-let currentChat = '';
-let chats = {}; // Para almacenar los chats individuales y grupales
-let selectedUsersForGroup = []; // Para almacenar los usuarios seleccionados para el chat grupal
+/*JS CHAT*/
 
-function toggleUserChat(user) {
-    const chatExists = chats[user];
-    if (chatExists) {
-        // Si el chat ya existe, no hacer nada o preguntar si se quiere abrir el chat
-        const openChat = confirm(`¿Quieres abrir el chat con ${user}?`);
-        if (openChat) {
-            currentChat = user;
-            loadChat();
-        }
-    } else {
-        // Si el chat no existe, preguntar si se quiere abrir uno
-        const openChat = confirm(`¿Quieres iniciar un chat con ${user}?`);
-        if (openChat) {
-            chats[user] = { type: 'individual', users: [user], messages: [] };
-            currentChat = user;
-            loadChat();
-        }
-    }
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const users = [
+        { name: 'Usuario A', avatar: 'https://i.pravatar.cc/40?u=alice' },
+        { name: 'Usuario B', avatar: 'https://i.pravatar.cc/40?u=bob' },
+        { name: 'Usuario C', avatar: 'https://i.pravatar.cc/40?u=carlos' },
+        { name: 'Usuario D', avatar: 'https://i.pravatar.cc/40?u=diana' }
+    ];
 
-function createGroupChat() {
-    const checkboxes = document.querySelectorAll('.user-checkbox:checked');
-    selectedUsersForGroup = Array.from(checkboxes).map(checkbox => checkbox.closest('li').innerText.trim());
+    let currentChatUser = null;
+    let chatHistory = {};
+    let isGroupChat = false;
 
-    if (selectedUsersForGroup.length > 0) {
-        const groupName = selectedUsersForGroup.join(', ');
-        if (!chats[groupName]) {
-            // Crear un nuevo chat grupal
-            chats[groupName] = { type: 'group', users: selectedUsersForGroup, messages: [] };
-        }
-        currentChat = groupName;
-        loadChat();
-        $('#createGroupChatModal').modal('hide'); // Cerrar el modal
-    }
-}
+    const userList = document.getElementById('userList');
+    const chatBox = document.getElementById('chatBox');
+    const chatHeader = document.getElementById('chatHeader');
+    const messageInput = document.getElementById('messageInput');
 
-function loadChat() {
-    // Actualizar el título y el área de chat
-    const chat = chats[currentChat];
-    document.getElementById('chat-title').innerText = `Chat con ${chat.type === 'individual' ? currentChat : `Grupo: ${currentChat}`}`;
-
-    // Generar los mensajes
-    const chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML = ''; // Limpiar el área de chat
-    chat.messages.forEach(msg => {
-        const messageElement = document.createElement('div');
-        messageElement.innerText = msg;
-        chatBox.appendChild(messageElement);
+    // Mostrar lista de usuarios
+    users.forEach(user => {
+        const btn = document.createElement('div');
+        btn.className = 'flex items-center gap-3 p-3 cursor-pointer hover:bg-blue-100';
+        btn.innerHTML = `
+        <img src="${user.avatar}" alt="avatar" class="w-8 h-8 rounded-full">
+        <div>${user.name}</div>
+      `;
+        btn.onclick = () => openChat(user.name);
+        userList.appendChild(btn);
     });
 
-    chatBox.scrollTop = chatBox.scrollHeight; // Hacer scroll hacia abajo
-
-    // Actualizar las pestañas de los chats
-    updateChatTabs();
-}
-
-function sendMessage() {
-    const message = document.getElementById('message-input').value;
-    if (message && currentChat) {
-        chats[currentChat].messages.push(`Tú: ${message}`);
-        loadChat(); // Recargar el chat
-        document.getElementById('message-input').value = '';  // Limpiar el input
+    function openChat(user) {
+        isGroupChat = false;
+        currentChatUser = user;
+        chatHeader.textContent = `Chat con ${user}`;
+        displayMessages(chatHistory[user] || []);
+        messageInput.value = ''; // Limpiar el input al abrir el chat
+        messageInput.focus(); // Opcional: enfocar el input
     }
-}
 
-function updateChatTabs() {
-    const chatTabs = document.getElementById('chat-tabs');
-    chatTabs.innerHTML = ''; // Limpiar las pestañas anteriores
+    function sendMessage() {
+        const msg = messageInput.value.trim();
+        if (!msg || !currentChatUser) return;
 
-    for (const chatName in chats) {
-        const chat = chats[chatName];
-        const tab = document.createElement('div');
-        tab.classList.add('chat-tab', 'd-inline-flex', 'align-items-center', 'mr-2');
-
-        // Crear el botón de la pestaña
-        const tabButton = document.createElement('button');
-        tabButton.classList.add('btn', 'btn-secondary', 'mr-2');
-        tabButton.innerText = chat.type === 'individual' ? chatName : `Grupo: ${chatName}`;
-        tabButton.onclick = () => {
-            currentChat = chatName;
-            loadChat();
-        };
-
-        // Crear el botón de eliminar más estético
-        const closeButton = document.createElement('button');
-        closeButton.classList.add('btn', 'btn-sm', 'btn-danger', 'rounded-circle', 'ml-1');
-        closeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        closeButton.onclick = () => {
-            deleteChat(chatName);
-        };
-
-        tab.appendChild(tabButton);
-        tab.appendChild(closeButton);
-        chatTabs.appendChild(tab);
+        if (!chatHistory[currentChatUser]) chatHistory[currentChatUser] = [];
+        chatHistory[currentChatUser].push(msg);
+        messageInput.value = '';
+        displayMessages(chatHistory[currentChatUser]);
     }
-}
 
-function deleteChat(chatName) {
-    // Eliminar el chat de la lista
-    delete chats[chatName];
-    if (currentChat === chatName) {
-        currentChat = '';
-        document.getElementById('chat-title').innerText = 'Seleccione un usuario para iniciar el chat';
-        document.getElementById('chat-box').innerHTML = '';
+    function displayMessages(messages) {
+        chatBox.innerHTML = '';
+        messages.forEach(msg => {
+            const div = document.createElement('div');
+            div.className = 'mb-3 flex';
+            div.innerHTML = `
+        <div class="bg-blue-100 text-gray-800 shadow px-4 py-2 rounded-xl max-w-[80%]">
+        ${msg}
+        </div>
+      `;
+
+            chatBox.appendChild(div);
+        });
+        chatBox.scrollTop = chatBox.scrollHeight;
     }
-    updateChatTabs(); // Actualizar las pestañas
-}
+
+    // MODAL
+    function openGroupModal() {
+        document.getElementById('groupModal').classList.remove('hidden');
+        const list = document.getElementById('groupUserList');
+        list.innerHTML = '';
+        users.forEach(user => {
+            const label = document.createElement('label');
+            label.className = 'flex items-center gap-2';
+            label.innerHTML = `
+          <input type="checkbox" value="${user.name}" class="form-checkbox" />
+          <span>${user.name}</span>
+        `;
+            list.appendChild(label);
+        });
+    }
+
+    function closeGroupModal() {
+        document.getElementById('groupModal').classList.add('hidden');
+    }
+
+    function createGroupChat() {
+        const checkboxes = document.querySelectorAll('#groupUserList input:checked');
+        const groupName = document.getElementById('groupNameInput').value.trim();
+        if (checkboxes.length < 2 || !groupName) {
+            alert('Selecciona al menos 2 usuarios y pon un nombre al grupo.');
+            return;
+        }
+
+        const participants = Array.from(checkboxes).map(cb => cb.value);
+        currentChatUser = groupName;
+        isGroupChat = true;
+        chatHistory[groupName] = chatHistory[groupName] || [];
+
+        if (!document.getElementById(`group-${groupName}`)) {
+            const div = document.createElement('div');
+            div.id = `group-${groupName}`;
+            div.className = 'cursor-pointer px-3 py-2 rounded-xl hover:bg-blue-100';
+            div.textContent = `👥 ${groupName}`;
+            div.onclick = () => {
+                currentChatUser = groupName;
+                isGroupChat = true;
+                chatHeader.textContent = `Grupo: ${groupName}`;
+                displayMessages(chatHistory[groupName]);
+                messageInput.value = ''; // limpiar input al abrir grupo
+                messageInput.focus();
+            };
+            userList.appendChild(div);
+        }
+
+        chatHeader.textContent = `Grupo: ${groupName}`;
+        displayMessages(chatHistory[groupName]);
+        closeGroupModal();
+        messageInput.value = '';
+        messageInput.focus();
+    }
+
+    // Exponer funciones globalmente si se usan desde HTML
+    window.openGroupModal = openGroupModal;
+    window.closeGroupModal = closeGroupModal;
+    window.createGroupChat = createGroupChat;
+    window.sendMessage = sendMessage;
+});
+
