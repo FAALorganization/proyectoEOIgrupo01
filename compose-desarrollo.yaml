@@ -1,11 +1,9 @@
-name: Desarrollo
-
-
+name: ${COMPOSE_NAME}
 
 # Definimos los servicios que se ejecutarán en los contenedores Docker.
 services:
   java:
-    image: $faal:${VERSION:-snapshot}
+    image: ${PROJECT_NAME}:${VERSION:-snapshot}
     ports:
       - "${PUERTO_DESARROLLO:-8080}:8080"
     environment:
