@@ -69,6 +69,10 @@ public class DefaultController {
         return "entidadesHijas"; // View name
     }
 
+    @GetMapping("/test")
+    public String testAusencias(){
+        return "ausencias";
+    }
     @GetMapping("/calendario")
     public String showCalendar()
     {

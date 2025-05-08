@@ -1,157 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{css/calendario.css}">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-
-
-    
-    <title>Calendario</title>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+    </th:block>
 </head>
-<body id="body-pd" class="bg-light">
-    <header class="header" id="header">
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-    </header>
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div class="nav_list">
-                <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
-                <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
-                <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-file-pen"></i>
-                    <span class="nav_name">Gestión</span>
 
-                </a>
+<body>
+<section layout:fragment="content">
+    <div class="calendar-container-all">
+        <div class="buttons-calendar-div">
+            <button>General</button>
+            <button>Individual</button>
+        </div>
 
-                <!-- Menú Dropdown -->
-                <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
-                    <li><a class="dropdown-item" href="#">Gestión de Tareas</a></li>
-                    <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Vacaciones</a></li>
-                    <li><a class="dropdown-item" th:href="@{/gestionAusencias}">Gestión Ausencias</a></li>
-                </ul>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
-                <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
-
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <span class="arrow" id="prevMonth">&#60;</span>
+                <div class="calendar-header-center">
+                    <select id="monthSelect"></select>
+                    <select id="yearSelect"></select>
+                </div>
+                <span class="arrow" id="nextMonth">&#62;</span>
             </div>
-        </nav>
+
+            <div class="days-of-week">
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mie</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sab</div>
+                <div>Dom</div>
+            </div>
+            <div class="days-grid" id="daysGrid"></div>
+        </div>
+
     </div>
-    <!--Container Main start-->
-    <div class="height-100 calendar-container">
-        <div class="calendar-options" >
-            <div class="general-individual">
-                <button class="button-29 General" role="button">General</button>
-                <button class="button-29" role="button">Individual</button>
-            </div>
-            <div class="actual-date">
-                <!--<a class="left-button" id="left-button"><i class="fa-solid fa-arrow-left fa-3x"></i></a>-->
-                <h1 id="actual-date-text">Texto</h1>
-                <!--<a class="right-button" id="right-button"><i class="fa-solid fa-arrow-right fa-3x"></i></a>-->
-            </div>
-            <div class="day-mode-container">
-                <div class="day-mode-buttons">
-                    
-                    <button class="button-29" id="week-button" role="button">Week</button>
-                    <button class="button-29" id="month-button" role="button">Month</button>
+
+    <!-- Modal -->
+    <div class="modal-background"  id="modal-container">
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-overlay-content">
+                <span class="close-btn" id="closeModal">&times;</span>
+                <h2 id="modalDate">Day Details</h2>
+                <div class="modal-content-text">
+                    <p>Here will be the tasks for this day.</p>
                 </div>
             </div>
         </div>
-        <div class="month-year-selection">
-            <label for="start">Select date:</label>
-            <input type="month" id="start" name="start" min="2025-01" value="" />
-        </div>
-        <div class="calendar-days days-mode">
-            <div class="bar-days row1">
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
-                <div>Sun</div>
-            </div>
-            <div class="days row2" id="month-mode">
-                <div class="day-month" id="day-1-1">1</div>
-                <div class="day-month" id="day-1-2">1</div>
-                <div class="day-month" id="day-1-3">1</div>
-                <div class="day-month" id="day-1-4">1</div>
-                <div class="day-month" id="day-1-5">1</div>
-                <div class="day-month" id="day-1-6">1</div>
-                <div class="day-month" id="day-1-7">1</div>
-                <div class="day-month" id="day-2-1">1</div>
-                <div class="day-month" id="day-2-2">1</div>
-                <div class="day-month" id="day-2-3">1</div>
-                <div class="day-month" id="day-2-4">1</div>
-                <div class="day-month" id="day-2-5">1</div>
-                <div class="day-month" id="day-2-6">1</div>
-                <div class="day-month" id="day-2-7">1</div>
-                <div class="day-month" id="day-3-1">1</div>
-                <div class="day-month" id="day-3-2">1</div>
-                <div class="day-month" id="day-3-3">1</div>
-                <div class="day-month" id="day-3-4">1</div>
-                <div class="day-month" id="day-3-5">1</div>
-                <div class="day-month" id="day-3-6">1</div>
-                <div class="day-month" id="day-3-7">1</div>
-                <div class="day-month" id="day-4-1">1</div>
-                <div class="day-month" id="day-4-2">1</div>
-                <div class="day-month" id="day-4-3">1</div>
-                <div class="day-month" id="day-4-4">1</div>
-                <div class="day-month" id="day-4-5">1</div>
-                <div class="day-month" id="day-4-6">1</div>
-                <div class="day-month" id="day-4-7">1</div>
-                <div class="day-month" id="day-5-1">1</div>
-                <div class="day-month" id="day-5-2">1</div>
-                <div class="day-month" id="day-5-3">1</div>
-                <div class="day-month" id="day-5-4">1</div>
-                <div class="day-month" id="day-5-5">1</div>
-                <div class="day-month" id="day-5-6">1</div>
-                <div class="day-month" id="day-5-7">1</div>
-                <div class="day-month" id="day-6-1">1</div>
-                <div class="day-month" id="day-6-2">1</div>
-                <div class="day-month" id="day-6-3">1</div>
-                <div class="day-month" id="day-6-4">1</div>
-                <div class="day-month" id="day-6-5">1</div>
-                <div class="day-month" id="day-6-6">1</div>
-                <div class="day-month" id="day-6-7">1</div>
-            </div>
-            <div class="calendar-week weeks" id="week-mode">
-                <div class="day-week" id="monday"></div>
-                <div class="day-week" id="tuesday"></div>
-                <div class="day-week" id="wednesday"></div>
-                <div class="day-week" id="thursday"></div>
-                <div class="day-week" id="friday"></div>
-                <div class="day-week" id="saturday"></div>
-                <div class="day-week" id="sunday"></div>
-    
-            </div>
-        </div>
-    </div>  
-  <!-- Modal -->
-  <div class="modal-background" id="modal-container">
-    <div class="modal-container" id="modal-content">
-        <button class="close-btn" id="close-modal">&times;</button>
-        <h1>Modal title</h1>
-        <hr>
-        <p>No hay tareas disponibles.</p>
-      </div>
-  </div> 
-  
-
-    <!--Container Main end-->
-
-    <script th:src="@{js/calendario.js}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
+    </div>
+</section>
 </body>
 </html>
