@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Open a Ticket </title>
+    <link rel="icon" href="Resources/images/icon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #F5F1ED;
+            color: #252323;
+        }
+
+        a img {
+            margin: 20px;
+        }
+
+        h1, h3, legend {
+            color: #252323;
+            text-align: center;
+        }
+
+        .main-block {
+            max-width: 800px;
+            margin: auto;
+            background-color: #FFFFFF;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        fieldset {
+            border: none;
+            margin-bottom: 30px;
+        }
+
+        .cdate-block {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cdate-block select {
+            flex: 1;
+        }
+
+        .terms-mailing {
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #252323;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        select[size] {
+            width: 100%;
+            height: auto;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #FFFFFF;
+        }
+
+        #copy {
+            text-align: center;
+            font-size: 0.9rem;
+            padding: 20px;
+            color: #777;
+        }
+
+        hr {
+            margin: 40px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        a {
+            color: #252323;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<a href="./index.html"><img src="./Resources/images/home.jpg" alt="Home Icon" width="30" height="30"></a>
+
+<div class="main-block">
+    <form action="/">
+        <h1>Ticketing System</h1>
+
+        <fieldset>
+            <legend><h3>Personal Information</h3></legend>
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter Full Name" required>
+
+            <label for="mail">E-mail</label>
+            <input type="text" id="mail" name="mail" placeholder="Enter E-mail" required>
+
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter Phone Number" required>
+
+            <label for="manager">Manager contact*</label>
+            <input type="text" id="manager" name="manager" placeholder="Enter Manager Email" required>
+
+            <label for="assigned">Assigned To</label>
+            <select id="assigned" name="AssignedTo">
+                <option value="email" selected>general@faal.com</option>
+                <option value="email">fershan@faal.com
+                <option value="email">bobow@faal.com
+                <option value="email">angel@faal.com
+            </select>
+
+        </fieldset>
+
+        <fieldset>
+            <legend><h3>Ticket Details</h3></legend>
+            <label for="ticketType">Ticket Type</label>
+            <select id="ticketType" name="ticketType">
+                <option value="task" selected>Task</option>
+                <option value="complaint">Complaint</option>
+                <option value="other">Other</option>
+            </select>
+            <label for="ticketCategory">Categoría del Ticket</label>
+            <select id="ticketCategory" name="ticketCategory">
+                <option value="rh" selected>Recursos Humanos</option>
+                <option value="soporte">Soporte</option>
+                <option value="ciberseguridad">Ciberseguridad</option>
+                <option value="infraestructura">Infraestructura</option>
+                <option value="desarrollo">Desarrollo de Software</option>
+                <option value="finanzas">Finanzas</option>
+                <option value="legal">Asuntos Legales</option>
+                <option value="marketing">Marketing</option>
+                <option value="ventas">Ventas</option>
+                <option value="otro">Otro</option>
+            </select>
+
+            <label for="priority">Assign Priority</label>
+            <select id="priority" name="priority">
+                <option value="high" >Alta</option>
+                <option value="low">Baja</option>
+                <option value="medium" selected>Media</option>
+            </select>
+
+            <label>Date to Complain*</label>
+            <div class="cdate-block">
+                <select name="day" required>
+                    <option value="">Day</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                </select>
+                <select name="month" required>
+                    <option value="">Month</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+
+                </select>
+                <select name="year" required>
+                    <option value="">Year</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                </select>
+            </div>
+
+            <label for="subject">Subject*</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label for="ticket">Ticket Information</label>
+            <textarea id="ticket" name="ticket" rows="8" placeholder="Enter ticket details..."></textarea>
+
+            <label for="file">File Attachment (optional)</label>
+            <input type="file" id="file" name="file" accept="audio/*,video/*,image/*">
+
+            <div class="terms-mailing">
+                <input type="checkbox" id="terms" name="terms">
+                <label for="terms">I accept the <a href="TermsAndConditions.html">Terms and Conditions</a></label>
+            </div>
+        </fieldset>
+
+        <button type="submit">Submit</button>
+        &nbsp;
+        <button type="reset">Reset</button>
+    </form>
+</div>
+
+<br>
+
+<div class="main-block" style="margin-top: 20px;">
+    <label>History of Tickets</label>
+    <select size="5" multiple required>
+        <option>ticket1</option>
+        <option>ticket2</option>
+        <option>ticket3</option>
+        <option>ticket4</option>
+        <option>ticket5</option>
+        <option>ticket6</option>
+        <option>ticket7</option>
+        <option>ticket8</option>
+        <option>ticket9</option>
+
+    </select>
+</div>
+
+<hr>
+
+<p id="copy">&copy; 2025 | All Rights Reserved to faal</p>
+
+</body>
+</html>
