@@ -15,7 +15,7 @@
     <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
 </header>
 <div class="l-navbar" id="nav-bar">
-    <nav class="nav">
+    <nav class="nav navbar-style">
         <div class="nav_list">
             <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
             <a th:href="@{/perfil}" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
@@ -29,8 +29,8 @@
             <!-- Menú Dropdown -->
             <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
                 <li><a class="dropdown-item" th:href="@{/tareas}">Gestión de Tareas</a></li>
-                <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Vacaciones</a></li>
-                <li><a class="dropdown-item" th:href="@{/gestionAusencias}">Gestión Ausencias</a></li>
+                <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Ausencias</a></li>
+
             </ul>
             <a th:href="@{/documentacion}" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
             <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
