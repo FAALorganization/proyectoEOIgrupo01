@@ -12,8 +12,8 @@
         <java.version>24</java.version>
         <lombok.version>1.18.38</lombok.version>
         <sonar.coverage.exclusions>**/Application.*,**/loaders/*</sonar.coverage.exclusions>
-        <project.name>buenaspracticas</project.name>
-        <project.groupId>com.atm.java6</project.groupId>
+        <project.name>faal</project.name>
+        <project.groupId>com.grupo01.java6</project.groupId>
     </properties>
     <groupId>${project.groupId}</groupId>
     <artifactId>${project.name}</artifactId>

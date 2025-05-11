@@ -76,6 +76,12 @@ if (monthSelect && typeof currentMonth !== 'undefined') {
         renderCalendar();
     });
 }
+// if (currentMonth) {
+//     monthSelect.onchange = e => {
+//         currentMonth = parseInt(e.target.value);
+//         renderCalendar();
+//     }
+// }
 
 if (yearSelect && typeof currentYear !== 'undefined') {
     yearSelect.onchange = e => {
@@ -83,23 +89,41 @@ if (yearSelect && typeof currentYear !== 'undefined') {
         renderCalendar();
     };
 }
+// if (currentYear) {
+//     yearSelect.onchange = e => {
+//         currentYear = parseInt(e.target.value);
+//         renderCalendar();
+//     }
+// }
 
 if (daysGrid) {
     daysGrid.addEventListener('click', e => {
-        if (e.target.classList.contains('day') && !e.target.classList.contains('inactive')) {
-            modalOverlay.style.display = 'flex';
-
+        if (
+            e.target.classList.contains('day') &&
+            !e.target.classList.contains('inactive') &&
+            modalOverlay &&
+            modalDate
+        ) {
             modalDate.textContent = `${e.target.dataset.date} ${monthSelect.options[monthSelect.selectedIndex].text} ${yearSelect.value}`;
+            showModal();  // Llama a la función que muestra el modal
         }
     });
 }
 
 
-if (modalOverlay) {
 
-    modalOverlay.onclick = e => {
+if (modalOverlay) {
+    // Mostrar el modal
+    function showModal() {
+        if (modalOverlay.style.display !== 'flex') {  // Verifica si ya está visible
+            modalOverlay.style.display = 'flex';  // Hace visible el modalOverlay
+        }
+    }
+
+    // Cerrar el modal
+    modalOverlay.onclick = function (e) {
         if (e.target === modalOverlay || e.target === closeModal) {
-            modalOverlay.style.display = 'none';
+            modalOverlay.style.display = 'none';  // Oculta el modalOverlay
         }
     }
 }
@@ -111,6 +135,8 @@ if (monthSelect) {
 if (daysGrid) {
     renderCalendar();
 }
+
+
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
@@ -124,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if(toggle && nav && bodypd && headerpd){
             toggle.addEventListener('click', ()=>{
                 // show navbar
-                nav.classList.toggle('show')
+                nav.classList.toggle('navbar-expanded')
                 // change icon
                 toggle.classList.toggle('bx-x')
                 // add padding to body
@@ -148,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     linkColor.forEach(l=> l.addEventListener('click', colorLink))
 
+    // Your code to run since DOM is loaded and ready
 });
 
 counter = 0;
@@ -377,4 +404,141 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+/******************************************MODAL GESTION AUSENCIAS*****************************/
+document.addEventListener('DOMContentLoaded', () => {
+    const modalIncidenciasEl = document.getElementById('aus-modal-incidencias');
+    const modalJustificacionEl = document.getElementById('aus-modal-justificacion');
+
+    const ausModalIncidencias = modalIncidenciasEl ? new bootstrap.Modal(modalIncidenciasEl) : null;
+    const ausModalJustificacion = modalJustificacionEl ? new bootstrap.Modal(modalJustificacionEl) : null;
+
+    const btnIncidencias = document.querySelector('.aus-btn-incidencias');
+    if (btnIncidencias && ausModalIncidencias) {
+        btnIncidencias.addEventListener('click', () => {
+            ausModalIncidencias.show();
+        });
+    }
+
+    const btnJustificar = document.querySelector('.aus-btn-justificar');
+    if (btnJustificar && ausModalIncidencias && ausModalJustificacion) {
+        btnJustificar.addEventListener('click', () => {
+            ausModalIncidencias.hide();
+            ausModalJustificacion.show();
+        });
+    }
+
+    const btnVolver = document.getElementById('aus-btn-volver');
+    if (btnVolver && ausModalIncidencias && ausModalJustificacion) {
+        btnVolver.addEventListener('click', () => {
+            ausModalJustificacion.hide();
+            ausModalIncidencias.show();
+        });
+    }
+
+    const formJustificacion = document.getElementById('aus-form-justificacion');
+    if (formJustificacion && ausModalJustificacion) {
+        formJustificacion.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const asunto = document.getElementById('aus-asunto')?.value.trim();
+            const descripcion = document.getElementById('aus-descripcion')?.value.trim();
+            const archivos = document.getElementById('aus-archivos')?.files;
+
+            if (!asunto || !descripcion) {
+                alert("Por favor completa asunto y descripción.");
+                return;
+            }
+
+            if (!archivos || archivos.length === 0) {
+                alert("Por favor adjunta al menos un archivo.");
+                return;
+            }
+
+            alert("Justificación enviada correctamente (simulado).");
+            ausModalJustificacion.hide();
+        });
+    }
+});
+
+/******************************************MODAL GESTION AUSENCIAS*****************************/
+document.addEventListener('DOMContentLoaded', () => {
+    const modalIncidenciasEl = document.getElementById('aus-modal-incidencias');
+    const modalJustificacionEl = document.getElementById('aus-modal-justificacion');
+
+    const ausModalIncidencias = modalIncidenciasEl ? new bootstrap.Modal(modalIncidenciasEl, { backdrop: 'static' }) : null;
+    const ausModalJustificacion = modalJustificacionEl ? new bootstrap.Modal(modalJustificacionEl, { backdrop: 'static' }) : null;
+
+    const btnIncidencias = document.querySelector('.aus-btn-incidencias');
+    if (btnIncidencias && ausModalIncidencias) {
+        btnIncidencias.addEventListener('click', () => {
+            ausModalIncidencias.show();
+        });
+    }
+
+    const btnJustificar = document.querySelector('.aus-btn-justificar');
+    if (btnJustificar && ausModalIncidencias && ausModalJustificacion) {
+        btnJustificar.addEventListener('click', () => {
+            ausModalIncidencias.hide();
+            ausModalJustificacion.show();
+        });
+    }
+
+    const btnVolver = document.getElementById('aus-btn-volver');
+    if (btnVolver && ausModalIncidencias && ausModalJustificacion) {
+        btnVolver.addEventListener('click', () => {
+            ausModalJustificacion.hide();
+            ausModalIncidencias.show();
+        });
+    }
+
+    const formJustificacion = document.getElementById('aus-form-justificacion');
+    if (formJustificacion && ausModalJustificacion) {
+        formJustificacion.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const asunto = document.getElementById('aus-asunto')?.value.trim();
+            const descripcion = document.getElementById('aus-descripcion')?.value.trim();
+            const archivos = document.getElementById('aus-archivos')?.files;
+
+            if (!asunto || !descripcion) {
+                alert("Por favor completa asunto y descripción.");
+                return;
+            }
+
+            if (!archivos || archivos.length === 0) {
+                alert("Por favor adjunta al menos un archivo.");
+                return;
+            }
+
+            alert("Justificación enviada correctamente (simulado).");
+            ausModalJustificacion.hide();
+        });
+    }
+});
+
+// Restaurar scroll al cerrarse un modal, de forma segura
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('hidden.bs.modal', () => {
+        document.body.style.overflow = '';
+    });
+});
+
+// Detectar click fuera del contenido (en backdrop)
+document.addEventListener('click', (event) => {
+    // Si se hace click en el backdrop (fuera del modal)
+    if (event.target.classList.contains('modal')) {
+        const instance = bootstrap.Modal.getInstance(event.target);
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        instance?.hide(); // Deja que Bootstrap se encargue de ocultar
+    }
+
+    // Si se hace click en el botón de cerrar
+    if (event.target.classList.contains('btn-close')) {
+        const modal = event.target.closest('.modal');
+        const instance = bootstrap.Modal.getInstance(modal);
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        instance?.hide();
+    }
+
+});
 

@@ -40,9 +40,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 counter = 0;
 const buttonNav = document.getElementById("header-toggle");
 buttonNav.addEventListener("click", function(){
-
-    let counter;
-    if (counter%2 === 0){
+    
+    if (counter%2 == 0){
         document.querySelectorAll(".nav_name").forEach(link =>{
             link.style.color = "white";
             link.classList.add("textenter");    
@@ -61,23 +60,24 @@ const date = new Date();
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 document.getElementById("actual-date-text").innerHTML = months[date.getMonth()] + " " + date.getFullYear();
 
+const buttonLeft = document.getElementById("left-button");
+const buttonRight = document.getElementById("right-button");
+
 const maxIndexMonth = 11;
 const minIndexMonth = 0;
 
 actualIndexMonth = date.getMonth();
 actualMonth = months[actualIndexMonth];
 
-    /*Actual date in input and days in month*/
 const inputMonth = document.getElementById("start");
 
-if (date.getMonth().toString().length === 1) {
+if (date.getMonth().toString().length == 1) {
     stringMonth = "0" + (date.getMonth()+1).toString();
 }else {
     stringMonth = (date.getMonth()+1).toString();
 }
 inputMonth.value = date.getFullYear() + "-" + stringMonth;
 
-    /*Change central div and days by using input*/
 inputMonth.addEventListener("input",function(){
     actualIndexMonth = Number(inputMonth.value.split("-")[1]) - 1;
     actualMonth = months[actualIndexMonth];
@@ -88,7 +88,6 @@ inputMonth.addEventListener("input",function(){
 
 actualYear = date.getFullYear();
 
-    /*Locate actual days in correct positions*/
 days = {
     "January":{"names":[],"numbers":[]},
     "February":{"names":[],"numbers":[]},
@@ -149,13 +148,13 @@ function changeDays(){
         document.getElementById("day-" + (counter*indexRow).toString() + "-" + (indexCol).toString()).style.pointerEvents = "auto";
         document.getElementById("day-" + (counter*indexRow).toString() + "-" + (indexCol).toString()).style.cursor = "pointer";
         
-        if (indexCol === 7) {
+        if (indexCol == 7) {
             counter += 1;
         }    
 
-        if (i === 0) {
+        if (i == 0) {
             indexColFixFirstDay = indexCol;
-        }else if (i === (days[actualMonth]["names"].length-1)) {
+        }else if (i == (days[actualMonth]["names"].length-1)) {
             indexColFixLastDay = indexCol;
             indexRowFixLastDay = indexRow*counter;
         }
@@ -176,7 +175,7 @@ function changeDays(){
             document.getElementById("day-" + k.toString() + "-" + m.toString()).innerHTML = "";
             document.getElementById("day-" + k.toString() + "-" + m.toString()).style.opacity = 0.5;
             document.getElementById("day-" + k.toString() + "-" + m.toString()).style.pointerEvents = "none";
-            if (k===5 && m === 7){
+            if (k==5 && m == 7){
                 k=6
                 m=0
             }
@@ -188,33 +187,63 @@ function changeDays(){
 
 changeDays();
 
-/*Show modal/list of incidence days*/
+const weekButton = document.getElementById("week-button");
+const dayButton = document.getElementById("day-button");
+const monthButton = document.getElementById("month-button");
 
-const incidenceButton = document.querySelector(".button-29");
-
-incidenceButton.addEventListener("click", function(){
-    document.getElementById("modal-container").classList.add("show");
-    document.getElementById("modal-content").classList.add("show");
+weekButton.addEventListener("click", function(){
+    document.getElementById("month-mode").style.display = "none";
+    document.getElementById("week-mode").style.display = "grid";
+    
 });
 
+monthButton.addEventListener("click", function(){
+    document.getElementById("month-mode").style.display = "grid";
+    document.getElementById("week-mode").style.display = "none";
+});
+
+//Click days: show modal
+
+document.querySelectorAll(".day-month").forEach(div => {
+    div.addEventListener("click", function(){
+
+     const clickedElement = document.getElementById(this.id);
+     document.getElementById(this.id).classList.add("active");
+     document.getElementById("modal-container").classList.add("show");
+     document.getElementById("modal-content").classList.add("show");
+     getInfoModal(clickedElement);
+    
+    });
+});
+
+document.querySelectorAll(".day-week").forEach(div => {
+    div.addEventListener("click", function(){
+
+     const clickedElement = document.getElementById(this.id);   
+     document.getElementById(this.id).classList.add("active");
+     document.getElementById("modal-container").classList.add("show");
+     document.getElementById("modal-content").classList.add("show");
+     getInfoModal(clickedElement);
+     
+    });
+    
+});
+
+const modalContainer = document.getElementById("modal-container");
 document.getElementById("close-modal").addEventListener("click", function(){
 
     document.getElementById("modal-container").classList.remove("show");
     document.getElementById("modal-content").classList.remove("show");
 });
 
-/*Show send files modal*/
-document.querySelector(".send-dates").addEventListener("click", function(){
-    document.querySelector(".modal-files").classList.add("show");
-    document.getElementById("modal-container").classList.add("show");
-    document.getElementById("modal-content").classList.remove("show");
-});
 
-/*Close send files modal*/
-
-document.querySelector(".close-btn-files").addEventListener("click", function(){
-    document.querySelector(".modal-files").classList.remove("show");
-    document.getElementById("modal-container").classList.remove("show");
-});
-
+function getInfoModal(element){
+    if (element.id.split("-")[0] == "day") {
+        document.querySelector(".modal-container h1").innerHTML = document.getElementById(element.id).innerHTML + " " + daysWeekrev[Number(element.id.split("-")[2])];
+    }else {
+        document.querySelector(".modal-container h1").innerHTML = element.id[0].toUpperCase() + element.id.slice(1);
+    }
+    
+    
+};
 
