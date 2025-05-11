@@ -202,7 +202,7 @@ body {
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
-    border: 7px solid #1b17ff;
+    border: 7px solid #1b17ff; /* Added 'solid' for border style */
 
 }
 
