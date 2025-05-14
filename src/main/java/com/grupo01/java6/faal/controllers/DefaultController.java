@@ -148,12 +148,30 @@ public class DefaultController {
     {
          return "checkin"; // View name
     }
+    @GetMapping("/checkinjefe")
+    public String showCheckinjefe()
+    {
+        return "checkinjefe";}
   
     @GetMapping("/documentacion")
     public String showDocumentation()
     {
 
         return "documentacion"; // View name
+    }
+
+    @GetMapping("/perfiljefe")
+    public String showPerfiljefe()
+    {
+
+        return "perfiljefe"; // View name
+    }
+
+    @GetMapping("/perfiladmin")
+    public String showPerfiladmin()
+    {
+
+        return "perfiladmin"; // View name
     }
 
     @GetMapping("/perfil")
@@ -163,7 +181,6 @@ public class DefaultController {
         return "perfil"; // View name
     }
 
-
     @GetMapping("/chat")
     public String showChat()
     {
@@ -171,14 +188,21 @@ public class DefaultController {
         return "chat"; // View name
     }
 
-    @GetMapping("/login")
+    @GetMapping("/loginFaal")
     public String showLogin()
     {
 
-        return "login"; // View name
+        return "loginFaal"; // View name
  
     }
 
+    @GetMapping("/home")
+    public String showHome()
+    {
+
+        return "home"; // View name
+
+    }
     /**
      * Gestiona las solicitudes GET para obtener y mostrar la lista de entidades protegidas.
      * Añade las entidades obtenidas del repositorio al modelo para renderizarlas en la vista correspondiente.
