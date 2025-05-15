@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,22 +15,14 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Entity(name = "Tipo_Notificacion")
 @Table(name = "tipo_notificacion", schema = "faal")
-public class TipoNotificacion implements java.io.Serializable {
-    private static final long serialVersionUID = 9194583128968915166L;
-    private Integer id;
-
-    private String descripcion;
-
+public class TipoNotificacion implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idTipo", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
+    private Integer id;
     @Lob
     @Column(name = "descripcion")
-    public String getDescripcion() {
-        return descripcion;
-    }
+    private String descripcion;
+
 
 }

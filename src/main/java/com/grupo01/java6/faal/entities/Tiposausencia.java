@@ -1,36 +1,26 @@
 package com.grupo01.java6.faal.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-@Builder
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Accessors(chain = true)
 @Entity(name = "Tiposausencia")
 @Table(name = "tiposausencias", schema = "faal")
-public class Tiposausencia implements java.io.Serializable {
-    private static final long serialVersionUID = 4776231211085319203L;
+public class Tiposausencia implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private Integer id;
-
+    @Column(name = "descripcion", length = 45)
     private String descripcion;
 
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
 
-    @Column(name = "descripcion", length = 45)
-    public String getDescripcion() {
-        return descripcion;
-    }
 
 }

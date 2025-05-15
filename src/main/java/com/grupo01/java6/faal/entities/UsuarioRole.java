@@ -6,7 +6,8 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-@Builder
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,31 +19,20 @@ import org.hibernate.annotations.OnDeleteAction;
         @Index(name = "idRol", columnList = "idRol"),
         @Index(name = "fk_usuario_roles_login1_idx", columnList = "idLogin")
 })
-public class UsuarioRole implements java.io.Serializable {
-    private static final long serialVersionUID = -4024495305340252965L;
-    private Integer id;
-
-    private Role idRol;
-
-    private Login idLogin;
-
+public class UsuarioRole implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
+    private Integer id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "idRol", nullable = false)
-    public Role getIdRol() {
-        return idRol;
-    }
-
+    private Role idRol;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idLogin", nullable = false)
-    public Login getIdLogin() {
-        return idLogin;
-    }
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "idRol", nullable = false)
+    private Login idLogin;
+
+
 
 }

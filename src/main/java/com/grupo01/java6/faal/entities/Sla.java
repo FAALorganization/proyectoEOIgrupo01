@@ -6,64 +6,38 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.io.Serializable;
 import java.time.Instant;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
 @Entity(name = "Sla")
 @Table(name = "sla", schema = "faal", indexes = {
         @Index(name = "id_prior", columnList = "id_prior")
 })
-public class Sla implements java.io.Serializable {
-    private static final long serialVersionUID = 4689274710532741418L;
-    private Integer id;
-
-    private String prioridadesEnum;
-
-    private Prioridade idPrior;
-
-    private Double numHoras;
-
-    private Instant fechaIni;
-
-    private Instant fechaFin;
-
+public class Sla implements Serializable {
     @Id
     @Column(name = "idSla", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
+    private Integer id;
     @Column(name = "prioridades_enum", nullable = false, length = 100)
-    public String getPrioridadesEnum() {
-        return prioridadesEnum;
-    }
 
+    private String prioridadesEnum;
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "id_prior")
-    public Prioridade getIdPrior() {
-        return idPrior;
-    }
 
+    private Prioridade idPrior;
     @Column(name = "num_horas")
-    public Double getNumHoras() {
-        return numHoras;
-    }
 
+    private Double numHoras;
     @Column(name = "fecha_ini")
-    public Instant getFechaIni() {
-        return fechaIni;
-    }
 
+    private Instant fechaIni;
     @Column(name = "fecha_fin")
-    public Instant getFechaFin() {
-        return fechaFin;
-    }
+    private Instant fechaFin;
+
+
 
 }

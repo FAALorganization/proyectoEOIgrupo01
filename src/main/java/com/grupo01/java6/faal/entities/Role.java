@@ -7,30 +7,20 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-@Builder
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
 @Entity(name = "Role")
 @Table(name = "roles", schema = "faal")
-public class Role implements java.io.Serializable {
-    private static final long serialVersionUID = -6519962748012982772L;
-    private Integer id;
-
-    private String descripcion;
-
+public class Role implements Serializable {
     @Id
     @Column(name = "idRol", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
+    private Integer id;
     @Column(name = "descripcion", length = 10)
-    public String getDescripcion() {
-        return descripcion;
-    }
+    private String descripcion;
+
 
 }

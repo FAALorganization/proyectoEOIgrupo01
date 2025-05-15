@@ -7,30 +7,20 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-@Builder
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
 @Entity(name = "Prioridade")
 @Table(name = "prioridades", schema = "faal")
-public class Prioridade implements java.io.Serializable {
-    private static final long serialVersionUID = 9148831855679094756L;
-    private Integer id;
-
-    private String prioridadesEnum;
-
+public class Prioridade implements Serializable {
     @Id
     @Column(name = "idPri", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
+    private Integer id;
     @Column(name = "prioridades_enum", nullable = false, length = 100)
-    public String getPrioridadesEnum() {
-        return prioridadesEnum;
-    }
+    private String prioridadesEnum;
+
 
 }
