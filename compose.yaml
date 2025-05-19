@@ -8,11 +8,11 @@ services:
     restart: always
     environment:
       # Nombre de la base de datos que se creará al iniciar el contenedor
-      POSTGRES_DB: 'localdb'
+      POSTGRES_DB: 'faal'
       # Usuario que se creará para acceder a la base de datos
-      POSTGRES_USER: 'localuser'
+      POSTGRES_USER: 'localfaal'
       # Contraseña del usuario creado
-      POSTGRES_PASSWORD: 'password123'
+      POSTGRES_PASSWORD: '0080'
     ports:
       # Mapea el puerto 5432 del contenedor al puerto 5432 del anfitrión
       - '5432:5432'
