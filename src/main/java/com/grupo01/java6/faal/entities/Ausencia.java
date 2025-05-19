@@ -3,43 +3,47 @@ package com.grupo01.java6.faal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "Ausencia")
-@Table(name = "ausencias", schema = "faal", indexes = {
+@Entity
+@Table(name = "ausencias",schema = "faal", indexes = {
         @Index(name = "fk_ausencias_login1_idx", columnList = "idLogin"),
         @Index(name = "fk_ausencias_tiposAusencias1_idx", columnList = "tiposAusencias_id")
 })
 public class Ausencia implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_ausencia")
     private Integer id;
-    @Column(name = "fechaInicio")
+    @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
-    @Column(name = "fechaFin")
+    @Column(name = "fecha_fin")
     private LocalDate fechaFin;
     @Column(name = "justificacion")
     private String justificacion;
     @Column(name = "documentos", length = 250)
     private String documentos;
-    @Column(name = "calcularDias")
+    @Column(name = "calcular_dias")
     private Integer calcularDias;
     @Column(name = "aprobado")
     private Boolean aprobado;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
-    private Login idLogin;
+    private Login login;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tiposAusencias_id", nullable = false)
     private Tiposausencia tiposAusencias;
 
-
-
+    @OneToMany(mappedBy = "ausencias")
+    private List<Diasausencia> diasAusencias;
 }
