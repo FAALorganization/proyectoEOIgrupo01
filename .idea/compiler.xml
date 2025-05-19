@@ -10,6 +10,7 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
+        <module name="ProyectoFAAL" />
         <module name="faal" />
         <module name="proyectoEOIgrupo01" />
       </profile>
@@ -17,6 +18,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ProyectoFAAL" options="-parameters" />
       <module name="faal" options="-parameters" />
       <module name="proyectoEOIgrupo01" options="-parameters" />
     </option>
