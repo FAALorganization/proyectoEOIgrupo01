@@ -59,7 +59,7 @@
             background-color: #444;
             transform: scale(1.05);
         }
- 
+
         .btn-group button {
             margin-bottom: 10px;
             width: 100%;
@@ -117,7 +117,7 @@
 
         .close-modal {
             position: absolute;
-            top: 10px; right: 15px;
+            top: 10px; right: 10px;
             background: none;
             border: none;
             font-size: 1.5rem;
@@ -478,22 +478,3 @@
 </script>
 
 </div>
-</body>
-</html>
-
-
-<script>
-    document.getElementById('closeTicketBtn').addEventListener('click', function () {
-        const reason = document.getElementById('close-reason').value;
-        if (!reason || reason === 'Close Reason') {
-            alert("Please select a close reason first.");
-            return;
-        }
-
-        document.getElementById('contact-subject').value = `Ticket Closed: ${reason}`;
-        document.getElementById('contactModal').style.display = 'flex';
-    });
-</script>
-
-</body>
-</html>

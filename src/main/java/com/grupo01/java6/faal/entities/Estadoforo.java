@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -16,7 +14,6 @@ import java.io.Serializable;
 @Entity(name = "Estadoforo")
 @Table(name = "estadoforo", schema = "faal")
 public class Estadoforo implements Serializable {
-    private static final long serialVersionUID = -538187169456903922L;
 
     @Id
     @Column(name = "id", nullable = false)

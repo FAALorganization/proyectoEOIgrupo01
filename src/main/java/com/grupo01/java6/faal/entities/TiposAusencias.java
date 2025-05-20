@@ -9,11 +9,14 @@ import lombok.*;
 @Setter
 @Entity
 @Table(name = "tiposausencias", schema = "faal")
-public class Tiposausencia implements java.io.Serializable {
+public class TiposAusencias implements java.io.Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id", nullable = false)
     private Integer id;
+
     @Column(name = "descripcion", length = 45)
     private String descripcion;
 

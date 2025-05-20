@@ -2,31 +2,27 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
 @Entity(name = "Tarea")
 @Table(name = "tareas", schema = "faal", indexes = {
         @Index(name = "fk_tareas_login1_idx", columnList = "idLogin")
 })
 public class Tarea implements Serializable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "titulo", length = 50)
     private String titulo;
 
-    @Lob
     @Column(name = "descripcion")
     private String descripcion;
 
@@ -44,6 +40,6 @@ public class Tarea implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
-    private Login idLogin;
+    private Login loginTarea;
 
 }
