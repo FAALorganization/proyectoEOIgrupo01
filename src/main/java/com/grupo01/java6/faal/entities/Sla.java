@@ -3,14 +3,12 @@ package com.grupo01.java6.faal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity(name = "Sla")
 @Table(name = "sla", schema = "faal", indexes = {
         @Index(name = "id_prior", columnList = "id_prior")

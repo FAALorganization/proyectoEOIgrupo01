@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity(name = "Tarea")
 @Table(name = "tareas", schema = "faal", indexes = {
         @Index(name = "fk_tareas_login1_idx", columnList = "idLogin")
