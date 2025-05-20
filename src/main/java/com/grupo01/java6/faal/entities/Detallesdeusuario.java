@@ -1,11 +1,7 @@
 package com.grupo01.java6.faal.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -15,7 +11,6 @@ import java.io.Serializable;
 @Entity(name = "Detallesdeusuario")
 @Table(name = "detallesdeusuario", schema = "faal")
 public class Detallesdeusuario implements Serializable {
-    private static final long serialVersionUID = -8232431230616355220L;
 
     @Id
     @Column(name = "idUsuario", nullable = false)
@@ -54,4 +49,7 @@ public class Detallesdeusuario implements Serializable {
     @Column(name = "token_img", length = 50)
     private String tokenImg;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idLogin", nullable = false, unique = true)
+    private Login usuarioLogin;
 }

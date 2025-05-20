@@ -2,39 +2,51 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-
-@Entity(name = "Login")
+@Entity
 @Table(name = "login", schema = "faal", indexes = {
         @Index(name = "fk_login_detallesdeusuario1_idx", columnList = "idUsuario")
 })
 
 public class Login implements Serializable {
+
     @Id
-    @Column(name = "idLogin", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_login", nullable = false)
     private Integer id;
 
-    @Column(name = "emailPrimario", length = 250)
+    @Column(name = "email_primario", length = 250)
     private String emailPrimario;
+
     @Column(name = "password")
     private String password;
+
     @Column(name = "token", length = 50)
     private String token;
+
     @Column(name = "img_avatar", length = 50)
     private String imgAvatar;
-    @Column(name = "lastLoginDay")
-    private Instant lastLoginDay;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idUsuario", nullable = false)
-    private Detallesdeusuario idUsuario;
+    @Column(name = "last_login_day")
+    private LocalDate lastLoginDay;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario_jefe", nullable = false, unique = true)
+    private Login jefeLogin;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUsuario", nullable = false, unique = true)
+    private Detallesdeusuario idDetallesDeUsuario;
+
+    @ManyToMany( mappedBy = "listaLogin")
+    private Set<Equipo> listaEquipos;
 
 
 }
