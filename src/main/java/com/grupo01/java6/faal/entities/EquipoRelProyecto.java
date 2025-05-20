@@ -2,7 +2,6 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -20,6 +19,9 @@ public class EquipoRelProyecto implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(name = "cometido", length = 100)
+    private String cometido;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idEquipo", nullable = false)
     private Equipo equipoEquipoRelProyecto;
@@ -27,8 +29,5 @@ public class EquipoRelProyecto implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idProyecto", nullable = false)
     private Proyecto proyectoEquipoRelProyecto;
-
-    @Column(name = "cometido", length = 100)
-    private String cometido;
 
 }

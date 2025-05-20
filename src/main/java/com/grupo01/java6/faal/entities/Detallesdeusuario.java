@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Entity(name = "Detallesdeusuario")
 @Table(name = "detallesdeusuario", schema = "faal")
 public class Detallesdeusuario implements Serializable {
-    private static final long serialVersionUID = -8232431230616355220L;
 
     @Id
     @Column(name = "idUsuario", nullable = false)
@@ -50,8 +49,7 @@ public class Detallesdeusuario implements Serializable {
     @Column(name = "token_img", length = 50)
     private String tokenImg;
 
-
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_login", nullable = false, unique = true)
+    @JoinColumn(name = "idLogin", nullable = false, unique = true)
     private Login usuarioLogin;
 }
