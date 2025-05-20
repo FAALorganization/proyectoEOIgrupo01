@@ -17,6 +17,7 @@ import java.io.Serializable;
 @Table(name = "tipo_notificacion", schema = "faal")
 public class TipoNotificacion implements Serializable{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idTipo", nullable = false)
     private Integer id;
 

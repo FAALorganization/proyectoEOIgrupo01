@@ -3,10 +3,8 @@ package com.grupo01.java6.faal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +19,7 @@ import java.time.LocalDate;
 public class Ticketing implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -47,7 +46,7 @@ public class Ticketing implements Serializable {
     private LocalDate eliminacion;
 
     @Column(name = "aprobado")
-    private Byte aprobado;
+    private Boolean aprobado;
 
     @Column(name = "tipoTicket", length = 45)
     private String tipoTicket;

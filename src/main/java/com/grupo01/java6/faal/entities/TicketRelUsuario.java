@@ -23,6 +23,7 @@ import java.time.LocalDate;
 })
 public class TicketRelUsuario implements Serializable{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -35,10 +36,10 @@ public class TicketRelUsuario implements Serializable{
     private LocalDate fechaAsignacion;
 
     @Column(name = "estado")
-    private Byte estado;
+    private Boolean estado;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "login_idLogin", nullable = false)
-    private Login LoginIdLogin;
+    private Login loginIdlogin;
 
 }

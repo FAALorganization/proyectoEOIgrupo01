@@ -20,6 +20,8 @@ import java.time.LocalDate;
 })
 public class Tarea implements Serializable {
     @Id
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
