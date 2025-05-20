@@ -3,7 +3,6 @@ package com.grupo01.java6.faal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Set;
 

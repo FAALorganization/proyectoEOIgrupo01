@@ -2,7 +2,7 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.io.Serializable;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -14,13 +14,15 @@ import java.time.Instant;
         @Index(name = "fk_mensaje_grupo_login1_idx", columnList = "idAutor"),
         @Index(name = "fk_mensaje_grupo_grupo_chat1_idx", columnList = "idGrupo")
 })
-public class MensajeGrupo implements java.io.Serializable {
+public class MensajeGrupo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_mensaje", nullable = false)
     private Integer id;
+
     @Column(name = "mensaje", nullable = false)
     private String mensaje;
+
     @Column(name = "fecha_envio")
     private Instant fechaEnvio;
 

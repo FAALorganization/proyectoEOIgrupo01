@@ -10,10 +10,12 @@ import lombok.*;
 @Entity
 @Table(name = "roles", schema = "faal")
 public class Roles implements java.io.Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idRol", nullable = false)
     private Integer id;
+
     @Column(name = "descripcion", length = 10)
     private String descripcion;
 
