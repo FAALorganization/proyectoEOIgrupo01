@@ -32,7 +32,7 @@ public class Notificacion implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
-    private Login login;
+    private Login loginNotif;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)

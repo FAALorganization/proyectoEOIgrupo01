@@ -25,32 +25,25 @@ public class Ticketing implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_prior")
-    private Prioridade idPrior;
+    private Prioridades idPrior;
     @Lob
     @Column(name = "descripcion")
     private String descripcion;
-
     @Column(name = "nombre", length = 45)
     private String nombre;
-
     @Column(name = "fechaInicio")
     private LocalDate fechaInicio;
-
     @Column(name = "fechaFin")
     private LocalDate fechaFin;
-
     @Column(name = "modificacion")
     private LocalDate modificacion;
-
     @Column(name = "eliminacion")
     private LocalDate eliminacion;
 
     @Column(name = "aprobado")
     private Boolean aprobado;
-
     @Column(name = "tipoTicket", length = 45)
     private String tipoTicket;
-
     @Column(name = "asunto", length = 50)
     private String asunto;
 

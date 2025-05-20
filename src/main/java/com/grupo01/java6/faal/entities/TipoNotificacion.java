@@ -20,8 +20,6 @@ public class TipoNotificacion implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idTipo", nullable = false)
     private Integer id;
-
-    @Lob
     @Column(name = "descripcion")
     private String descripcion;
 

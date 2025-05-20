@@ -7,13 +7,11 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Accessors(chain = true)
 @Entity(name = "Tarea")
 @Table(name = "tareas", schema = "faal", indexes = {
         @Index(name = "fk_tareas_login1_idx", columnList = "idLogin")

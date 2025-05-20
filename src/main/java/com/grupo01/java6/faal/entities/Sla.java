@@ -9,13 +9,11 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.io.Serializable;
 import java.time.Instant;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Accessors(chain = true)
 @Entity(name = "Sla")
 @Table(name = "sla", schema = "faal", indexes = {
         @Index(name = "id_prior", columnList = "id_prior")
@@ -23,6 +21,7 @@ import java.time.Instant;
 public class Sla implements Serializable{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idSla", nullable = false)
     private Integer id;
 
@@ -32,7 +31,7 @@ public class Sla implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "id_prior")
-    private Prioridade idPrior;
+    private Prioridades idPrior;
 
     @Column(name = "num_horas")
     private Double numHoras;

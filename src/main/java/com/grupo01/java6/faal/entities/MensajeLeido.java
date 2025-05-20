@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class MensajeLeido implements java.io.Serializable {
     @Column(name = "idMensaje", nullable = false)
     private Integer id;
     @Column(name = "fechaLeido")
-    private Instant fechaLeido;
+    private LocalDate fechaLeido;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idMensajeGrupo", nullable = false)

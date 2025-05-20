@@ -20,7 +20,6 @@ public class Tipoevento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
     @Column(name = "descripcion", length = 45)
     private String descripcion;
 }

@@ -31,13 +31,10 @@ public class TicketRelUsuario implements Serializable{
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "id_ticketing")
     private Ticketing idTicketing;
-
     @Column(name = "fecha_asignacion")
     private LocalDate fechaAsignacion;
-
     @Column(name = "estado")
     private Boolean estado;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "login_idLogin", nullable = false)
     private Login loginIdlogin;
