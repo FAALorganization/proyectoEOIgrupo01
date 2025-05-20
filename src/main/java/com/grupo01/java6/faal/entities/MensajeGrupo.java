@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,7 +31,4 @@ public class MensajeGrupo implements java.io.Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_grupo", nullable = false)
     private GrupoChat idGrupo;
-
-    @OneToMany(mappedBy = "mensajeGrupo", fetch = FetchType.LAZY)
-    private List<MensajeLeido> mensajesLeidos;
 }

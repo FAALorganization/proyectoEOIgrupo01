@@ -27,7 +27,7 @@ public class Proyecto implements java.io.Serializable {
     @Column(name = "fechaFin")
     private LocalDate fechaFin;
 
-    @OneToMany(mappedBy = "proyecto", fetch = FetchType.LAZY)
-    private List<EquipoRelProyecto> proyectosEquipo;
+    @OneToMany(mappedBy = "proyectoEquipoRelProyecto", fetch = FetchType.LAZY)
+    private List<EquipoRelProyecto> listaEquipoRelProyectos;
 
 }

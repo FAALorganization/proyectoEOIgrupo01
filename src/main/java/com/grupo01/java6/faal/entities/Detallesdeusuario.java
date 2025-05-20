@@ -1,11 +1,7 @@
 package com.grupo01.java6.faal.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -54,4 +50,8 @@ public class Detallesdeusuario implements Serializable {
     @Column(name = "token_img", length = 50)
     private String tokenImg;
 
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_login", nullable = false, unique = true)
+    private Login usuarioLogin;
 }

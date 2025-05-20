@@ -17,4 +17,8 @@ public class Roles implements java.io.Serializable {
     @Column(name = "descripcion", length = 10)
     private String descripcion;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "idLogin", nullable = false)
+    private Login loginRol;
+
 }

@@ -2,19 +2,15 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
 @Entity(name = "Foro")
 @Table(name = "foro", schema = "faal", indexes = {
         @Index(name = "fk_foro_estadoForo1_idx", columnList = "estadoForo_id"),
@@ -23,7 +19,7 @@ import java.time.Instant;
 public class Foro implements Serializable {
     @Id
     @Column(name = "idForo", nullable = false)
-    private Integer Id;
+    private Integer id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "estadoForo_id", nullable = false)
     private Estadoforo estadoforo;
@@ -40,6 +36,6 @@ public class Foro implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
-    private Login idLogin;
+    private Login loginForo;
 
 }

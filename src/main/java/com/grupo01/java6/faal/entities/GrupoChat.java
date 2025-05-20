@@ -26,9 +26,8 @@ public class GrupoChat implements java.io.Serializable {
     @Column(name = "fecha_creacion")
     private Instant fechaCreacion;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_login", nullable = false)
-    private Login login;
+    @OneToMany(mappedBy = "grupoChatUsuario", fetch = FetchType.LAZY)
+    private List<GrupoChatUsuario> listaGruposChatUsuario;
 
     @OneToMany(mappedBy = "idGrupoChat", fetch = FetchType.LAZY)
     private List<Equipo> equipos;

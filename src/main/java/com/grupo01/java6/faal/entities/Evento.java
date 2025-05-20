@@ -2,7 +2,6 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -15,7 +14,6 @@ import java.time.LocalDate;
         @Index(name = "fk_eventos_login1_idx", columnList = "idLogin")
 })
 public class Evento implements Serializable {
-    private static final long serialVersionUID = 2695489353375459498L;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -24,7 +22,6 @@ public class Evento implements Serializable {
     @Column(name = "titulo", length = 45)
     private String titulo;
 
-    @Lob
     @Column(name = "descripcion")
     private String descripcion;
 
@@ -39,6 +36,6 @@ public class Evento implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
-    private Login idLogin;
+    private Login loginEvento;
 
 }

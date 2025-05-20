@@ -44,6 +44,6 @@ public class Tarea implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
-    private Login idLogin;
+    private Login loginTarea;
 
 }

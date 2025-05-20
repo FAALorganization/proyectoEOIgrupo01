@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,63 +33,29 @@ public class Login implements Serializable {
     private Instant lastLoginDay;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
-    private Detallesdeusuario usuario;
+    @JoinColumn(name = "id_usuario_jefe", nullable = false, unique = true)
+    private Login jefeLogin;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_jefe", nullable = false)
-    private Detallesdeusuario loginJefe;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<Ausencia> ausencias;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<Checkin> checkins;
-
-    @OneToMany(mappedBy = "remitente", fetch = FetchType.LAZY)
-    private List<Chat> chatsEnviados;
-
-    @OneToMany(mappedBy = "destinatario", fetch = FetchType.LAZY)
-    private List<Chat> chatsRecibidos;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<GrupoChat> chatsGrupos;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<Foro> foros;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<Tarea> tareas;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<Evento> eventos;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<GrupoChat> gruposChats;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<GrupoChatUsuario> gruposChatUsuarios;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<LoginEquipo> loginsEquipos;
-
-    @OneToMany(mappedBy = "idAutor", fetch = FetchType.LAZY)
-    private List<MensajeGrupo> mensajesGrupos;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<MensajeLeido> mensajesLeidos;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<Notificacion> notificaciones;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<Post> posts;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<UsuarioRoles> usuarioRoles;
-
-    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
-    private List<TicketRelUsuario> ticketRelsUsario;
+    @ManyToMany( mappedBy = "listaLogin")
+    private Set<Equipo> listaEquipos;
+//
+//    @OneToMany(mappedBy = "loginGrupoChatUsuarios", fetch = FetchType.LAZY)
+//    private List<GrupoChatUsuario> gruposChatUsuarios;
+//
+//
+//
+//    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
+//    private List<MensajeLeido> mensajesLeidos;
+//
+//    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
+//    private List<Notificacion> notificaciones;
+//
+//    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
+//    private List<Post> posts;
+//
+//
+//    @OneToMany(mappedBy = "login", fetch = FetchType.LAZY)
+//    private List<TicketRelUsuario> ticketRelsUsario;
 
 
 }

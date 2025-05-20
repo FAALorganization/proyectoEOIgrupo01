@@ -2,7 +2,6 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -37,6 +36,6 @@ public class Checkin implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
-    private Login idLogin;
+    private Login idLoginCheckin;
 
 }
