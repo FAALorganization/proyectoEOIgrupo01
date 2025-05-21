@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "Equipo")
-@Table(name = "equipo", schema = "faal", indexes = {
+@Table(name = "equipo", indexes = {
         @Index(name = "fk_equipo_grupo_chat1_idx", columnList = "idGrupoChat")
 })
 public class Equipo implements Serializable {

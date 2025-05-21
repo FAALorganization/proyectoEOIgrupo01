@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Entity(name = "Post")
-@Table(name = "post", schema = "faal", indexes = {
+@Table(name = "post", indexes = {
         @Index(name = "fk_post_foro1_idx", columnList = "foro_idForo"),
         @Index(name = "fk_post_login1_idx", columnList = "idLogin")
 })

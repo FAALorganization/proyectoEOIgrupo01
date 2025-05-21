@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "login", schema = "faal", indexes = {
+@Table(name = "login", indexes = {
         @Index(name = "fk_login_detallesdeusuario1_idx", columnList = "idUsuario")
 })
 
