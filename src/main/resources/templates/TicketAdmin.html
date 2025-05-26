@@ -91,7 +91,7 @@
 
         /* Modal */
         .modal {
-            display: none;
+            display: flex;
             position: fixed;
             z-index: 1000;
             left: 0; top: 0;
@@ -105,33 +105,28 @@
             background: white;
             padding: 30px;
             border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
             animation: fadeIn 0.5s ease-in-out;
             position: relative;
         }
 
-        .modal-content button {
-            width: 100%;
-        }
+
 
         .close-modal {
             position: absolute;
-            top: 10px; right: 10px;
+            padding: 20px;
             background: none;
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
+            transition: color 0.2s;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            padding: 10px;
+            text-align: right;
+
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
 
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-        }
     </style>
 </head>
 <body>
@@ -156,6 +151,28 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+        }
+
+        #form-action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        #form-action-buttons button {
+            padding: 12px 24px;
+            background-color: #252323;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #form-action-buttons button:hover {
+            background-color: #444;
         }
 
         h1, h3, legend { text-align: center; }
@@ -248,9 +265,7 @@
             position: relative;
         }
 
-        .modal-content button {
-            width: 100%;
-        }
+
 
         .close-modal {
             position: absolute;
@@ -330,7 +345,10 @@
                     <option value="medium" selected>Media</option>
                 </select>
 
-                <label>Date to Complain*</label>
+                <label>
+                    <input type="text" />
+                    Date to Complain*
+                </label>
                 <div class="date-block">
                     <select name="day" required>
                         <option value="">Day</option>
@@ -399,15 +417,15 @@
                 <label for="file">File Attachment (optional)</label>
                 <input type="file" id="file" name="file" accept="audio/*,video/*,image/*">
 
-                <div class="terms-mailing">
-                    <input type="checkbox" id="terms" name="terms">
-                    <label for="terms">I accept the <a href="TermsAndConditions.html">Terms and Conditions</a></label>
-                </div>
+
             </fieldset>
 
-            <button type="submit">Submit</button>
-            &nbsp;
-            <button type="reset">Reset</button>
+            <div id="form-action-buttons">
+                <button type="submit">Submit</button>
+                &nbsp;&nbsp;
+                <button type="reset">Reset</button>
+            </div>
+
         </form>
     </div>
 </div>
@@ -453,25 +471,34 @@
 <!-- MODAL -->
 <div class="modal" id="contactModal">
     <div class="modal-content">
-        <button class="close-modal" onclick="document.getElementById('contactModal').style.display='none'">&times;</button>
+        <button class="close-modal"  id="closeModalBtn" >&times;</button>
         <h3>Contact User Before Closing</h3>
         <form action="mailto:user@domain.com" method="POST" enctype="text/plain">
-            <label>Subject</label>
+            <label>
+                <input type="text" />
+                Subject
+            </label>
             <input type="text" id="contact-subject" name="subject" required>
-            <label>Message</label>
+            <label>
+                <input type="text" />
+                Message
+            </label>
             <textarea name="message" rows="6" required></textarea>
             <button type="submit"><i class="fa-solid fa-envelope-circle-check"></i> Send Email</button>
         </form>
     </div>
 </div>
 <script>
-    document.getElementById('closeTicketBtn').addEventListener('click', function () {
+    // javascript
+       document.getElementById('closeTicketBtn').addEventListener('click', function () {
         const reason = document.getElementById('close-reason').value;
         if (!reason || reason === 'Close Reason') {
             alert("Please select a close reason first.");
             return;
         }
-
+        document.getElementById('closeModalBtn').addEventListener('click', function () {
+            document.getElementById('contactModal').style.display = 'none';
+        });
         document.getElementById('contact-subject').value = `Ticket Closed: ${reason}`;
         document.getElementById('contactModal').style.display = 'flex';
     });
