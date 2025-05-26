@@ -36,21 +36,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
      // Your code to run since DOM is loaded and ready
     });
-    counter = 0;
-    const buttonNav = document.getElementById("header-toggle");
-    buttonNav.addEventListener("click", function(){
-        
-        if (counter%2 == 0){
-            document.querySelectorAll(".nav_name").forEach(link =>{
-                link.style.color = "white";
-                link.classList.add("textenter");    
-            })
-            counter += 1;
-        }else {
-            document.querySelectorAll(".nav_name").forEach(link =>{
-                link.style.color = "#252323";
-                link.classList.remove("textenter");   
-            })
-            counter += 1; 
-        }    
+
+counter = 0;
+const buttonNav = document.getElementById("header-toggle");
+buttonNav.addEventListener("click", function(){
+
+    let counter;
+    if (counter % 2 === 0) {
+        document.querySelectorAll(".nav_name").forEach(link => {
+            link.style.color = "white";
+            link.classList.add("textenter");
+        })
+        counter += 1;
+    } else {
+        document.querySelectorAll(".nav_name").forEach(link => {
+            link.style.color = "#252323";
+            link.classList.remove("textenter");
+        })
+        counter += 1;
+    }    
+});
+
+const buttonsUser = document.querySelectorAll('.fa-magnifying-glass');
+
+buttonsUser.forEach(boton => {
+    boton.addEventListener("click", function(){
+        document.getElementById("modal-container").classList.add("show");
+        document.getElementById("modal-content").classList.add("show");
     });
+});
+
+document.getElementById("close-modal").addEventListener("click", function(){
+
+    document.getElementById("modal-container").classList.remove("show");
+    document.getElementById("modal-content").classList.remove("show");
+});
+

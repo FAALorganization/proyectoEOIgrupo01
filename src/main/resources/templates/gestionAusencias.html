@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{css/gestionAusencias.css}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+
+
+    
+    <title>Gestión de Incidencias</title>
+</head>
+<body id="body-pd" class="bg-light">
+  <header class="header" id="header">
+    <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+  </header>
+  <div class="l-navbar" id="nav-bar">
+      <nav class="nav">
+          <div class="nav_list">
+              <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
+              <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
+              <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
+              <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
+              <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-file-pen"></i>
+                  <span class="nav_name">Gestión</span>
+
+              </a>
+
+              <!-- Menú Dropdown -->
+              <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
+                  <li><a class="dropdown-item" href="#">Gestión de Tareas</a></li>
+                  <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Vacaciones</a></li>
+                  <li><a class="dropdown-item" th:href="@{/gestionAusencias}">Gestión Ausencias</a></li>
+              </ul>
+              <a href="#" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
+              <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
+              <a href="#" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
+              <a href="#" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
+              <a href="#" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
+
+          </div>
+      </nav>
+  </div>
+  <!--Container Main start-->
+  <div class="height-100 calendar-container">
+        <div class="calendar-options">
+            <div class="general-individual">
+                <button class="button-29 General" role="button">Incidencias</button>
+                <div class="dias-propios">X</div>
+            </div>  
+            <div class="actual-date">
+                <h1 id="actual-date-text">Texto</h1>
+            </div>
+            <div class="day-mode-container">
+                <div class="day-mode-buttons">
+                  <a th:href="@{/gestionARes.html}">
+                    <button class="button-29 General" role="button">Gestionar Ausencias</button>
+                  </a>
+                  <button class="button-29 General" role="button">Mandar recordatorio</button>
+                </div> 
+            </div>
+        </div>
+        <div class="month-year-selection">
+            <label for="start">Select date:</label>
+            <input type="month" id="start" name="start" min="2025-01" value="" />
+        </div>
+        <div class="calendar-days days-mode">
+            <div class="bar-days row1">
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+                <div>Sun</div>
+            </div>
+            <div class="days row2" id="month-mode">
+                <div class="day-month" id="day-1-1">1</div>
+                <div class="day-month" id="day-1-2">1</div>
+                <div class="day-month" id="day-1-3">1</div>
+                <div class="day-month" id="day-1-4">1</div>
+                <div class="day-month" id="day-1-5">1</div>
+                <div class="day-month" id="day-1-6">1</div>
+                <div class="day-month" id="day-1-7">1</div>
+                <div class="day-month" id="day-2-1">1</div>
+                <div class="day-month" id="day-2-2">1</div>
+                <div class="day-month" id="day-2-3">1</div>
+                <div class="day-month" id="day-2-4">1</div>
+                <div class="day-month" id="day-2-5">1</div>
+                <div class="day-month" id="day-2-6">1</div>
+                <div class="day-month" id="day-2-7">1</div>
+                <div class="day-month" id="day-3-1">1</div>
+                <div class="day-month" id="day-3-2">1</div>
+                <div class="day-month" id="day-3-3">1</div>
+                <div class="day-month" id="day-3-4">1</div>
+                <div class="day-month" id="day-3-5">1</div>
+                <div class="day-month" id="day-3-6">1</div>
+                <div class="day-month" id="day-3-7">1</div>
+                <div class="day-month" id="day-4-1">1</div>
+                <div class="day-month" id="day-4-2">1</div>
+                <div class="day-month" id="day-4-3">1</div>
+                <div class="day-month" id="day-4-4">1</div>
+                <div class="day-month" id="day-4-5">1</div>
+                <div class="day-month" id="day-4-6">1</div>
+                <div class="day-month" id="day-4-7">1</div>
+                <div class="day-month" id="day-5-1">1</div>
+                <div class="day-month" id="day-5-2">1</div>
+                <div class="day-month" id="day-5-3">1</div>
+                <div class="day-month" id="day-5-4">1</div>
+                <div class="day-month" id="day-5-5">1</div>
+                <div class="day-month" id="day-5-6">1</div>
+                <div class="day-month" id="day-5-7">1</div>
+                <div class="day-month" id="day-6-1">1</div>
+                <div class="day-month" id="day-6-2">1</div>
+                <div class="day-month" id="day-6-3">1</div>
+                <div class="day-month" id="day-6-4">1</div>
+                <div class="day-month" id="day-6-5">1</div>
+                <div class="day-month" id="day-6-6">1</div>
+                <div class="day-month" id="day-6-7">1</div>
+            </div>
+            <div class="calendar-week weeks" id="week-mode">
+                <div class="day-week" id="monday"></div>
+                <div class="day-week" id="tuesday"></div>
+                <div class="day-week" id="wednesday"></div>
+                <div class="day-week" id="thursday"></div>
+                <div class="day-week" id="friday"></div>
+                <div class="day-week" id="saturday"></div>
+                <div class="day-week" id="sunday"></div>
+            </div>
+        </div>
+        <div class="modal-background" id="modal-container">
+            <div class="modal-container show" id="modal-content">
+              <div class="header-modal-incidencias">
+                <h1>Incidencias</h1>
+                <button class="close-btn" id="close-modal">&times;</button>
+                <hr>
+              </div>
+              <div class="modal-table-incidencias">
+                <span>--/--/----: x horas</span> 
+                <div class="checkbox-wrapper-30">
+                    <span class="checkbox">
+                      <input type="checkbox" />
+                      <svg>
+                        <use xlink:href="#checkbox-30" class="checkbox"></use>
+                      </svg>
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+                      <symbol id="checkbox-30" viewBox="0 0 22 22">
+                        <path fill="none" stroke="currentColor" d="M5.5,11.3L9,14.8L20.2,3.3l0,0c-0.5-1-1.5-1.8-2.7-1.8h-13c-1.7,0-3,1.3-3,3v13c0,1.7,1.3,3,3,3h13 c1.7,0,3-1.3,3-3v-13c0-0.4-0.1-0.8-0.3-1.2"/>
+                      </symbol>
+                    </svg>
+                  </div>
+              </div>
+              <div class="button-modal-incidencias">
+                <button type="button" class="send-dates">Click</button>
+              </div>
+            </div>
+        </div> 
+        <div class="modal-files">
+          <div class="modal-header">
+            <div class="modal-logo">
+              <span class="logo-circle">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  width="25"
+                  height="25"
+                  viewBox="0 0 512 419.116"
+                >
+                  <defs>
+                    <clipPath id="clip-folder-new">
+                      <rect width="512" height="419.116"></rect>
+                    </clipPath>
+                  </defs>
+                  <g id="folder-new" clip-path="url(#clip-folder-new)">
+                    <path
+                      id="Union_1"
+                      data-name="Union 1"
+                      d="M16.991,419.116A16.989,16.989,0,0,1,0,402.125V16.991A16.989,16.989,0,0,1,16.991,0H146.124a17,17,0,0,1,10.342,3.513L227.217,57.77H437.805A16.989,16.989,0,0,1,454.8,74.761v53.244h40.213A16.992,16.992,0,0,1,511.6,148.657L454.966,405.222a17,17,0,0,1-16.6,13.332H410.053v.562ZM63.06,384.573H424.722L473.86,161.988H112.2Z"
+                      fill="var(--c-action-primary)"
+                      stroke=""
+                      stroke-width="1"
+                    ></path>
+                  </g>
+                </svg>
+              </span>
+            </div>
+            <button class="close-btn-files" id="close-modal-files">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <p>Add a description (Min. 150 characters)</p>
+              <textarea id="description" maxlength="150" placeholder="Enter up to 150 characters..."></textarea>
+            </div>
+            <p class="modal-title">Upload a file</p>
+            <p class="modal-description">Attach the file below</p>
+            <button class="upload-area">
+              <span class="upload-area-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  width="35"
+                  height="35"
+                  viewBox="0 0 340.531 419.116"
+                >
+                  <g id="files-new" clip-path="url(#clip-files-new)">
+                    <path
+                      id="Union_2"
+                      data-name="Union 2"
+                      d="M-2904.708-8.885A39.292,39.292,0,0,1-2944-48.177V-388.708A39.292,39.292,0,0,1-2904.708-428h209.558a13.1,13.1,0,0,1,9.3,3.8l78.584,78.584a13.1,13.1,0,0,1,3.8,9.3V-48.177a39.292,39.292,0,0,1-39.292,39.292Zm-13.1-379.823V-48.177a13.1,13.1,0,0,0,13.1,13.1h261.947a13.1,13.1,0,0,0,13.1-13.1V-323.221h-52.39a26.2,26.2,0,0,1-26.194-26.195v-52.39h-196.46A13.1,13.1,0,0,0-2917.805-388.708Zm146.5,241.621a14.269,14.269,0,0,1-7.883-12.758v-19.113h-68.841c-7.869,0-7.87-47.619,0-47.619h68.842v-18.8a14.271,14.271,0,0,1,7.882-12.758,14.239,14.239,0,0,1,14.925,1.354l57.019,42.764c.242.185.328.485.555.671a13.9,13.9,0,0,1,2.751,3.292,14.57,14.57,0,0,1,.984,1.454,14.114,14.114,0,0,1,1.411,5.987,14.006,14.006,0,0,1-1.411,5.973,14.653,14.653,0,0,1-.984,1.468,13.9,13.9,0,0,1-2.751,3.293c-.228.2-.313.485-.555.671l-57.019,42.764a14.26,14.26,0,0,1-8.558,2.847A14.326,14.326,0,0,1-2771.3-147.087Z"
+                      transform="translate(2944 428)"
+                      fill="var(--c-action-primary)"
+                    ></path>
+                  </g>
+                </svg>
+              </span>
+              <span class="upload-area-title">Drag file(s) here to upload.</span>
+              <span class="upload-area-description">
+                Alternatively, you can select a file by <br /><strong
+                  >clicking here</strong
+                >
+              </span>
+            </button>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary">Cancel</button>
+            <button class="btn-primary">Upload File</button>
+          </div>
+        </div>
+  </div>  
+  
+
+
+  <!--Container Main end-->
+
+  <script th:src="@{js/gestionAusencias.js}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</body>
+</html>
+
