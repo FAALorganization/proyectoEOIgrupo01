@@ -1,54 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:wght@100..900&family=New+Tegomin&family=Russo+One&display=swap');
-
-:root{
-    --header-height: 3rem;
-    --nav-width: 68px;
-    --first-color: #252323;
-    --first-color-light: #e6e6e6;
-    --white-color: #F7F6FB;
-    --body-font: 'Montserrat', sans-serif;
-    --normal-font-size: 1rem;
-    --z-fixed: 100;
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
 }
 
-*,::before,::after{
-    box-sizing: border-box;
-
+#userList li {
+    border: none;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s ease;
 }
 
-body{
-    position: relative;
-    margin: var(--header-height) 0 0 0;
-    padding: 0 1rem;
-    font-family: var(--body-font);
-    font-size: var(--normal-font-size);
-    transition: .5s;
-    height: auto;
-    background-color: var(--white-color);
-
+#userList li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
 }
 
-a{
-    text-decoration: none
+#userList li.selected {
+    background-color: #0d6efd;
+    color: white;
 }
 
-.header{
-    width: 100%;
-    height: var(--header-height);
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
-    background-color: var(--white-color);
-    z-index: var(--z-fixed);
-    transition: .5s;
+#chatMessages .message {
+    margin-bottom: 10px;
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 1rem;
+    display: inline-block;
 }
-/*.header_toggle{*/
-/*    color: var(--first-color);*/
-/*    font-size: 1.5rem;*/
-/*    cursor: pointer;*/
-/*}*/
 
+.message.self {
+    background-color: #0d6efd;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message.other {
+    background-color: #e9ecef;
+    color: #333;
+    align-self: flex-start;
+}
+
+.chat-header, .chat-footer {
+    z-index: 1;
+}
