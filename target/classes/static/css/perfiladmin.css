@@ -1,0 +1,50 @@
+
+.container {
+    border-radius: 10px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Agrega una sombra opcional para resaltar */
+    overflow: hidden; /* Asegura que el contenido no sobresalga de los bordes redondeados */
+    position: relative;
+    top: var(--header-height);
+    margin-top: calc(var(--header-height) + 2rem) !important;
+}
+
+.labels {
+    font-size: 11px
+}
+
+.btn-primary{
+    background-color: #1B17FF !important;
+    color: #F5F1ED;
+    border: none !important; /* Elimina el borde */
+}
+
+
+.btn-primary:focus, 
+.btn-primary:active {
+    border: 2px solid #1B17FF !important; /* Cambia el color del borde */
+    box-shadow: 0 0 5px #1B17FF !important; /* Agrega un efecto de sombra opcional */
+    transform: none !important; /* Evita cambios de tamaño */
+}
+.btn-primary:hover{
+    background-color: #0d0aca !important;
+    color: #F5F1ED;
+    border: none !important; /* Elimina el borde */
+}
+.gestion-button{ 
+    background-color: #1B17FF !important;
+    color: #F5F1ED !important;
+    border: none !important; /* Elimina el borde */}
+    /* Asegura que el backdrop del modal se oscurezca lo suficiente */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5) !important; /* Oscurece el fondo */
+}
+
+/* El modal debe estar por encima del backdrop */
+.modal {
+    z-index: 1055 !important; /* Asegura que el modal esté por encima del backdrop */
+}
+
+/* Si hay múltiples modales, asegúrate de que el segundo modal esté encima del primero */
+.modal.fade {
+    z-index: 1056 !important;
+}

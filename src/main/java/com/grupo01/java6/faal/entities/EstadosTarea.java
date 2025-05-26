@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity(name = "Estadostarea")
-@Table(name = "estadostareas", schema = "faal")
+@Table(name = "estadostareas")
 public class EstadosTarea implements Serializable {
 
     @Id

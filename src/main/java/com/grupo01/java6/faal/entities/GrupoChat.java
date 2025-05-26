@@ -9,7 +9,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "grupo_chat", schema = "faal", indexes = {
+@Table(name = "grupo_chat", indexes = {
         @Index(name = "fk_grupo_chat_login1_idx", columnList = "idLogin")
 })
 public class GrupoChat implements java.io.Serializable {
