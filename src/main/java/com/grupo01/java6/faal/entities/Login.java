@@ -37,9 +37,13 @@ public class Login implements Serializable {
     @Column(name = "last_login_day")
     private LocalDate lastLoginDay;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario_jefe", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario_jefe")
     private Login jefeLogin;
+
+    //He puesto esto para que podamos acceder directamente a los subordinados de un jefe.
+    @OneToMany(mappedBy = "jefeLogin")
+    private Set<Login> subordinados;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario", nullable = false, unique = true)

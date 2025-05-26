@@ -49,7 +49,7 @@ public class Detallesdeusuario implements Serializable {
     @Column(name = "token_img", length = 50)
     private String tokenImg;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idLogin", nullable = false, unique = true)
+    //He cambiado tambien esta parte para que mapee directamente con Login y no haya confusiones con jefe.
+    @OneToOne(mappedBy = "idDetallesDeUsuario", fetch = FetchType.LAZY)
     private Login usuarioLogin;
 }

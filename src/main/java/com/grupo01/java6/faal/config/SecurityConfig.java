@@ -85,22 +85,61 @@ public class SecurityConfig {
      *
      * @Author No se especificó autor.
      */
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(Customizer.withDefaults()) // deshabilitado para pruebas o APIs
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/entities").permitAll()
-                        .requestMatchers("/entities/*").permitAll()
-                        .requestMatchers("/css/*").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/entidades/deleteHija/*").authenticated()
-                        .anyRequest().authenticated()
-                );
+//    @Bean
+    //ESTE TROZO DE CODIGO ES EL DEFAULT POR PARTE DE ALEJANDRO
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(Customizer.withDefaults()) // deshabilitado para pruebas o APIs
+//                .httpBasic(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/entities").permitAll()
+//                        .requestMatchers("/entities/*").permitAll()
+//                        .requestMatchers("/css/*").permitAll()
+//                        .requestMatchers(HttpMethod.POST,"/entidades/deleteHija/*").authenticated()
+//                        .anyRequest().authenticated()
+//                );
+//
+//        return http.build();
+//    }
+    //ESTO TE PERMITE QUITAR TODOS LOS PERMISOS Y TENGAS QUE LOGEARTE
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(csrf -> csrf.disable()) // Desactiva CSRF
+//                .authorizeHttpRequests(authz -> authz
+//                        .anyRequest().permitAll() // Permite cualquiera sin autenticacion
+//                )
+//                .formLogin(form -> form.disable()) // Desactiva login con formulario
+//                .httpBasic(httpBasic -> httpBasic.disable()); // Desactiva auth básica
+//
+//        return http.build();
+//    }
 
-        return http.build();
-    }
+    //ESTO TE IMPIDE IR A OTRA RUTA SIN HABERTE LOGEADO PRIMERO:
+
+
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http
+                    .authorizeHttpRequests(auth -> auth //Permite definir que rutas pueden accederse sin autorizacion
+                            .requestMatchers("/", "/login", "/loginFaal", "/css/**", "/js/**", "/images/**").permitAll() // público
+                            .anyRequest().authenticated() // el resto requiere login
+                    )
+                    .formLogin(form -> form //inicia la configuracion para login formularion personalizado
+                            .loginPage("/") // tu HTML de login
+                            .defaultSuccessUrl("/inicio", true)
+                            .permitAll()
+                    )
+                    .logout(logout -> logout
+                            //.logoutUrl("/logout")
+                            .logoutSuccessUrl("/") // vuelve al login tras logout
+                            .invalidateHttpSession(true) //invalida la sesion
+                            .deleteCookies("JSESSIONID") //borra la cookie
+                    );
+
+            return http.build();
+        }
+
 
     /**
      * Configura y proporciona un bean de tipo {@link AuthenticationManager}.
