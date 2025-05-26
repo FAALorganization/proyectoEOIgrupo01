@@ -188,13 +188,6 @@ public class DefaultController {
         return "chat"; // View name
     }
 
-    @GetMapping("/loginFaal")
-    public String showLogin()
-    {
-
-        return "loginFaal"; // View name
- 
-    }
 
     @GetMapping("/home")
     public String showHome()

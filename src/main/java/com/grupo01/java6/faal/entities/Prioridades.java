@@ -12,7 +12,7 @@ import java.io.Serializable;
 @ToString
 @Accessors(chain = true)
 @Entity(name = "Prioridade")
-@Table(name = "prioridades", schema = "faal")
+@Table(name = "prioridades")
 public class Prioridades implements Serializable{
 
     @Id

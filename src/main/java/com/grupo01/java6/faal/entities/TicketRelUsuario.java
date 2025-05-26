@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity(name = "Ticket_Rel_Usuario")
-@Table(name = "ticket_rel_usuario", schema = "faal", indexes = {
+@Table(name = "ticket_rel_usuario", indexes = {
         @Index(name = "id_ticketing", columnList = "id_ticketing"),
         @Index(name = "fk_ticket_rel_usuario_login1_idx", columnList = "login_idLogin")
 })

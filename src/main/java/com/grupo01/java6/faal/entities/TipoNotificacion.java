@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity(name = "Tipo_Notificacion")
-@Table(name = "tipo_notificacion", schema = "faal")
+@Table(name = "tipo_notificacion")
 public class TipoNotificacion implements Serializable{
 
     @Id
