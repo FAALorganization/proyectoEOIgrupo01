@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class Ausencias implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ausencia")
+    @Column(name = "ausencias_id", nullable = false)
     private Integer id;
 
     @Column(name = "fecha_inicio")

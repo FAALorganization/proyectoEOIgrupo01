@@ -26,7 +26,7 @@ public class DiasAusencias implements Serializable {
     private Integer diasDisfrutados;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idDiasAusencias", nullable = false)
+    @JoinColumn(name = "ausencias_id", nullable = false)
     private Ausencias diasAusencias;
 
 }
