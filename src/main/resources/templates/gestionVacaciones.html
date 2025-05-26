@@ -1,180 +1,174 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/layoutNavBar}">
+<html lang="en">
 <head>
-    <th:block layout:fragment="styles">
-        <link rel="stylesheet" th:href="@{/css/app.css}" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </th:block>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{css/gestionVacaciones.css}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
 
-    <title>Ausencias</title>
+
+    
+    <title>Gestión de Vacaciones</title>
 </head>
+<body id="body-pd" class="bg-light">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div class="nav_list">
+                <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
+                <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
+                <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-file-pen"></i>
+                    <span class="nav_name">Gestión</span>
 
-<body>
-<section layout:fragment="content">
-    <div class="calendar-container-all">
-        <div class="container-buttons-gestion-all">
-            <div class="buttons-calendar-div">
+                </a>
 
-                <button class="btn-general">
-                    General
-                    <div class="perfiles-usuarios-btn">
-                        <b>Perfiles usuarios</b>
-                        <div class="perfil-usuario-leyenda">
-                            <i class="fa-regular fa-user"></i>
-                            <span>Nombre completo</span>
-                        </div>
-                    </div>
-                </button>
-                <button>Individual</button>
-                <form th:action="@{/gestionVRes}" method="get">
-                    <button id="submitbtn" type="submit" class="button-gestion">Gestión</button>
-                </form>
+                <!-- Menú Dropdown -->
+                <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
+                    <li><a class="dropdown-item" href="#">Gestión de Tareas</a></li>
+                    <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Vacaciones</a></li>
+                    <li><a class="dropdown-item" th:href="@{/gestionAusencias}">Gestión Ausencias</a></li>
+                </ul>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
+                <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
+                <a href="#" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
 
             </div>
-            <div class="container-contador-dias">
-                <p>Totales: </p>
-                <p>Aceptados: </p>
-                <p>Por aprobar: </p>
-                <p>Disfrutados: </p>
-            </div>
-            <div class="container-btn-incidencias">
-                <button class="btn-incidencias">Incidencias</button>
-                <button class="btn-incidencias aus-btn-incidencias">Gestión Incidencias</button>
-            </div>
-        </div>
-
-        <div class="calendar-container">
-            <div class="calendar-header">
-                <span class="arrow" id="prevMonth">&#60;</span>
-                <div class="calendar-header-center">
-                    <select id="monthSelect"></select>
-                    <select id="yearSelect"></select>
-                </div>
-                <span class="arrow" id="nextMonth">&#62;</span>
-            </div>
-
-            <div class="days-of-week">
-                <div>Lun</div>
-                <div>Mar</div>
-                <div>Mie</div>
-                <div>Jue</div>
-                <div>Vie</div>
-                <div>Sab</div>
-                <div>Dom</div>
-            </div>
-            <div class="days-grid" id="daysGrid"></div>
-        </div>
-
+        </nav>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade aus-modal-incidencias" id="aus-modal-incidencias" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ausencias y Vacaciones</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" id="aus-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#aus-tab-incidencias">Ausencias</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#aus-tab-vacaciones">Historial Vacaciones</a>
-                        </li>
-                    </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content pt-3">
-                        <div class="tab-pane fade show active" id="aus-tab-incidencias">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Tipo de Ausencia</th>
-                                    <th>Fecha</th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Falta</td>
-                                    <td>01/03/2025 al 03/03/2025</td>
-                                    <td><button class="btn btn-sm btn-warning aus-btn-justificar">Justificar</button></td>
-                                </tr>
-                                </tbody>
-                            </table>
+    <!--Container Main start-->
+    <div class="height-100 calendar-container">
+        <div class="calendar-options" >
+            <div class="Contadores">
+                <ul class="lista-contadores">
+                    <li class="disfrutados">X</li>
+                    <li class="xdisfrutar">Y</li>
+                    <li class="xaprobar">Z</li>
+                </ul>
+            </div>
+            <div class="actual-date">
+                <!--<a class="left-button" id="left-button"><i class="fa-solid fa-arrow-left fa-3x"></i></a>-->
+                <h1 id="actual-date-text">Texto</h1>
+                <!--<a class="right-button" id="right-button"><i class="fa-solid fa-arrow-right fa-3x"></i></a>-->
+            </div>
+            <div class="day-mode-container">
+                <div class="day-mode-buttons">
+                    <a th:href="@{/gestionVRes}">
+                        <button class="button-29" role="button">Gestionar Vacaciones</button>
+                    </a>
+                    
+                    <button class="button-29" role="button">Privado</button>
+                    <button class="button-29 general-mode" role="button">
+                        General
+                        <div class="general-dropdown">
+                            <div class="user-dropdown">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Usuario ejemplo</span>
+                            </div>
+                            <div class="user-dropdown">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Usuario ejemplo</span>
+                            </div>
+                            <div class="user-dropdown">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Usuario ejemplo</span>
+                            </div>
+                            <div class="user-dropdown">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Usuario ejemplo</span>
+                            </div>
                         </div>
-                        <div class="tab-pane fade" id="aus-tab-vacaciones">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>10/03/2025</td>
-                                    <td>Aceptada</td>
-                                    <td><button class="btn btn-sm btn-danger">✖</button></td>
-                                </tr>
-                                <tr>
-                                    <td>15/03/2025</td>
-                                    <td>Disfrutada</td>
-                                    <td>—</td>
-                                </tr>
-                                <tr>
-                                    <td>20/03/2025</td>
-                                    <td>Pendiente</td>
-                                    <td><button class="btn btn-sm btn-danger">✖</button></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- MODAL DE JUSTIFICACIÓN -->
-    <div class="modal fade" id="aus-modal-justificacion" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form id="aus-form-justificacion">
-                    <div class="modal-header">
-                        <button type="button" class="btn btn-link" id="aus-btn-volver">← Atrás</button>
-                        <h5 class="modal-title ms-2">Justificar Ausencia</h5>
-                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="aus-asunto" class="form-label">Asunto</label>
-                            <input type="text" class="form-control" id="aus-asunto" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="aus-descripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="aus-descripcion" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="aus-archivos" class="form-label">Adjuntar Archivos</label>
-                            <input type="file" class="form-control" id="aus-archivos" multiple>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Enviar</button>
-                    </div>
-                </form>
+        <div class="month-year-selection">
+            <label for="start">Select date:</label>
+            <input type="month" id="start" name="start" min="2025-01" value="" />
+        </div>
+        <div class="calendar-days days-mode">
+            <div class="bar-days row1">
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+                <div>Sun</div>
+            </div>
+            <div class="days row2" id="month-mode">
+                <div class="day-month" id="day-1-1">1</div>
+                <div class="day-month" id="day-1-2">1</div>
+                <div class="day-month" id="day-1-3">1</div>
+                <div class="day-month" id="day-1-4">1</div>
+                <div class="day-month" id="day-1-5">1</div>
+                <div class="day-month" id="day-1-6">1</div>
+                <div class="day-month" id="day-1-7">1</div>
+                <div class="day-month" id="day-2-1">1</div>
+                <div class="day-month" id="day-2-2">1</div>
+                <div class="day-month" id="day-2-3">1</div>
+                <div class="day-month" id="day-2-4">1</div>
+                <div class="day-month" id="day-2-5">1</div>
+                <div class="day-month" id="day-2-6">1</div>
+                <div class="day-month" id="day-2-7">1</div>
+                <div class="day-month" id="day-3-1">1</div>
+                <div class="day-month" id="day-3-2">1</div>
+                <div class="day-month" id="day-3-3">1</div>
+                <div class="day-month" id="day-3-4">1</div>
+                <div class="day-month" id="day-3-5">1</div>
+                <div class="day-month" id="day-3-6">1</div>
+                <div class="day-month" id="day-3-7">1</div>
+                <div class="day-month" id="day-4-1">1</div>
+                <div class="day-month" id="day-4-2">1</div>
+                <div class="day-month" id="day-4-3">1</div>
+                <div class="day-month" id="day-4-4">1</div>
+                <div class="day-month" id="day-4-5">1</div>
+                <div class="day-month" id="day-4-6">1</div>
+                <div class="day-month" id="day-4-7">1</div>
+                <div class="day-month" id="day-5-1">1</div>
+                <div class="day-month" id="day-5-2">1</div>
+                <div class="day-month" id="day-5-3">1</div>
+                <div class="day-month" id="day-5-4">1</div>
+                <div class="day-month" id="day-5-5">1</div>
+                <div class="day-month" id="day-5-6">1</div>
+                <div class="day-month" id="day-5-7">1</div>
+                <div class="day-month" id="day-6-1">1</div>
+                <div class="day-month" id="day-6-2">1</div>
+                <div class="day-month" id="day-6-3">1</div>
+                <div class="day-month" id="day-6-4">1</div>
+                <div class="day-month" id="day-6-5">1</div>
+                <div class="day-month" id="day-6-6">1</div>
+                <div class="day-month" id="day-6-7">1</div>
+            </div>
+            <div class="calendar-week weeks" id="week-mode">
+                <div class="day-week" id="monday"></div>
+                <div class="day-week" id="tuesday"></div>
+                <div class="day-week" id="wednesday"></div>
+                <div class="day-week" id="thursday"></div>
+                <div class="day-week" id="friday"></div>
+                <div class="day-week" id="saturday"></div>
+                <div class="day-week" id="sunday"></div>
+    
             </div>
         </div>
-    </div>
+    </div>  
+   
+  
 
-</section>
+    <!--Container Main end-->
+    <script th:src="@{js/gestionVacaciones.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
 </body>
 </html>

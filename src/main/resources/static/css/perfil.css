@@ -1,8 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:wght@100..900&family=New+Tegomin&family=Russo+One&display=swap');
 
+:root{
+    --header-height: 3rem;
+    --nav-width: 68px;
+    --first-color: #252323;
+    --first-color-light: #F5F1ED;
+    --white-color: #F5F1ED;
+    --body-font: 'Montserrat', sans-serif;
+    --normal-font-size: 1rem;
+    --z-fixed: 100;
+}
+
+*,::before,::after{
+    box-sizing: border-box;
+    
+}
+
+
+
+body{
+    position: relative;
+    margin: var(--header-height) 0 0 0;
+    padding: 0 1rem;
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+    transition: .5s;
+    height: auto;
+    background-color: #F5F1ED !important;
+    
+}
+.bg-white, .bg-light {
+    background-color: #F5F1ED !important;
+} /* para desactivar el color del fondo de bootstrap */
+
+.header{
+    width: 100%;
+    height: var(--header-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background-color: var(--white-color);
+    z-index: var(--z-fixed);
+    transition: .5s;
+}
+.header_toggle{
+        color: var(--first-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+}
+
+.l-navbar{
+    position: fixed;
+    top: 0;
+    left: -30%;
+    width: var(--nav-width);
+    height: 100vh;
+    background-color: var(--first-color);
+    transition: .5s;
+    z-index: var(--z-fixed);
+}
+
+
+.nav_link:hover {
+  background-color: white;
+  border-radius: 30px 0 0 30px;
+  margin-left: 10px;
+  color: black !important;
+  transition: 0.5s;
+}
+
+.nav{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+
+.nav_link:hover > span.textenter {
+    color: var(--first-color) !important;
+}
+
+.nav_link > span {
+    color: var(--first-color);
+    margin-left: 10px;
+}
+
+.nav_logo, .nav_link{
+    display: grid;
+    grid-template-columns: max-content max-content;
+    align-items: center;
+    column-gap: 1rem;
+    padding: .5rem  0 .5rem 1.5rem;
+}
+
+.nav_logo{
+    margin-bottom: 2rem;
+}
+
+.nav_logo-icon{
+    font-size: 1.25rem;
+    color: var(--white-color);
+}
+
+.nav_logo-name{
+    color: var(--white-color);
+    font-weight: 700;
+}
+
+.nav_link{
+    position: relative;
+    color: var(--first-color-light);
+    margin-bottom: 1rem;
+    transition: .3s;
+    text-decoration: none;
+}
+
+.nav_icon{
+    font-size: 1.25rem;
+}
+
+.show{
+    left: 0;
+}
+
+.body-pd{
+    padding-left: calc(var(--nav-width) + 1rem);
+}
+
+.active{
+    color: var(--white-color);
+}
+
+.active::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 32px;
+    
+}
+
+.height-100{
+    height:100vh;
+}
+@media screen and (min-width: 768px){
+    body{
+        margin: calc(var(--header-height) + 1rem) 0 0 0;
+        padding-left: calc(var(--nav-width) + 2rem);
+    }
+    .header{
+        height: calc(var(--header-height) + 1rem);
+        padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
+    }
+    
+    .l-navbar{
+        left: 0;
+        padding: 1rem 0 0 0;
+    }
+    .show{
+        width: calc(var(--nav-width) + 156px);
+    }
+    .body-pd{
+        padding-left: calc(var(--nav-width) + 188px);
+    }
+    
+}
+ /*aqui termina el navbar*/
 .container {
     border-radius: 10px !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Agrega una sombra opcional para resaltar */
+    overflow: hidden; /* Asegura que el contenido no sobresalga de los bordes redondeados */
     position: relative;
     top: var(--header-height);
     margin-top: calc(var(--header-height) + 2rem) !important;
@@ -15,18 +188,36 @@
 .btn-primary{
     background-color: #1B17FF !important;
     color: #F5F1ED;
-    border: none !important; 
+    border: none !important; /* Elimina el borde */
 }
 
 
 .btn-primary:focus, 
 .btn-primary:active {
-    border: 2px solid #1B17FF !important; 
-    box-shadow: 0 0 5px #1B17FF !important;
-    transform: none !important;
+    border: 2px solid #1B17FF !important; /* Cambia el color del borde */
+    box-shadow: 0 0 5px #1B17FF !important; /* Agrega un efecto de sombra opcional */
+    transform: none !important; /* Evita cambios de tamaño */
 }
 .btn-primary:hover{
     background-color: #0d0aca !important;
     color: #F5F1ED;
-    border: none !important;
+    border: none !important; /* Elimina el borde */
+}
+.gestion-button{ 
+    background-color: #1B17FF !important;
+    color: #F5F1ED !important;
+    border: none !important; /* Elimina el borde */}
+    /* Asegura que el backdrop del modal se oscurezca lo suficiente */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5) !important; /* Oscurece el fondo */
+}
+
+/* El modal debe estar por encima del backdrop */
+.modal {
+    z-index: 1055 !important; /* Asegura que el modal esté por encima del backdrop */
+}
+
+/* Si hay múltiples modales, asegúrate de que el segundo modal esté encima del primero */
+.modal.fade {
+    z-index: 1056 !important;
 }
