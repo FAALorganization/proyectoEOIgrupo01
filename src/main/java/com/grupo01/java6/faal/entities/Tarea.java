@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity(name = "Tarea")
-@Table(name = "tareas", schema = "faal", indexes = {
+@Table(name = "tareas", indexes = {
         @Index(name = "fk_tareas_login1_idx", columnList = "idLogin")
 })
 public class Tarea implements Serializable {

@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "tiposausencias", schema = "faal")
+@Table(name = "tiposausencias")
 public class TiposAusencias implements java.io.Serializable {
 
     @Id

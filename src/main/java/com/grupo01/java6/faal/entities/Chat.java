@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity(name = "Chat")
-@Table(name = "chat", schema = "faal", indexes = {
+@Table(name = "chat", indexes = {
         @Index(name = "fk_chat_login1_idx", columnList = "idRemitente"),
         @Index(name = "fk_chat_login2_idx", columnList = "idDestinatario")
 })

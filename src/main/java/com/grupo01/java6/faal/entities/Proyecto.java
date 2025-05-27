@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "proyecto", schema = "faal")
+@Table(name = "proyecto")
 public class Proyecto implements java.io.Serializable {
 
     @Id
