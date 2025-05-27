@@ -1,184 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{css/gestionVRes.css}">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-
-
-    
-    <title>Gestión de ausencias Responsable</title>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+    </th:block>
+    <title>Gestión Ausencias</title>
 </head>
-<body id="body-pd" class="bg-light">
-    <header class="header" id="header">
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-    </header>
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div class="nav_list">
-                <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
-                <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
-                <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-file-pen"></i>
-                    <span class="nav_name">Gestión</span>
-
-                </a>
-
-                <!-- Menú Dropdown -->
-                <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
-                    <li><a class="dropdown-item" href="#">Gestión de Tareas</a></li>
-                    <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Vacaciones</a></li>
-                    <li><a class="dropdown-item" th:href="@{/gestionAusencias}">Gestión Ausencias</a></li>
-                </ul>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
-                <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
-                <a href="#" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
-
-            </div>
-        </nav>
-    </div>
+<body>
+<section layout:fragment="content">
     <!--Container Main start-->
-    <div class="height-100 container-personal">
-        <div class="container-personal-lista">
-            <div class="tabla-usuarios-grupo-container">
-              <div class="tabla-usuarios">
-                <div class="header-usuarios">
-                  <p>Selección de Usuario</p>
+    <div class="height-100 aus-container-personal">
+        <div class="aus-container-personal-lista">
+            <div class="aus-tabla-usuarios-grupo-container">
+                <div class="aus-tabla-usuarios">
+                    <div class="aus-header-usuarios">
+                        <p>Selección de Usuario</p>
+                    </div>
+                    <div class="aus-content-usuarios">
+                        <div class="aus-usuario-info">
+                            <div class="aus-imagen-container">
+                                <div class="aus-circle-decorative1">
+                                    <div class="aus-circle-decorative2">
+                                        <div class="aus-mini-circle"></div>
+                                        <div class="aus-circle-decorativePNG">
+                                            <img th:src="@{images/perfil.png}" alt="perfil">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aus-personal-info">
+                                <span class="aus-nombre">Nombre usuario</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="content-usuarios">
-                  <div class="usuario-info">
-                    <div class="imagen-container">
-                      <div class="circle-decorative1">
-                        <div class="circle-decorative2">
-                          <div class="mini-circle"></div>
-                          <div class="circle-decorativePNG">
-                              <img th:src="@{images/perfil.png}" alt="perfil">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="personal-info">
-                      <span class="nombre">Nombre usuario</span> 
-                    </div>
-                  </div>
-                  <div class="usuario-info">
-                    <div class="imagen-container">
-                      <div class="circle-decorative1">
-                        <div class="circle-decorative2">
-                          <div class="circle-decorativePNG">
-                              <img th:src="@{images/perfil.png}" alt="perfil">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="personal-info">
-                      <span class="nombre">Nombre usuario</span> 
-                    </div>
-                  </div>
-                  <div class="usuario-info">
-                    <div class="imagen-container">
-                      <div class="circle-decorative1">
-                        <div class="circle-decorative2">
-                          <div class="circle-decorativePNG">
-                              <img th:src="@{images/perfil.png}" alt="perfil">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="personal-info">
-                      <span class="nombre">Nombre usuario</span> 
-                    </div>
-                  </div>
-                  <div class="usuario-info">
-                    <div class="imagen-container">
-                      <div class="circle-decorative1">
-                        <div class="circle-decorative2">
-                          <div class="circle-decorativePNG">
-                              <img th:src="@{images/perfil.png}" alt="perfil">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="personal-info">
-                      <span class="nombre">Nombre usuario</span> 
-                    </div>
-                  </div>
-                  <div class="usuario-info">
-                    <div class="imagen-container">
-                      <div class="circle-decorative1">
-                        <div class="circle-decorative2">
-                          <div class="circle-decorativePNG">
-                              <img th:src="@{images/perfil.png}" alt="perfil">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="personal-info">
-                      <span class="nombre">Nombre usuario</span> 
-                    </div>
-                  </div>
-                  <div class="usuario-info">
-                    <div class="imagen-container">
-                      <div class="circle-decorative1">
-                        <div class="circle-decorative2">
-                          <div class="circle-decorativePNG">
-                              <img th:src="@{images/perfil.png}" alt="perfil">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="personal-info">
-                      <span class="nombre">Nombre usuario</span> 
-                    </div>
-                  </div>
-                  <div class="usuario-info">
-                    <div class="imagen-container">
-                      <div class="circle-decorative1">
-                        <div class="circle-decorative2">
-                          <div class="circle-decorativePNG">
-                            <img th:src="@{images/perfil.png}" alt="perfil">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="personal-info">
-                      <span class="nombre">Nombre usuario</span> 
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-            <div class="mini-calendario-container">
-              <div class="calendar-container">
-                <div class="calendar-header">
-                  <button class="nav-button" id="prevMonth">&lt;</button>
-                  <div class="month-year" id="monthYearLabel">Abril 2025</div>
-                  <button class="nav-button" id="nextMonth">&gt;</button>
-                  <select id="yearSelect"></select>
+            <div class="aus-mini-calendario-container">
+                <div class="aus-calendar-container">
+                    <div class="aus-calendar-header">
+                        <button class="aus-nav-button" id="aus-prevMonth">&lt;</button>
+                        <div class="aus-month-year" id="aus-monthYearLabel">Abril 2025</div>
+                        <button class="aus-nav-button" id="aus-nextMonth">&gt;</button>
+                        <select id="aus-yearSelect"></select>
+                    </div>
+                    <div class="aus-calendar-grid" id="aus-calendarGrid">
+                        <!-- Grid dinámica -->
+                    </div>
                 </div>
-                <div class="calendar-grid" id="calendarGrid">
-                  <!-- Grid dinámica -->
-                </div>
-              </div>
             </div>
         </div>
-    </div>  
-   
-  
+    </div>
 
-    <!--Container Main end-->
-    <script th:src="@{js/gestionVRes.js}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
+    <div class="aus-modal-background"  id="aus-modal-container">
+        <div class="aus-modal-overlay" id="aus-modalOverlay">
+            <div class="aus-modal-overlay-content">
+                <span class="aus-close-btn" id="aus-closeModal">&times;</span>
+                <h2 id="aus-titulo">Ausencias</h2>
+                <div class="aus-modal-content-text">
+                    <table class="aus-tabla-modal-ausencias">
+                        <thead class="aus-table-modal-header">
+                        <tr>
+                            <th>Tipo Ausencia</th>
+                            <th>Fecha Ausencia</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody class="aus-table-modal-body">
+                        <tr>
+                            <td>Vacaciones</td>
+                            <td>01/07/2025 to 07/07/2025</td>
+                            <td>
+                                <label class="aus-checkbox-btn">
+                                    <input type="checkbox" name="accion" value="A">
+                                    <span class="btn-letter">A</span>
+                                </label>
+                                <label class="aus-checkbox-btn">
+                                    <input type="checkbox" name="accion" value="R">
+                                    <span class="btn-letter">R</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ausencia laboral</td>
+                            <td>01/03/2025 to 01/03/2025</td>
+                            <td>
+                                <button class="btn btn-warning aus-btn">D</button>
+                                <label class="aus-checkbox-btn">
+                                    <input type="checkbox" name="accion" value="A">
+                                    <span class="btn-letter">A</span>
+                                </label>
+                                <label class="aus-checkbox-btn">
+                                    <input type="checkbox" name="accion" value="R">
+                                    <span class="btn-letter">R</span>
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal-buttons-enviarinfo">
+                        <button class="btn btn-primary aus-btn" id="aus-enviarInfo">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
 </body>
 </html>
