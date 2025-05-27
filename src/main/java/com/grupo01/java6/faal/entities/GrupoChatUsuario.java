@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "grupo_chat_usuario", schema = "faal", indexes = {
+@Table(name = "grupo_chat_usuario", indexes = {
         @Index(name = "fk_grupo_chat_usuario_login1_idx", columnList = "idLogin")
 })
 public class GrupoChatUsuario implements java.io.Serializable {

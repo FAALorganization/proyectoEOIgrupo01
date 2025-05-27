@@ -10,7 +10,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "notificacion", schema = "faal", indexes = {
+@Table(name = "notificacion", indexes = {
         @Index(name = "idTipo", columnList = "idTipo"),
         @Index(name = "fk_notificacion_login1_idx", columnList = "idLogin")
 })

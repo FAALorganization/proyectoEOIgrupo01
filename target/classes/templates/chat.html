@@ -1,61 +1,94 @@
 <!DOCTYPE html>
-<html lang="es"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/layoutNavBar}">
+<html lang="es">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat Grupal</title>
-    <th:block layout:fragment="styles">
-        <link rel="stylesheet" th:href="@{/css/app.css}"/>
-    </th:block>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{css/chat.css}">
 </head>
 
-<body>
-<section layout:fragment="content">
-    <div class="container-fluid h-100">
-        <div class="row vh-100">
+<body id="body-pd" class="bg-light">
+<header class="header" id="header">
+    <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+</header>
+<!-- Sidebar prueba para desarrollo -->
+<div class="l-navbar" id="nav-bar">
+    <nav class="nav">
+        <div class="nav_list">
+            <a href="#" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
+            <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-file-pen"></i>
+                <span class="nav_name">Gestión</span>
 
-            <!-- Sidebar -->
-            <aside class="col-md-3 bg-white shadow-sm border-end p-3 d-flex flex-column">
-                <h4 class="mb-3 text-primary">Usuarios</h4>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control rounded" id="searchUser" placeholder="Buscar usuario..." onkeyup="filterUsers()">
-                </div>
-                <ul class="list-group flex-grow-1 overflow-auto" id="userList" style="border: none;">
-                    <!-- Lista de usuarios -->
-                </ul>
-                <button class="btn btn-outline-primary mt-3" onclick="createGroupChat()">
-                    <i class="bi bi-people-fill me-1"></i> Crear Chat Grupal
-                </button>
-            </aside>
+            </a>
 
-            <!-- Chat principal -->
-            <main class="col-md-9 d-flex flex-column bg-light">
-                <!-- Encabezado del chat -->
-                <div class="chat-header bg-white border-bottom p-3 shadow-sm">
-                    <h5 class="m-0" id="chatTitle">Chats</h5>
-                </div>
+            <!-- Menú Dropdown -->
+            <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
+                <li><a class="dropdown-item" href="#">Gestión de Tareas</a></li>
+                <li><a class="dropdown-item" href="#">Gestión Vacaciones</a></li>
+                <li><a class="dropdown-item" href="#">Gestión Incidencias</a></li>
+            </ul>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
+            <a href="#" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
 
-                <!-- Mensajes -->
-                <div class="flex-grow-1 overflow-auto p-4" id="chatMessages" style="background: #f5f7fa;">
-                    <!-- Mensajes aparecerán aquí -->
-                </div>
+        </div>
+    </nav>
+</div>
 
-                <!-- Entrada de mensaje -->
-                <div class="chat-footer bg-white border-top p-3 shadow-sm">
-                    <div class="input-group">
-                        <input type="text" id="chatInput" class="form-control" placeholder="Escribe un mensaje...">
-                        <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
-                    </div>
-                </div>
-            </main>
+<div class="bg-[#f5f7fa] text-gray-800 flex justify-center items-center h-screen pt-16">
+
+    <div class="w-full max-w-6xl h-[90vh] flex rounded-xl overflow-hidden shadow-lg border border-gray-200">
+        <!-- Panel de Usuarios -->
+        <div class="w-1/4 bg-white p-4 flex flex-col">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-blue-500">Chats</h2>
+            </div>
+            <div id="userList" class="flex-1 space-y-2 overflow-y-auto"></div>
+            <button onclick="openGroupModal()" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-2xl hover:bg-blue-600">
+                Crear chat grupal
+            </button>
+        </div>
+
+        <!-- Panel de Chat -->
+        <div class="w-3/4 p-6 flex flex-col bg-white">
+            <div id="chatHeader" class="text-xl font-semibold mb-2 text-blue-600"></div>
+            <div id="chatBox" class="bg-gray-100 rounded-2xl p-4 mb-4 h-[75%] overflow-y-auto border border-gray-200">
+                <p class="text-center text-gray-400">Selecciona un usuario para comenzar a chatear</p>
+            </div>
+            <div class="flex">
+                <input id="messageInput" type="text" placeholder="Escribe un mensaje..." class="flex-1 p-3 rounded-l-2xl border border-gray-300 focus:outline-none" />
+                <button onclick="sendMessage()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 rounded-r-2xl">Enviar</button>
+            </div>
         </div>
     </div>
-</section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
-<script th:src="@{js/chat.js}"></script>
+    <!-- Modal para grupo -->
+    <div id="groupModal" class="fixed inset-0 backdrop-blur-sm flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-xl shadow-lg w-96">
+            <h2 class="text-lg font-semibold mb-4">Selecciona usuarios para el chat grupal</h2>
+            <div id="groupUserList" class="space-y-2 max-h-60 overflow-y-auto mb-4"></div>
+            <input id="groupNameInput" type="text" placeholder="Nombre del grupo" class="w-full mb-4 p-2 border rounded" />
+            <div class="flex justify-end gap-2">
+                <button onclick="createGroupChat()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Crear</button>
+                <button onclick="closeGroupModal()" class="text-gray-600 hover:underline">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{js/chat.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</div>
 
 </body>
 </html>
