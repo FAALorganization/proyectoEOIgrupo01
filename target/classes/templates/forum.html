@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum empresa</title>
     <!-- ======= Styles ====== -->
-    <link rel="stylesheet" th:href="@{css/forum.css}">
+    <link rel="stylesheet" th:href="@{/css/forum.css}">
+
     <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://fontawesome.com/icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,7 +16,7 @@
 </head>
 
 <body>
-<!-- =============== Navigation ================ -->
+<!-- =============== Navigation sidebar ================ -->
 <div class="container">
     <div class="navigation">
         <ul>
@@ -24,7 +25,7 @@
                         <span class="icon">
                              <!-- incase we want to creat an icon or but r our faal  -->
                         </span>
-                    <img  th:src = "@{images/image.png}" width="150" height="150">
+                    <img  th:src = "@{/images/image.png}" width="150" height="150">
                     <span class="title"></span>
                 </a>
             </li>
@@ -133,7 +134,7 @@
             </div>
 
             <div class="user">
-                <img th:src = "@{images/image.png}" alt="">
+                <img th:src = "@{/images/image.png}" alt="">
             </div>
         </div>
 
@@ -191,16 +192,16 @@
             <!-- Forum Posts (Left Side) -->
             <div class="forum-posts">
                 <div class="cardHeader">
-                    <h2>Forum de la emresa </h2>
+                    <h2>Forum de la empresa </h2>
                 </div>
 
                 <table>
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img src="static/images/302688.jpg" alt="User"></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt="User"></div>
                         </td>
                         <td>
-                            <h4>Alan turbc</h4>
+                            <h4>Alan turbic</h4>
                             <div class="post-details">
                                 <span>jason.aalbers95</span>
                                 <span class="separator">•</span>
@@ -218,7 +219,7 @@
                     <!-- Additional forum posts -->
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt="User"></div>
                         </td>
                         <td>
                             <h4>Sarah Johnson</h4>
@@ -237,7 +238,7 @@
                     </tr>
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt="User"></div>
                         </td>
                         <td>
                             <h4>Sarah Johnson</h4>
@@ -256,7 +257,7 @@
                     </tr>
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}"alt="User"></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}"alt="User"></div>
                         </td>
                         <td>
                             <h4>Sarah Johnson</h4>
@@ -275,7 +276,7 @@
                     </tr>
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}"alt="User"></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}"alt="User"></div>
                         </td>
                         <td>
                             <h4>Sarah Johnson</h4>
@@ -294,7 +295,26 @@
                     </tr>
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt="User"></div>
+                        </td>
+                        <td>
+                            <h4>Sarah Johnson</h4>
+                            <div class="post-details">
+                                <span>sarah.j</span>
+                                <span class="separator">•</span>
+                                <span>5 h ago</span>
+                                <span class="separator">•</span>
+                                <span>3 replies</span>
+                            </div>
+                        </td>
+                        <td width="60px" class="comment-count">
+                            <i class="fas fa-comment"></i>
+                            <span>3</span>
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td width="60px">
+                            <div class="imgBx"><img th:src = "@{/images/image.png}"alt="User"></div>
                         </td>
                         <td>
                             <h4>Sarah Johnson</h4>
@@ -313,26 +333,7 @@
                     </tr>
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Sarah Johnson</h4>
-                            <div class="post-details">
-                                <span>sarah.j</span>
-                                <span class="separator">•</span>
-                                <span>5 h ago</span>
-                                <span class="separator">•</span>
-                                <span>3 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>3</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt="User"></div>
                         </td>
                         <td>
                             <h4>Sarah Johnson</h4>
@@ -352,7 +353,7 @@
 
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt="User"></div>
                         </td>
                         <td>
                             <h4>Mike Peterson</h4>
@@ -381,7 +382,7 @@
                 <table>
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}"alt=""></div>
                         </td>
                         <td>
                             <h4>David <br> <span>Italy</span></h4>
@@ -390,7 +391,7 @@
 
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt=""></div>
                         </td>
                         <td>
                             <h4>Amit <br> <span>India</span></h4>
@@ -399,7 +400,7 @@
 
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}"alt=""></div>
                         </td>
                         <td>
                             <h4>David <br> <span>Italy</span></h4>
@@ -408,7 +409,7 @@
 
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt=""></div>
                         </td>
                         <td>
                             <h4>Amit <br> <span>India</span></h4>
@@ -417,7 +418,7 @@
 
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt=""></div>
                         </td>
                         <td>
                             <h4>David <br> <span>Italy</span></h4>
@@ -426,7 +427,7 @@
 
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt=""></div>
                         </td>
                         <td>
                             <h4>Amit <br> <span>India</span></h4>
@@ -435,7 +436,7 @@
 
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt=""></div>
                         </td>
                         <td>
                             <h4>David <br> <span>Italy</span></h4>
@@ -444,7 +445,7 @@
 
                     <tr>
                         <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
+                            <div class="imgBx"><img th:src = "@{/images/image.png}" alt=""></div>
                         </td>
                         <td>
                             <h4>Amit <br> <span>India</span></h4>
@@ -457,7 +458,7 @@
 </div>
 
 <!-- =========== Scripts =========  -->
-<script th:src="@{js/forum.js}"></script>
+<script th:src="@{/js/forum.js}"></script>
 
 <!-- ====== ionicons ======= -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
