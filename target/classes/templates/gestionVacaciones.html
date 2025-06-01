@@ -17,32 +17,30 @@
     <div class="calendar-container-all">
         <div class="container-buttons-gestion-all">
             <div class="buttons-calendar-div">
-
-                <button class="btn-general">
-                    General
+                <div class="btn-wrapper">
+                    <button class="btn-general btn-gestion">General</button>
                     <div class="perfiles-usuarios-btn">
                         <b>Perfiles usuarios</b>
-                        <div class="perfil-usuario-leyenda">
-                            <i class="fa-regular fa-user"></i>
-                            <span>Nombre completo</span>
+                        <!-- Aquí irán los compañeros -->
+                        <div id="companeros-container">
+                            <!-- Se insertan con JS -->
                         </div>
                     </div>
-                </button>
-                <button>Individual</button>
+                </div>
+                <button class="btn-ind-vac btn-gestion">Individual</button>
                 <form th:action="@{/gestionVRes}" method="get">
-                    <button id="submitbtn" type="submit" class="button-gestion">Gestión</button>
+                    <button th:if="${rol == 'Jefe'}" id="submitbtn" type="submit" class="button-gestion btn-gestion">Gestión</button>
                 </form>
-
             </div>
             <div class="container-contador-dias">
-                <p>Totales: </p>
-                <p>Aceptados: </p>
-                <p>Por aprobar: </p>
-                <p>Disfrutados: </p>
+                <p class="contador-totales">Totales: </p>
+                <p class="contador-aceptados">Aceptados: </p>
+                <p class="contador-aprobar">Por aprobar: </p>
+                <p class="contador-disfrutados">Disfrutados: </p>
             </div>
             <div class="container-btn-incidencias">
-                <button class="btn-incidencias">Incidencias</button>
-                <button class="btn-incidencias aus-btn-incidencias">Gestión Incidencias</button>
+                <!--<button class="btn-incidencias btn-gestion">Incidencias</button>-->
+                <button type="button" class="btn-incidencias btn-gestion aus-btn-incidencias">Gestión Ausencias</button>
             </div>
         </div>
 
@@ -87,55 +85,56 @@
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#aus-tab-vacaciones">Historial Vacaciones</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#aus-tab-vacaciones-modificar">Modificar Vacaciones</a>
+                        </li>
                     </ul>
 
                     <!-- Tab panes -->
                     <div class="tab-content pt-3">
                         <div class="tab-pane fade show active" id="aus-tab-incidencias">
                             <table class="table">
-                                <thead>
+                                <thead class="historial-vacaciones-head">
                                 <tr>
                                     <th>Tipo de Ausencia</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Falta</td>
-                                    <td>01/03/2025 al 03/03/2025</td>
-                                    <td><button class="btn btn-sm btn-warning aus-btn-justificar">Justificar</button></td>
-                                </tr>
+                                <tbody class="historial-vacaciones-tabla-noasis">
+<!--                                <tr>-->
+<!--                                    <td>Falta</td>-->
+<!--                                    <td>01/03/2025 al 03/03/2025</td>-->
+<!--                                    <td><button class="btn btn-sm btn-warning aus-btn-justificar">Justificar</button></td>-->
+<!--                                </tr>-->
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade" id="aus-tab-vacaciones">
                             <table class="table">
-                                <thead>
+                                <thead class="historial-vacaciones-head">
                                 <tr>
                                     <th>Fecha</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td>10/03/2025</td>
-                                    <td>Aceptada</td>
-                                    <td><button class="btn btn-sm btn-danger">✖</button></td>
-                                </tr>
-                                <tr>
-                                    <td>15/03/2025</td>
-                                    <td>Disfrutada</td>
-                                    <td>—</td>
-                                </tr>
-                                <tr>
-                                    <td>20/03/2025</td>
-                                    <td>Pendiente</td>
-                                    <td><button class="btn btn-sm btn-danger">✖</button></td>
-                                </tr>
+                                <tbody class="historial-vacaciones-tabla">
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="tab-pane fade" id="aus-tab-vacaciones-modificar">
+                            <table class="table">
+                                <thead class="historial-vacaciones-head">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody class="historial-vacaciones-modificar-tabla">
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn-incidencias btn-gestion aus-btn-incidencias aus-btn-enviar-cancelar">Enviar</button>
                         </div>
                     </div>
                 </div>
@@ -156,7 +155,16 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="aus-asunto" class="form-label">Asunto</label>
-                            <input type="text" class="form-control" id="aus-asunto" required>
+                            <select class="form-select" aria-label="Default select example" id="aus-asunto">
+                                <option selected>Selecciona una opción</option>
+                                <option value="1">Enfermedad o Incapacidad temporal</option>
+                                <option value="2">Cita Médica</option>
+                                <option value="3">Permiso Personal</option>
+                                <option value="4">Permiso retribuido</option>
+                                <option value="5">Huelga</option>
+                                <option value="6">Baja maternidad/paternidad</option>
+                                <option value="7">Reducción de jornada</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="aus-descripcion" class="form-label">Descripción</label>
@@ -171,6 +179,33 @@
                         <button type="submit" class="btn btn-success">Enviar</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="div-pedir-vacaciones">
+            <button class="btn-gestion pedir-vacaciones" data-bs-toggle="modal" data-bs-target="#calendarModal">Pedir Vacaciones</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="calendarModal" tabindex="-1" >
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-style">
+            <div class="modal-content modal-content-style">
+                <div class="modal-header modal-header-style">
+                    <button class="btn btn-outline-secondary me-2" id="prevYearBtn" style="display: none">&lt;</button>
+                    <h5 class="modal-title modal-title-style w-100 text-center" id="yearDisplay"></h5>
+                    <button class="btn btn-outline-secondary ms-2" id="nextYearBtn" style="display: none">&gt;</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-body-style">
+                    <div class="text-center mb-3">
+                        <span class="badge bg-warning text-dark fs-6">Días restantes: <span id="remainingDays">23</span></span>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center" id="calendarContainer"></div>
+                </div>
+                <div class="modal-footer modal-footer-style">
+                    <button class="btn fixed-send-btn-modal-gest" id="sendSelectedDays">Enviar</button>
+                </div>
             </div>
         </div>
     </div>

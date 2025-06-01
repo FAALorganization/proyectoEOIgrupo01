@@ -93,12 +93,7 @@ public class DefaultController {
 
         return "ticket"; // View name
     }
-    @GetMapping("/gestionVacaciones")
-    public String showgestionVacaciones()
-    {
 
-        return "gestionVacaciones"; // View name
-    }
 
     @GetMapping("/gestionAusencias")
     public String showgestionAusencias()

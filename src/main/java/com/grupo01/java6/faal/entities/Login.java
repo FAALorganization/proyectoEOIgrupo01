@@ -52,5 +52,6 @@ public class Login implements Serializable {
     @ManyToMany( mappedBy = "listaLogin")
     private Set<Equipo> listaEquipos;
 
-
+    @OneToMany(mappedBy = "loginRol", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Roles> roles;
 }
