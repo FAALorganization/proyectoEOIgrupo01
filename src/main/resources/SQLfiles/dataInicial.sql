@@ -36,3 +36,24 @@ VALUES
     (8, 'Visitante', 8),
     (9, 'Visitante', 9),
     (10, 'Visitante', 10);
+
+INSERT INTO tiposausencias (id, descripcion)
+VALUES
+    (1, 'Vacaciones'),
+    (2, 'No asiste'),
+    (3, 'Personal'),
+    (4, 'Salud');
+
+
+INSERT INTO ausencias (aprobado, calcular_dias, fecha_fin, fecha_inicio,
+                       id_login, id_tipos_ausencias, documentos, justificacion)
+VALUES
+    (true,25,'2025-05-08', '2025-05-05',1, 1,null,null),
+    (true,25,'2025-06-02', '2025-05-28',1, 1,null,null),
+    (true,25,'2025-05-02', '2025-04-27',1, 1,null,null),
+    (false,25,'2025-06-06', '2025-06-04',1, 1,null,null),
+    (false,25,'2025-05-16', '2025-05-15',1, 2,null,null),
+    (false,25,'2025-05-13', '2025-05-13',1, 2,null,null),
+    (true,25,'2025-05-19', '2025-05-19',1, 2,null,null);
+
+

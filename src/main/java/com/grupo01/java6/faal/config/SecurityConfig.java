@@ -1,16 +1,22 @@
 package com.grupo01.java6.faal.config;
 
+import com.grupo01.java6.faal.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -27,14 +33,27 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
+
+
+    private final CustomUserDetailsService customUserDetailsService;
 
 
     private final Environment environment;
 
-    public SecurityConfig(Environment environment) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, Environment environment) {
+        this.customUserDetailsService = customUserDetailsService;
         this.environment = environment;
     }
+
+    //Por ahora lo comento porque no lo usamos (no tenemos las passwords codificadas: pass1, pass2, etc.)
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+        //return new BCryptPasswordEncoder(); //Codificacion de passwords con BCrypt
+    }
+
 
 
     /**
@@ -50,18 +69,18 @@ public class SecurityConfig {
      *
      * @Author No se especificó autor.
      */
-    @Bean
-    public UserDetailsService userDetailsService() {
-        String name = environment.getProperty("spring.security.user.name", "user");
-        String password = environment.getProperty("spring.security.user.password", "password");
-
-        var user = User.withUsername(name)
-                .password("{noop}" + password) // {noop} indica que no se usa encoder para simplificar (solo pruebas)
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        String name = environment.getProperty("spring.security.user.name", "user");
+//        String password = environment.getProperty("spring.security.user.password", "password");
+//
+//        var user = User.withUsername(name)
+//                .password("{noop}" + password) // {noop} indica que no se usa encoder para simplificar (solo pruebas)
+//                .roles("USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user);
+//    }
 
     /**
      * Configura una cadena de filtros de seguridad para gestionar la seguridad HTTP de la aplicación.
@@ -117,28 +136,52 @@ public class SecurityConfig {
 
     //ESTO TE IMPIDE IR A OTRA RUTA SIN HABERTE LOGEADO PRIMERO:
 
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout","/css/**", "/js/**", "/images/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .usernameParameter("correo")     // nombre del campo usuario en el formulario
+                        .passwordParameter("contrasena")// Tu página de login personalizada
+                        .defaultSuccessUrl("/home", true)  // A dónde ir después de login correcto
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                );
 
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http
-                    .authorizeHttpRequests(auth -> auth //Permite definir que rutas pueden accederse sin autorizacion
-                            .requestMatchers("/", "/login", "/loginFaal", "/css/**", "/js/**", "/images/**").permitAll() // público
-                            .anyRequest().authenticated() // el resto requiere login
-                    )
-                    .formLogin(form -> form //inicia la configuracion para login formularion personalizado
-                            .loginPage("/") // tu HTML de login
-                            .defaultSuccessUrl("/inicio", true)
-                            .permitAll()
-                    )
-                    .logout(logout -> logout
-                            //.logoutUrl("/logout")
-                            .logoutSuccessUrl("/") // vuelve al login tras logout
-                            .invalidateHttpSession(true) //invalida la sesion
-                            .deleteCookies("JSESSIONID") //borra la cookie
-                    );
+        return http.build();
+    }
 
-            return http.build();
-        }
+//        @Bean
+//        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//            http.csrf(csrf -> csrf.disable())
+//                    .authorizeHttpRequests(auth -> auth //Permite definir que rutas pueden accederse sin autorizacion
+//                            .requestMatchers("/", "/login", "/loginFaal", "/css/**", "/js/**", "/images/**").permitAll() // público
+//                            .anyRequest().authenticated() // el resto requiere login
+//                    )
+//                    .formLogin(form -> form //inicia la configuracion para login formularion personalizado
+//                            .loginPage("/") // tu HTML de login
+//                            .defaultSuccessUrl("/inicio", true)
+//                            .permitAll()
+//                    )
+//                    .logout(logout -> logout
+//                            //.logoutUrl("/logout")
+//                            .logoutSuccessUrl("/") // vuelve al login tras logout
+//                            .invalidateHttpSession(true) //invalida la sesion
+//                            .deleteCookies("JSESSIONID") //borra la cookie
+//                    );
+//
+//            return http.build();
+//        }
 
 
     /**
@@ -159,9 +202,22 @@ public class SecurityConfig {
      *
      * @Author No se especificó autor.
      */
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+//        return authConfig.getAuthenticationManager();
+//    }
+
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        authBuilder
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder());
+
+        return authBuilder.build();
     }
+
 
 }

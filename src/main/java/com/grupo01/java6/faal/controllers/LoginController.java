@@ -1,13 +1,13 @@
 package com.grupo01.java6.faal.controllers;
 
 import com.grupo01.java6.faal.entities.Login;
-import com.grupo01.java6.faal.repositories.LoginRepository;
+import com.grupo01.java6.faal.entities.Roles;
 import com.grupo01.java6.faal.services.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,25 +17,30 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller
 public class LoginController {
 
-    private LoginService loginService;
+    private final LoginService loginService;
+    private final AuthenticationManager authenticationManager;
 
-    public LoginController(LoginService loginService) {
+
+    public LoginController(LoginService loginService, AuthenticationManager authenticationManager) {
         this.loginService = loginService;
+        this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping({"/loginFaal", "/"})
+    @GetMapping({"/loginFaal", "/", "/login"})
     public String showLogin()
     {
         return "loginFaal"; // View name
     }
+
+
 
     @PostMapping("/login")
     public String login(
@@ -43,29 +48,32 @@ public class LoginController {
             @RequestParam String contrasena,
             Model model,
             HttpServletRequest request
-    ) {
-        Login login = loginService.obtainUser(correo);
-        // Aquí podrías validar contra una base de datos real
-        if (login != null && login.getPassword().equals(contrasena)) {
-            //Crea un token de autenticacion:
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(correo, contrasena,
-                            List.of(new SimpleGrantedAuthority("ROLE_USER")));
+    ) { try {
+        // 1. Crear token de autenticacion con las credenciales recibidas:
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(correo, contrasena);
+        var authentication = authenticationManager.authenticate(authRequest);
 
-            //Establece autenticacion en contexto de seguridad:
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+        // 2. Delegar autenticacion a Spring Security:
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            //Crea sesion y asocia contexto de seguridad:
-            HttpSession session = request.getSession(true);
-            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,SecurityContextHolder.getContext());
-            model.addAttribute("mensaje", "¡Inicio de sesión exitoso!");
-            log.info("Correcto: " + correo + " " + contrasena);
-            return "redirect:/home"; // plantilla HTML de bienvenida
+        // 3. Si la autenticación es correcta, guardar contexto de seguridad:
+        HttpSession session = request.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-        } else {
-            model.addAttribute("error", "Credenciales incorrectas");
-            log.info("Error: " + correo + " " + contrasena);
-            return "loginFaal"; // vuelve a la plantilla de login
+        // 5. Mensaje y redirección a home:
+        model.addAttribute("mensaje", "¡Inicio de sesión exitoso!");
+        log.info("Correcto: " + correo);
+        return "redirect:/home";
+
+    } catch (BadCredentialsException e) {
+        // 6. Si la autenticación falla, mostrar error:
+        model.addAttribute("error", "Credenciales incorrectas");
+        log.info("Error login: " + correo + " - " + e.getMessage());
+        return "loginFaal";  // Volver a login
+        }catch (Exception e) {
+        model.addAttribute("error", "Error inesperado: " + e.getMessage());
+        log.error("Error inesperado en login: " + correo, e);
+        return "loginFaal";
         }
     }
 }

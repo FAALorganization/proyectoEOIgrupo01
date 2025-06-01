@@ -32,14 +32,18 @@
                     <li><a class="dropdown-item">Gestión de Tareas</a></li>
                 </form>
 
-                <li><a class="dropdown-item" th:href="@{/gestionVacaciones}">Gestión Ausencias</a></li>
+                <li><a class="dropdown-item" th:href="@{/gestion}">Gestión Ausencias</a></li>
 
             </ul>
             <a th:href="@{/documentacion}" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
             <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
             <a th:href="@{/chat}" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
             <a th:href="@{/forum}" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
-            <a th:href="@{/logout}" class="nav_link"> <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span> </a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="nav_link" style="background: none; border: none;">
+                    <i class="fa-solid fa-right-to-bracket"></i> <span class="nav_name">SignOut</span>
+                </button>
+            </form>
         </div>
     </nav>
 </div>

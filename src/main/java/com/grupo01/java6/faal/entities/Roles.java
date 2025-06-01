@@ -22,4 +22,7 @@ public class Roles implements java.io.Serializable {
     @JoinColumn(name = "idLogin", nullable = false)
     private Login loginRol;
 
+    public String getNombre() {
+        return descripcion;
+    }
 }

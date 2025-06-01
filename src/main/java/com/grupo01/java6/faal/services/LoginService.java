@@ -1,14 +1,13 @@
 package com.grupo01.java6.faal.services;
 
+import com.grupo01.java6.faal.dtos.EmpleadoConAusenciasDTO;
+import com.grupo01.java6.faal.dtos.NombreConAusenciasDTO;
+import com.grupo01.java6.faal.dtos.NombreDTO;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.repositories.LoginRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.*;
 
 @Service
 public class LoginService {
@@ -19,31 +18,37 @@ public class LoginService {
         this.loginRepository = loginRepository;
     }
 
-    public Set<String> allUsers() {
-        Iterable<Login> logins = loginRepository.findAll();
-        Set<String> loginSet = new HashSet<>();
-        logins.forEach(login -> loginSet.add(login.getEmailPrimario()));
-        return loginSet;
-    }
-
-    public Set<String> allPasswords() {
-        Iterable<Login> logins = loginRepository.findAll();
-        Set<String> loginSet = new HashSet<>();
-        logins.forEach(login -> loginSet.add(login.getPassword()));
-        return loginSet;
-    }
-
     public Login obtainUser(String str){
-        List<Login> logins = loginRepository.getLoginByEmailPrimario(str);
-        if (logins == null || logins.isEmpty()) {
-            return null;
-        }
+        Optional<Login> logins = loginRepository.getLoginByEmailPrimario(str);
+        return logins.orElse(null);
         // Por ejemplo, devolver el email primario del primer Login
-        return logins.getFirst();
+    }
+
+    public Set<String> allUsers() {
+        return loginRepository.findAllEmails();
     }
 
 
+    public List<NombreDTO> obtenerCompaneros(String email) {
+        return loginRepository.findCompanerosByEmail(email);
+    }
 
+    public List<EmpleadoConAusenciasDTO> obtenerCompanerosConAusenciasAgrupados(String email) {
+        List<NombreConAusenciasDTO> rawList = loginRepository.obtenerCompanerosConAusencias(email);
 
+        Map<String, EmpleadoConAusenciasDTO> map = new LinkedHashMap<>();
 
+        for (NombreConAusenciasDTO dto : rawList) {
+            String key = dto.getNombre() + " " + dto.getApellidos();
+
+            EmpleadoConAusenciasDTO empleado = map.get(key);
+            if (empleado == null) {
+                empleado = new EmpleadoConAusenciasDTO(dto.getNombre(), dto.getApellidos());
+                map.put(key, empleado);
+            }
+            empleado.agregarAusencia(dto.getFechaInicio(), dto.getFechaFin());
+        }
+
+        return new ArrayList<>(map.values());
+    }
 }
