@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -52,7 +56,7 @@ public class JustificacionController {
             }
 
             StringBuilder archivosNombresBuilder = new StringBuilder();
-            Integer contador = 0;
+            int contador = 0;
             if (archivos != null) {
                 for (MultipartFile archivo : archivos) {
                     if (!archivo.isEmpty()) {
@@ -69,6 +73,18 @@ public class JustificacionController {
                         archivosNombresBuilder.append(nuevoNombre).append("|");// Añadir al string builder
                         contador += 1;
                     }
+//                    try {
+//                        String nombreArchivoTxt = token + "." + fecha + "." + contador + "." + "descripcion.txt";
+//                        nombreArchivoTxt = nombreArchivoTxt.replace("-", "_").replace(" al ", ".");
+//                        Path archivoTxt = carpeta.resolve(nombreArchivoTxt);
+//
+//                        String[] asuntoNames = {"Enfermedad o Incapacidad temporal","Cita Médica","Permiso Personal","Permiso retribuido","Huelga","Baja maternidad","Reducción de jornada"};
+//                        String asuntoName = asuntoNames[Integer.parseInt(asunto) - 1];
+//                        Files.writeString(archivoTxt, "Asunto:\n " + asuntoName + "\nDescripción:\n" + descripcion, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        // Opcional: puedes retornar error o continuar
+//                    }
                 }
             }
 

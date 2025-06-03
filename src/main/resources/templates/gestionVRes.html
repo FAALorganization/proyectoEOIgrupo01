@@ -20,21 +20,6 @@
                         <p>Selección de Usuario</p>
                     </div>
                     <div class="aus-content-usuarios">
-                        <div class="aus-usuario-info">
-                            <div class="aus-imagen-container">
-                                <div class="aus-circle-decorative1">
-                                    <div class="aus-circle-decorative2">
-                                        <div class="aus-mini-circle"></div>
-                                        <div class="aus-circle-decorativePNG">
-                                            <img th:src="@{images/perfil.png}" alt="perfil">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="aus-personal-info">
-                                <span class="aus-nombre">Nombre usuario</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -54,7 +39,7 @@
         </div>
     </div>
 
-    <div class="aus-modal-background"  id="aus-modal-container">
+    <div class="aus-modal-background" id="aus-modal-container">
         <div class="aus-modal-overlay" id="aus-modalOverlay">
             <div class="aus-modal-overlay-content">
                 <span class="aus-close-btn" id="aus-closeModal">&times;</span>
@@ -69,35 +54,8 @@
                         </tr>
                         </thead>
                         <tbody class="aus-table-modal-body">
-                        <tr>
-                            <td>Vacaciones</td>
-                            <td>01/07/2025 to 07/07/2025</td>
-                            <td>
-                                <label class="aus-checkbox-btn">
-                                    <input type="checkbox" name="accion" value="A">
-                                    <span class="btn-letter">A</span>
-                                </label>
-                                <label class="aus-checkbox-btn">
-                                    <input type="checkbox" name="accion" value="R">
-                                    <span class="btn-letter">R</span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ausencia laboral</td>
-                            <td>01/03/2025 to 01/03/2025</td>
-                            <td>
-                                <button class="btn btn-warning aus-btn">D</button>
-                                <label class="aus-checkbox-btn">
-                                    <input type="checkbox" name="accion" value="A">
-                                    <span class="btn-letter">A</span>
-                                </label>
-                                <label class="aus-checkbox-btn">
-                                    <input type="checkbox" name="accion" value="R">
-                                    <span class="btn-letter">R</span>
-                                </label>
-                            </td>
-                        </tr>
+
+                            <div id="aus-tooltip" class="aus-tooltip" style="display: none;"></div>
                         </tbody>
                     </table>
                     <div class="modal-buttons-enviarinfo">

@@ -1,5 +1,6 @@
 package com.grupo01.java6.faal.dtos;
 
+import com.grupo01.java6.faal.entities.TiposAusencias;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,8 @@ public class EmpleadoConAusenciasDTO {
     private String apellidos;
     private List<RangoAusenciaDTO> ausencias = new ArrayList<>();
 
-    public void agregarAusencia(LocalDate inicio, LocalDate fin) {
-        this.ausencias.add(new RangoAusenciaDTO(inicio, fin));
+    public void agregarAusencia(LocalDate inicio, LocalDate fin, boolean aprobado, TiposAusencias tipoAusencia, String justificacion) {
+        this.ausencias.add(new RangoAusenciaDTO(inicio, fin, aprobado, tipoAusencia, justificacion));
     }
 
     public EmpleadoConAusenciasDTO(String nombre, String apellidos) {
@@ -35,5 +36,8 @@ public class EmpleadoConAusenciasDTO {
     public static class RangoAusenciaDTO {
         private LocalDate fechaInicio;
         private LocalDate fechaFin;
+        private boolean aprobado;
+        private TiposAusencias tipoAusencias;
+        private String justificacion;
     }
 }

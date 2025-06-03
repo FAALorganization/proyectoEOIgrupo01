@@ -790,8 +790,8 @@ function getColor(index) {
 }
 
 
+if (window.location.pathname === '/gestion') {
 document.querySelector(".btn-ind-vac").addEventListener("click", (event) => {
-    if (window.location.pathname === '/gestion') {
         let ausencias = [];
 
         fetch('/gestion/ausencias')
@@ -815,9 +815,8 @@ document.querySelector(".btn-ind-vac").addEventListener("click", (event) => {
                 pintarAusencias(ausencias);
             });
         });
-    }
 });
-
+}
 /*******************************************REST NOMBRES***************************************/
 // Opcional: función para variar colores
 if (window.location.pathname === '/gestion') {
@@ -1613,3 +1612,290 @@ if (window.location.pathname === "/gestion") {
     });
 
 }
+
+/*******************************Gestion companeros justificacion******************************/
+if (window.location.pathname === "/gestionVRes" || window.location.pathname === "/gestionVRes?") {
+    // Crear tooltip global una vez
+    const tooltip = document.createElement("div");
+    tooltip.id = "aus-tooltip";
+    tooltip.classList = "aus-tooltip";
+    tooltip.style.display = "none";
+    document.body.appendChild(tooltip);
+
+    fetch('/companeros-con-ausencias').then(response => response.json())
+        .then(data => {
+            let ausencias = data;
+            let divGeneral = document.querySelector(".aus-content-usuarios");
+
+            Object.keys(ausencias).forEach(index => {
+                // Crear estructura de usuario
+                let divName1 = document.createElement("div");
+                divName1.classList = "aus-usuario-info";
+
+                let divName2 = document.createElement("div");
+                divName2.classList = "aus-imagen-container";
+
+                let divName3 = document.createElement("div");
+                divName3.classList = "aus-circle-decorative1";
+
+                let divName4 = document.createElement("div");
+                divName4.classList = "aus-circle-decorative2";
+
+                let divName5 = document.createElement("div");
+                divName5.classList = "aus-circle-decorativePNG";
+
+                let divImg = document.createElement("img");
+                divImg.src = "/images/perfil.png";
+                divImg.alt = "perfil";
+
+                divName5.appendChild(divImg);
+                divName4.appendChild(divName5);
+                divName3.appendChild(divName4);
+                divName2.appendChild(divName3);
+                divName1.appendChild(divName2);
+
+                let divInfo = document.createElement("div");
+                divInfo.classList = "aus-personal-info";
+
+                let spanNombre = document.createElement("span");
+                spanNombre.classList = "aus-nombre";
+                spanNombre.textContent = `${ausencias[index].nombre} ${ausencias[index].apellidos}`;
+
+                divInfo.appendChild(spanNombre);
+                divName1.appendChild(divInfo);
+                divGeneral.appendChild(divName1);
+
+                // Modal y tabla
+                const modalContainer = document.getElementById("aus-modal-container");
+                const modalOverlay = modalContainer.querySelector(".aus-modal-overlay");
+                const tbody = document.querySelector(".aus-table-modal-body");
+
+                divName1.addEventListener("click", function () {
+                    tbody.innerHTML = "";
+                    ausencias[index].ausencias.forEach(ausencia => {
+                        if (ausencia.aprobado === false) {
+                            // Crear fila y celdas
+                            let trElement = document.createElement("tr");
+                            let tdTitulo = document.createElement("td");
+                            let tdFechas = document.createElement("td");
+                            let tdAcciones = document.createElement("td");
+
+                            let boolVar = ausencia.tipoAusencias.id === 1;
+                            tdTitulo.innerHTML = boolVar ? "Vacaciones" : "No asiste";
+
+                            let fechaIni = ausencia.fechaInicio;
+                            let fechaFin = ausencia.fechaFin;
+                            tdFechas.innerHTML = (fechaIni === fechaFin) ? fechaIni : `${fechaIni} al ${fechaFin}`;
+
+                            // Crear acciones
+                            let tdLabel1 = document.createElement("label");
+                            tdLabel1.classList = "aus-checkbox-btn";
+                            let input1 = document.createElement("input");
+                            input1.type = "checkbox"; input1.name = "accion"; input1.value = "A";
+                            let span1 = document.createElement("span");
+                            span1.classList = "btn-letter"; span1.innerHTML = "A";
+
+                            let tdLabel2 = document.createElement("label");
+                            tdLabel2.classList = "aus-checkbox-btn";
+                            let input2 = document.createElement("input");
+                            input2.type = "checkbox"; input2.name = "accion"; input2.value = "R";
+                            let span2 = document.createElement("span");
+                            span2.classList = "btn-letter"; span2.innerHTML = "R";
+
+                            tdLabel1.appendChild(input1);
+                            tdLabel1.appendChild(span1);
+                            tdLabel2.appendChild(input2);
+                            tdLabel2.appendChild(span2);
+                            tdAcciones.appendChild(tdLabel1);
+                            tdAcciones.appendChild(tdLabel2);
+
+                            const justificacion = ausencia.justificacion;
+
+                            if (!boolVar) {
+                                let tdButton = document.createElement("button");
+                                tdButton.classList = `btn btn-warning aus-btn ${fechaIni}-${fechaFin}`;
+                                tdButton.innerHTML = "D";
+
+                                // Crear tooltip
+                                let tooltip = document.createElement("div");
+                                tooltip.classList = "aus-tooltip";
+                                tooltip.style.left = "0px";
+                                tooltip.style.top = "0px";
+                                document.body.appendChild(tooltip);
+
+                                if (justificacion === null) {
+                                    // Simular estado deshabilitado sin usar 'disabled'
+                                    input1.disabled = true;
+                                    input2.disabled = true;
+                                    tdLabel1.style.opacity = "0.5";
+                                    tdLabel2.style.opacity = "0.5";
+                                    tdLabel1.style.pointerEvents = "none";
+                                    tdLabel2.style.pointerEvents = "none";
+
+                                    // Botón D apariencia deshabilitada pero sin disabled
+                                    tdButton.style.opacity = "0.5";
+                                    tdButton.style.cursor = "not-allowed";
+                                    tdButton.setAttribute("data-disabled", "true"); // atributo personalizado para controlar
+
+                                    // Prevenir clic si "deshabilitado"
+                                    tdButton.addEventListener("click", (e) => {
+                                        if (tdButton.getAttribute("data-disabled") === "true") {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                        }
+                                    });
+
+                                    tdButton.addEventListener("mouseenter", (e) => {
+                                        tooltip.innerHTML = "Justificación no disponible";
+                                        tooltip.classList.add("visible");
+                                        tooltip.style.left = (e.pageX + 10) + "px";
+                                        tooltip.style.top = (e.pageY + 10) + "px";
+                                    });
+
+                                    tdButton.addEventListener("mousemove", (e) => {
+                                        tooltip.style.left = (e.pageX + 10) + "px";
+                                        tooltip.style.top = (e.pageY + 10) + "px";
+                                    });
+
+                                    tdButton.addEventListener("mouseleave", () => {
+                                        tooltip.classList.remove("visible");
+                                    });
+                                } else {
+                                    // Si justificación existe, comportamiento normal
+                                    const justList = ["Enfermedad o Incapacidad temporal","Cita Médica","Permiso Personal","Permiso retribuido","Huelga","Baja maternidad","Reducción de jornada"]
+                                    tdButton.addEventListener("mouseenter", (e) => {
+                                        const motivo = justList[parseInt(justificacion.split("//")[0].trim()) - 1];
+                                        const cuerpoJust = justificacion.split("//")[1].trim();
+                                        tooltip.innerHTML = motivo + " - " + cuerpoJust;
+                                        tooltip.classList.add("visible");
+                                        tooltip.style.left = (e.pageX + 10) + "px";
+                                        tooltip.style.top = (e.pageY + 10) + "px";
+                                    });
+
+                                    tdButton.addEventListener("mousemove", (e) => {
+                                        tooltip.style.left = (e.pageX + 10) + "px";
+                                        tooltip.style.top = (e.pageY + 10) + "px";
+                                    });
+
+                                    tdButton.addEventListener("mouseleave", () => {
+                                        tooltip.classList.remove("visible");
+                                    });
+                                }
+
+                                tdAcciones.appendChild(tdButton);
+                            }
+
+                            trElement.appendChild(tdTitulo);
+                            trElement.appendChild(tdFechas);
+                            trElement.appendChild(tdAcciones);
+                            tbody.appendChild(trElement);
+                        }
+                    });
+
+//                     ausencias[index].ausencias.forEach(ausencia => {
+//                         if (!ausencia.aprobado) {
+//                             let tr = document.createElement("tr");
+//                             let tdTitulo = document.createElement("td");
+//                             let tdFechas = document.createElement("td");
+//                             let tdAcciones = document.createElement("td");
+//
+//                             const boolVar = ausencia.tipoAusencias.id === 1;
+//                             const fechaIni = ausencia.fechaInicio;
+//                             const fechaFin = ausencia.fechaFin;
+//
+//                             tdTitulo.textContent = boolVar ? "Vacaciones" : "No asiste";
+//                             tdFechas.textContent = (fechaIni === fechaFin) ? fechaIni : `${fechaIni} al ${fechaFin}`;
+//
+//                             // Acciones A / R
+//                             ["A", "R"].forEach(valor => {
+//                                 let label = document.createElement("label");
+//                                 label.classList = "aus-checkbox-btn";
+//                                 let input = document.createElement("input");
+//                                 input.type = "checkbox";
+//                                 input.name = "accion";
+//                                 input.value = valor;
+//                                 let span = document.createElement("span");
+//                                 span.classList = "btn-letter";
+//                                 span.textContent = valor;
+//                                 label.appendChild(input);
+//                                 label.appendChild(span);
+//                                 tdAcciones.appendChild(label);
+//                             });
+//
+//                             // Botón D (tooltip)
+//                             if (!boolVar) {
+//                                 let tdButton = document.createElement("button");
+//                                 tdButton.classList = `btn btn-warning aus-btn ${fechaIni}-${fechaFin}`;
+//                                 tdButton.innerHTML = "D";
+//
+// // Crear tooltip
+//                                 let tooltip = document.createElement("div");
+//                                 tooltip.classList = "aus-tooltip";
+//                                 tooltip.innerHTML = "Motivo pendiente";
+//                                 tooltip.style.left = "0px";
+//                                 tooltip.style.top = "0px";
+//                                 document.body.appendChild(tooltip);
+//
+// // Eventos del tooltip
+//                                 tdButton.addEventListener("mouseenter", (e) => {
+//                                     const justificacion = ausencia.justificacion;
+//                                     if (justificacion === null) {
+//
+//                                     }
+//                                     tooltip.innerHTML = `Motivo para: ${fechaIni} al ${fechaFin}`;
+//                                     tooltip.classList.add("visible");
+//                                     tooltip.style.left = (e.pageX + 10) + "px";
+//                                     tooltip.style.top = (e.pageY + 10) + "px";
+//                                 });
+//
+//                                 tdButton.addEventListener("mousemove", (e) => {
+//                                     tooltip.style.left = (e.pageX + 10) + "px";
+//                                     tooltip.style.top = (e.pageY + 10) + "px";
+//                                 });
+//
+//                                 tdButton.addEventListener("mouseleave", () => {
+//                                     tooltip.classList.remove("visible");
+//                                 });
+//
+//                                 // Añadir botón al tdAcciones
+//                                 tdAcciones.appendChild(tdButton);
+//
+//                             }
+//
+//                             tr.appendChild(tdTitulo);
+//                             tr.appendChild(tdFechas);
+//                             tr.appendChild(tdAcciones);
+//                             tbody.appendChild(tr);
+//                         }
+//                     });
+
+                    // Comportamiento de checkboxes (solo uno activo)
+                    tbody.querySelectorAll('tr').forEach(fila => {
+                        const checks = fila.querySelectorAll('input[name="accion"]');
+                        checks.forEach(check => {
+                            check.addEventListener("change", function () {
+                                if (this.checked) {
+                                    checks.forEach(c => { if (c !== this) c.checked = false; });
+                                }
+                            });
+                        });
+                    });
+
+                    modalContainer.style.display = "block";
+                    modalOverlay.style.display = "block";
+                });
+
+                // Cerrar modal
+                document.getElementById("aus-closeModal").addEventListener("click", function () {
+                    modalContainer.style.display = "none";
+                    modalOverlay.style.display = "none";
+                    document.querySelectorAll('.aus-modal-background').forEach(el => el.style.display = 'none');
+                    tooltip.style.display = "none";
+                });
+            });
+        });
+}
+
+
+
+

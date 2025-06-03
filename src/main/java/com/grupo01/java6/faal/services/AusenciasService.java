@@ -65,8 +65,10 @@ public class AusenciasService {
             String asunto = dto.getAsunto();
             String descripcion = dto.getDescripcion();
             ausencia.setJustificacion(asunto + "//" + descripcion);
-            if (dto.getArchivos() != null) {
+            log.info("\nA escribir: " + dto.getArchivos());
+            if (dto.getArchivos() != null && !dto.getArchivos().isEmpty()) {
                 ausencia.setDocumentos(dto.getArchivos());
+                log.info("\nEscribiendo: " + dto.getArchivos());
             }
             ausenciasRepository.save(ausencia);
             return true;
