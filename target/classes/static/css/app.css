@@ -663,20 +663,21 @@ a{
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 13px;
-    white-space: nowrap;
+    white-space: normal;
     pointer-events: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     opacity: 0; /* Inicialmente oculto */
     transition: opacity 0.2s ease-in-out;
     display: none; /* Oculto por defecto */
+    max-width: 250px;
+    word-wrap: break-word;
+    line-height: 1.4;
 }
 
 .aus-tooltip.visible {
     display: block;
     opacity: 1;
 }
-
-
 
 
 /****************************************MINI CALENDARIO**************************************/
