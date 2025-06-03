@@ -3,6 +3,7 @@ package com.grupo01.java6.faal.services;
 import com.grupo01.java6.faal.dtos.JustificacionDTO;
 import com.grupo01.java6.faal.entities.Ausencias;
 import com.grupo01.java6.faal.repositories.AusenciasRepository;
+import com.grupo01.java6.faal.services.mappers.AusenciasMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +14,18 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class AusenciasService {
-    private final AusenciasRepository ausenciasRepository;
+public class AusenciasService extends AbstractBusinessService<Ausencias,Integer,JustificacionDTO,AusenciasRepository,AusenciasMapper>{
 
-    public AusenciasService(AusenciasRepository ausenciasRepository) {
-        this.ausenciasRepository = ausenciasRepository;
+    public AusenciasService(AusenciasRepository repo, AusenciasMapper ausenciasMapper) {
+        super(repo, ausenciasMapper);
     }
 
     public List<Ausencias> findVacaciones(Integer id){
-        return ausenciasRepository.findByLoginAusencias_Id(id);
+        return repo.findByLoginAusencias_Id(id);
     }
 
-    public void guardarVacacion(Ausencias ausencia) {
-        ausenciasRepository.save(ausencia);
+    public void guardarVacacion(Ausencias ausencia) throws Exception {
+        guardarEntityEntity(ausencia);
     }
 
     public Optional<Ausencias> obtainHolidayByStartDate(LocalDate date, Integer idUsuario) {
@@ -39,39 +39,10 @@ public class AusenciasService {
     }
 
     public void eliminateHoliday(Ausencias ausencia) {
-        ausenciasRepository.delete(ausencia);
+        repo.delete(ausencia);
     }
-    public boolean justificarAusencia(JustificacionDTO dto) {
-        String fechaString = dto.getFecha();
-        Optional<Ausencias> ausenciaRegistro;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        if (fechaString.contains(" al ")) {
-            String[] fechas = fechaString.split(" al ");
-            LocalDate fechaFin = LocalDate.parse(fechas[1], formatter);
-            LocalDate fechaInicio = LocalDate.parse(fechas[0], formatter);
-            ausenciaRegistro = ausenciasRepository.findByFechaFinAndFechaInicio(fechaFin, fechaInicio);
-
-            log.info("\nFECHAS:\n" + fechaFin + "\n" + fechaInicio);
-        } else {
-            LocalDate fechaFin = LocalDate.parse(fechaString, formatter);
-            LocalDate fechaInicio = LocalDate.parse(fechaString, formatter);
-            ausenciaRegistro = ausenciasRepository.findByFechaFinAndFechaInicio(fechaFin, fechaInicio);
-            log.info("\nFECHAS:\n" + fechaFin + "\n" + fechaInicio);
-
-        }
-
-        if(ausenciaRegistro.isPresent()){
-            Ausencias ausencia = ausenciaRegistro.get();
-            String asunto = dto.getAsunto();
-            String descripcion = dto.getDescripcion();
-            ausencia.setJustificacion(asunto + "//" + descripcion);
-            if (dto.getArchivos() != null) {
-                ausencia.setDocumentos(dto.getArchivos());
-            }
-            ausenciasRepository.save(ausencia);
-            return true;
-        }
-        return false;
-
+    public void justificarAusencia(JustificacionDTO dto) throws Exception {
+        Ausencias ausencia = serviceMapper.toEntity(dto);
+        repo.save(ausencia);
     }
 }

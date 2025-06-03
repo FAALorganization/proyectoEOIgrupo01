@@ -16,9 +16,7 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     @Query("select l from Login l left join fetch l.roles where l.emailPrimario = :email")
     Optional<Login> getLoginByEmailPrimario(@Param("email") String email);
 
-    @Query("SELECT l.emailPrimario FROM Login l")
-    Set<String> findAllEmails();
-
+    //este metodo lo borrare con el tiempo
     @Query("""
     SELECT new com.grupo01.java6.faal.dtos.NombreDTO(d.nombre, d.apellidos)
     FROM Login l

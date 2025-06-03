@@ -24,10 +24,6 @@ public class LoginService {
         // Por ejemplo, devolver el email primario del primer Login
     }
 
-    public Set<String> allUsers() {
-        return loginRepository.findAllEmails();
-    }
-
 
     public List<NombreDTO> obtenerCompaneros(String email) {
         return loginRepository.findCompanerosByEmail(email);
