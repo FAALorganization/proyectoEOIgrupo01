@@ -26,8 +26,8 @@ public class Tarea implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @Column(name = "tipoTarea", length = 45)
-    private String tipoTarea;
+//    @Column(name = "tipoTarea", length = 45)
+//    private String tipoTarea;
 
     @Column(name = "fechaInicio")
     private LocalDate fechaInicio;
@@ -37,6 +37,9 @@ public class Tarea implements Serializable {
 
     @Column(name = "fechaEliminada")
     private LocalDate fechaEliminada;
+
+    @Column(name = "estado", length = 20, nullable = false)
+    private String estado = "pendiente"; // Valor por defecto
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)

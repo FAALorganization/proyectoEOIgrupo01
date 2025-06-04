@@ -25,7 +25,6 @@
         <form id="formAgregarTarea" th:action="@{/tareas/agregar}" method="post" th:object="${nuevaTarea}">
             <input type="text" th:field="*{titulo}" class="form-control mb-2" placeholder="Nombre de la tarea" required>
             <textarea th:field="*{descripcion}" class="form-control mb-2" placeholder="Descripción"></textarea>
-            <input type="text" th:field="*{tipoTarea}" class="form-control mb-2" placeholder="Tipo de tarea">
 
             <!-- Campo oculto para enviar el id del Login -->
             <input type="hidden" name="idLogin" th:value="${usuarioActual != null} ? ${usuarioActual.id} : ''" />
@@ -44,12 +43,12 @@
                     <strong th:text="${tarea.titulo}"></strong> - <span th:text="${tarea.descripcion}"></span>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-success btn-sm btn-completar" th:attr="data-id=${tarea.id}">
-                        Completar
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm btn-eliminar" th:attr="data-id=${tarea.id}">
-                        Eliminar
-                    </button>
+                    <form th:action="@{/tareas/completar/{id}(id=${tarea.id})}" method="post">
+                        <button type="submit" class="btn btn-success btn-sm">Completar</button>
+                    </form>
+                    <form th:action="@{/tareas/eliminar/{id}(id=${tarea.id})}" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
                 </div>
             </li>
         </ul>
@@ -63,9 +62,9 @@
                     <strong th:text="${tarea.titulo}"></strong> - <span th:text="${tarea.descripcion}"></span>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-danger btn-sm btn-eliminar" th:attr="data-id=${tarea.id}">
-                        Eliminar
-                    </button>
+                    <form th:action="@{/tareas/eliminar/{id}(id=${tarea.id})}" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
                 </div>
             </li>
         </ul>
@@ -79,9 +78,12 @@
                     <strong th:text="${tarea.titulo}"></strong> - <span th:text="${tarea.descripcion}"></span>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-warning btn-sm btn-restaurar" th:attr="data-id=${tarea.id}">
-                        Restaurar
-                    </button>
+                    <form th:action="@{/tareas/restaurar/{id}(id=${tarea.id})}" method="post">
+                        <button type="submit" class="btn btn-warning btn-sm">Restaurar</button>
+                    </form>
+                    <form th:action="@{/tareas/eliminar-definitivo/{id}(id=${tarea.id})}" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar Definitivamente</button>
+                    </form>
                 </div>
             </li>
         </ul>

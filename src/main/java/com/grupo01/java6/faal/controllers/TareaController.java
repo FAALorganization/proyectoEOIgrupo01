@@ -44,11 +44,7 @@ public class TareaController {
     }
 
     @PostMapping("/agregar")
-    public String agregarTarea(
-            @ModelAttribute("nuevaTarea") Tarea nuevaTarea,
-            BindingResult result,
-            @RequestParam Integer idLogin
-    ) {
+    public String agregarTarea(@ModelAttribute("nuevaTarea") Tarea nuevaTarea, BindingResult result, @RequestParam Integer idLogin) {
         if (result.hasErrors()) {
             return "tareas";
         }
@@ -57,6 +53,7 @@ public class TareaController {
         login.setId(idLogin);
         nuevaTarea.setLoginTarea(login);
         nuevaTarea.setFechaInicio(LocalDate.now());
+        nuevaTarea.setEstado("pendiente"); //  Establece el estado inicial
 
         tareaService.guardarTarea(nuevaTarea);
         return "redirect:/tareas";
@@ -77,6 +74,12 @@ public class TareaController {
     @PostMapping("/restaurar/{id}")
     public String restaurarTarea(@PathVariable Integer id) {
         tareaService.restaurarTarea(id);
+        return "redirect:/tareas";
+    }
+
+    @PostMapping("/eliminar-definitivo/{id}")
+    public String eliminarDefinitivamente(@PathVariable Integer id) {
+        tareaService.eliminarDefinitivamente(id);
         return "redirect:/tareas";
     }
 }

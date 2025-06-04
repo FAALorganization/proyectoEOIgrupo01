@@ -9,4 +9,5 @@ public interface TareaRepository extends JpaRepository<Tarea, Integer> {
     List<Tarea> findByFechaFinNullAndFechaEliminadaNull();
     List<Tarea> findByFechaFinNotNull();
     List<Tarea> findByFechaEliminadaNotNull();
+    List<Tarea> findByEstado(String estado);
 }

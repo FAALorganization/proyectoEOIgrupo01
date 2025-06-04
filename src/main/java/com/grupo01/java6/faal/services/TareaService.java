@@ -16,16 +16,16 @@ public class TareaService {
         this.tareaRepository = tareaRepository;
     }
 
-    public List<Tarea> obtenerPendientes() {
-        return tareaRepository.findByFechaFinNullAndFechaEliminadaNull();
+    public List<Tarea> obtenerCompletadas() {
+        return tareaRepository.findByEstado("completada"); // Solo tareas completadas
     }
 
-    public List<Tarea> obtenerCompletadas() {
-        return tareaRepository.findByFechaFinNotNull();
+    public List<Tarea> obtenerPendientes() {
+        return tareaRepository.findByEstado("pendiente");
     }
 
     public List<Tarea> obtenerEliminadas() {
-        return tareaRepository.findByFechaEliminadaNotNull();
+        return tareaRepository.findByEstado("eliminada"); // Solo tareas eliminadas
     }
 
     public void guardarTarea(Tarea tarea) {
@@ -33,20 +33,33 @@ public class TareaService {
     }
 
     public void marcarComoCompletada(Integer id) {
-        Tarea tarea = tareaRepository.findById(id).orElseThrow();
-        tarea.setFechaFin(LocalDate.now());
-        tareaRepository.save(tarea);
+        Tarea tarea = tareaRepository.findById(id).orElse(null);
+        if (tarea != null) {
+            tarea.setEstado("completada");
+            tarea.setFechaFin(LocalDate.now()); // Guarda la fecha de finalización
+            tareaRepository.save(tarea);
+        }
     }
 
     public void eliminarTarea(Integer id) {
-        Tarea tarea = tareaRepository.findById(id).orElseThrow();
-        tarea.setFechaEliminada(LocalDate.now());
-        tareaRepository.save(tarea);
+        Tarea tarea = tareaRepository.findById(id).orElse(null);
+        if (tarea != null) {
+            tarea.setEstado("eliminada"); // Cambio de estado
+            tarea.setFechaEliminada(LocalDate.now()); // Guarda la fecha de eliminación
+            tareaRepository.save(tarea);
+        }
     }
 
     public void restaurarTarea(Integer id) {
-        Tarea tarea = tareaRepository.findById(id).orElseThrow();
-        tarea.setFechaEliminada(null);
-        tareaRepository.save(tarea);
+        Tarea tarea = tareaRepository.findById(id).orElse(null);
+        if (tarea != null) {
+            tarea.setEstado("pendiente"); // Cambio de estado a pendiente
+            tarea.setFechaEliminada(null); // Borra la fecha de eliminación
+            tareaRepository.save(tarea);
+        }
+    }
+
+    public void eliminarDefinitivamente(Integer id) {
+        tareaRepository.deleteById(id); // Borra la tarea de la BD
     }
 }
