@@ -42,7 +42,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas
-                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**", "/gestionVRes/aprobar-justificacion").permitAll()
                         // Rutas restringidas (ejemplo de rol ADMIN)
                         //esto es un ejemplo para poner las rutas restringidas como para jefe o admin
                         .requestMatchers("/admin-only").hasRole("ADMIN")
