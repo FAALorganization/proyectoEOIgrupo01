@@ -47,4 +47,15 @@ public class LoginService {
 
         return new ArrayList<>(map.values());
     }
+
+//    private Login obtenerUsuarioActual() {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (auth != null && auth.isAuthenticated()) {
+//            String username = auth.getName();
+//            // Aquí debes recuperar tu Login con ese username
+//            // Por ejemplo, usando un servicio LoginService:
+//            return loginService.buscarPorNombreUsuario(username);
+//        }
+//        return null;
+//    }
 }

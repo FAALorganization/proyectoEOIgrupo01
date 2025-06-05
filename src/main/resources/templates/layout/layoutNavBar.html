@@ -28,10 +28,7 @@
 
             <!-- Menú Dropdown -->
             <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
-                <form th:action="@{/tareas}" method="get">
-                    <li><a class="dropdown-item">Gestión de Tareas</a></li>
-                </form>
-
+                <li><a class="dropdown-item" th:href="@{/tareas}">Gestión de Tareas</a></li>
                 <li><a class="dropdown-item" th:href="@{/gestion}">Gestión Ausencias</a></li>
 
             </ul>
@@ -49,7 +46,7 @@
 </div>
 
 <!-- Main Content Placeholder -->
-<main class="height-100 calendar-container">
+<main class="height-80 calendar-container">
     <section layout:fragment="content">
         <!-- Aquí se inyectará el contenido de cada vista -->
     </section>

@@ -123,13 +123,6 @@ public class DefaultController {
         return "creacionTicket"; // View name
     }
 
-    @GetMapping("/tareas")
-    public String showtareas()
-    {
-
-        return "tareas"; // View name
-    }
-
     @GetMapping("/tareasJefe")
     public String showtareasJefe()
     {
@@ -191,6 +184,23 @@ public class DefaultController {
         return "home"; // View name
 
     }
+    @GetMapping("/TicketAdmin")
+    public String showTicketAdmin()
+    {
+
+        return "TicketAdmin"; // View name
+
+    }
+
+    @GetMapping("/TermsAndConditions")
+    public String showTermsAndConditions()
+    {
+
+        return "TermsAndConditions"; // View name
+
+    }
+
+
     /**
      * Gestiona las solicitudes GET para obtener y mostrar la lista de entidades protegidas.
      * Añade las entidades obtenidas del repositorio al modelo para renderizarlas en la vista correspondiente.

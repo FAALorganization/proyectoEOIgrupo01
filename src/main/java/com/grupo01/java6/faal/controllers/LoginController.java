@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 @Slf4j
 @Controller
 public class LoginController {
@@ -79,45 +79,4 @@ public class LoginController {
         response.put("authority", auth.getAuthorities().toString());
         return response;
     }
-
-    //Este metodo lo hace a mano, lo que está haciendo formLogin() en el securityConfig, para que funcione hay que modificar el securityConfi.
-//    @PostMapping("/doLogin")
-//    public String login(
-//            @RequestParam String correo,
-//            @RequestParam String contrasena,
-//            Model model,
-//            HttpServletRequest request
-//    ) {
-//        log.info("Intento de login para: {}", correo);
-//        try {
-//            UsernamePasswordAuthenticationToken authRequest =
-//                    new UsernamePasswordAuthenticationToken(correo, contrasena);
-//
-//            Authentication authentication = authenticationManager.authenticate(authRequest);
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//            HttpSession session = request.getSession(true);
-//            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-//                    SecurityContextHolder.getContext());
-//
-//            // Mostrar roles en logs para verificar
-//            authentication.getAuthorities().forEach(grantedAuthority ->
-//                    log.info("Rol del usuario: {}", grantedAuthority.getAuthority())
-//            );
-//
-//            log.info("Inicio de sesión exitoso para: {}", correo);
-//            return "redirect:/home";
-//
-//        } catch (BadCredentialsException e) {
-//            model.addAttribute("error", "Credenciales incorrectas");
-//            log.warn("Intento fallido de login para: {}", correo);
-//            return "loginFaal";
-//
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Error inesperado: " + e.getMessage());
-//            log.error("Error inesperado en login para: {}", correo, e);
-//            return "loginFaal";
-//        }
-//    }
 }
