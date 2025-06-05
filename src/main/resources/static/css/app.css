@@ -522,7 +522,7 @@ a{
 }
 
 .aus-tabla-usuarios {
-    min-width: 250px;
+    min-width: 320px;
     width: 50%;
     height: 300px;
     overflow: auto;
@@ -655,6 +655,30 @@ a{
     transform: translateY(2px);
 }
 
+.aus-tooltip {
+    position: fixed;
+    z-index: 999999 !important; /* Asegura que va por encima del modal y backdrop */
+    background-color: #222;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: normal;
+    pointer-events: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    opacity: 0; /* Inicialmente oculto */
+    transition: opacity 0.2s ease-in-out;
+    display: none; /* Oculto por defecto */
+    max-width: 250px;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.aus-tooltip.visible {
+    display: block;
+    opacity: 1;
+}
+
 
 /****************************************MINI CALENDARIO**************************************/
 
@@ -780,41 +804,82 @@ a{
 }
 
 /****************************************MINI CALENDARIO (modal)**************************************/
-.aus-modal-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: var(--modal-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    display: none;
+/*.aus-modal-overlay {*/
+/*    position: fixed;*/
+/*    top: 0; left: 0; right: 0; bottom: 0;*/
+/*    background-color: var(--modal-bg);*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    display: none;*/
 
-}
+/*}*/
 
-.aus-modal-overlay-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 60vw;
-    min-height: 60vh;
-    max-height: 200px;
-    position: relative;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    display: block;
-    overflow: auto;
-}
-.aus-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
+/*.aus-modal-overlay-content {*/
+/*    background-color: white;*/
+/*    padding: 30px;*/
+/*    border-radius: 10px;*/
+/*    width: 60vw;*/
+/*    min-height: 60vh;*/
+/*    max-height: 200px;*/
+/*    position: relative;*/
+/*    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);*/
+/*    display: block;*/
+/*    overflow: auto;*/
+/*}*/
+/*.aus-close-btn {*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    right: 15px;*/
+/*    font-size: 1.5rem;*/
+/*    cursor: pointer;*/
+/*    transition: transform 0.2s;*/
+/*}*/
 .aus-close-btn:hover {
     transform: scale(1.2);
     color: black;
 }
+/* Fondo modal que cubre toda la pantalla y oscurece */
+.aus-modal-background {
+    position: fixed;
+    display: none; /* oculto por defecto */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999; /* debe estar por encima */
+    overflow-y: auto;
+}
+
+/* Caja del modal centrada */
+.aus-modal-overlay {
+    background-color: white;
+    width: 600px;
+    max-width: 90vw;
+    margin: 80px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+/* Contenido visible y legible */
+.aus-modal-overlay-content {
+    color: black;
+    font-family: Arial, sans-serif;
+}
+
+/* Botón cerrar con posición absoluta */
+.aus-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+}
+
 /****************************************MINI CALENDARIO (tabla)**************************************/
 /* Estilo base tabla */
 .aus-tabla-modal-ausencias {

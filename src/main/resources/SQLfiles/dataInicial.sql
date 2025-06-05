@@ -48,12 +48,23 @@ VALUES
 INSERT INTO ausencias (aprobado, calcular_dias, fecha_fin, fecha_inicio,
                        id_login, id_tipos_ausencias, documentos, justificacion)
 VALUES
-    (true,25,'2025-05-08', '2025-05-05',1, 1,null,null),
+    (true,25,'2025-07-24', '2025-07-20',1, 1,null,null),
     (true,25,'2025-06-02', '2025-05-28',1, 1,null,null),
-    (true,25,'2025-05-02', '2025-04-27',1, 1,null,null),
-    (false,25,'2025-06-06', '2025-06-04',1, 1,null,null),
+    (true,25,'2025-05-02', '2025-04-24',1, 1,null,null),
+    (false,25,'2025-07-06', '2025-07-04',1, 1,null,null),
     (false,25,'2025-05-16', '2025-05-15',1, 2,null,null),
     (false,25,'2025-05-13', '2025-05-13',1, 2,null,null),
-    (true,25,'2025-05-19', '2025-05-19',1, 2,null,null);
+    (true,25,'2025-05-19', '2025-05-19',1, 2,null,null),
+    (false,25,'2025-04-04', '2025-04-04',1, 2,null,'Salud//adfasd'),
+    (false,25,'2025-07-27', '2025-07-23',4, 1,null,null),
+    (false,25,'2025-07-18', '2025-07-16',4, 1,null,null),
+    (false,25,'2025-05-26', '2025-05-23',4, 2,null,null),
+    (false,25,'2025-07-17', '2025-07-14',5, 1,null,null),
+    (false,25,'2025-08-22', '2025-08-18',5, 1,null,null),
+    (false,25,'2025-05-09', '2025-05-07',5, 2,null,null),
+    (true,25,'2025-05-14', '2025-05-12',5, 1,null,null);
+
+
+
 
 

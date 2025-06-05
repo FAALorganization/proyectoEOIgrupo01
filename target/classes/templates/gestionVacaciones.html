@@ -168,11 +168,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="aus-descripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="aus-descripcion" rows="3" required></textarea>
+                            <textarea class="form-control" id="aus-descripcion" rows="3" maxlength="200" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="aus-archivos" class="form-label">Adjuntar Archivos</label>
-                            <input type="file" class="form-control" id="aus-archivos" multiple>
+                            <input type="file" class="form-control" id="aus-archivos" accept=".pdf" multiple>
+                            <div id="archivo-error" class="text-danger mt-1" style="display: none;"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
