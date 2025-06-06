@@ -129,16 +129,15 @@
                             </tbody>
                         </table>
                         <!-- boton para subir un archivo CSV -->
-                        <form id="uploadCsvForm">
-                            <div class="mb-3">
-                                <label for="csvFileInput" class="form-label">Crear usuarios mediante CSV</label>
-                                <input class="form-control" type="file" id="csvFileInput" accept=".csv">
-                            </div>
-                        </form>
-                        </button>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
+                            <form id="uploadCsvForm">
+                                <div class="mb-3">
+                                    <label for="csvFileInput" class="form-label">Crear usuarios mediante CSV</label>
+                                    <input class="form-control" type="file" id="csvFileInput" name="archivo" accept=".csv" multiple>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="uploadCsvBtn">Enviar</button>
+                                    </div>
+                            </form>
                     </div>
                 </div>
             </div>

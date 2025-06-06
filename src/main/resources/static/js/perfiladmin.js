@@ -61,3 +61,44 @@ function reopenFirstModal() {
     const firstModal = new bootstrap.Modal(document.getElementById('exampleModal'));
     firstModal.show(); // Reabre el primer modal
 }
+// subir usuarios mediante csv
+if (window.location.pathname === '/perfiladmin') {
+    async function uploadCsv() {
+        try {
+            const formData = new FormData();
+            const fileInput = document.getElementById('csvFileInput');
+            const files = fileInput.files;
+
+            if (files.length === 0) {
+                alert('Por favor, selecciona al menos un archivo CSV.');
+                return;
+            }
+
+            for (let i = 0; i < files.length; i++) {
+                formData.append('archivo', files[i]);
+            }
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al subir archivo (status: ' + response.status + ')');
+            }
+
+            const data = await response.text();
+            console.log('Respuesta del servidor:', data);
+            alert('Subida completada: ' + data);
+
+            const modalElement = document.getElementById('exampleModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();
+            document.querySelectorAll('.modal-backdrop').forEach(el =>el.remove());
+        } catch (error) {
+            console.error('Error al subir archivo:', error);
+            alert('Error al subir archivo: ' + error.message);
+        }
+    }
+    document.getElementById('uploadCsvBtn').addEventListener('click', uploadCsv);
+}
