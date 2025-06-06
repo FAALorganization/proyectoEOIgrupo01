@@ -22,12 +22,22 @@
 
     <div class="task-container">
         <h5 class="task-title">Nueva Tarea</h5>
+
         <form id="formAgregarTarea" th:action="@{/tareas/agregar}" method="post" th:object="${nuevaTarea}">
+            <select class="form-select" th:field="*{tipoTarea}" aria-label="Default" id="tareas-asunto" required>
+                <option value="" selected>Selecciona una opción</option>
+                <option th:each="tipo : ${tiposTarea}"
+                        th:value="${tipo.id}"
+                        th:text="${tipo.tarea}">
+                </option>
+            </select>
+
             <input type="text" th:field="*{titulo}" class="form-control mb-2" placeholder="Nombre de la tarea" required>
             <textarea th:field="*{descripcion}" class="form-control mb-2" placeholder="Descripción"></textarea>
 
             <!-- Campo oculto para enviar el id del Login -->
             <input type="hidden" name="idLogin" th:value="${usuarioActual != null} ? ${usuarioActual.id} : ''" />
+
 
             <button type="submit" class="btn btn-primary me-2">
                 <i class="bi bi-plus-circle"></i> Agregar Tarea

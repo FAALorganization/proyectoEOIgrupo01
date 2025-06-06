@@ -2,8 +2,10 @@ package com.grupo01.java6.faal.controllers;
 
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Tarea;
+import com.grupo01.java6.faal.entities.TipoTareas;
 import com.grupo01.java6.faal.services.TareaService;
 import com.grupo01.java6.faal.services.LoginService;
+import com.grupo01.java6.faal.services.TiposTareasService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/tareas")
@@ -20,10 +23,12 @@ public class TareaController {
 
     private final LoginService loginService;
     private final TareaService tareaService;
+    private final TiposTareasService tiposTareasService;
 
-    public TareaController(TareaService tareaService, LoginService loginService) {
+    public TareaController(TareaService tareaService, LoginService loginService, TiposTareasService tiposTareasService) {
         this.tareaService = tareaService;
         this.loginService = loginService;
+        this.tiposTareasService = tiposTareasService;
     }
 
     @GetMapping
@@ -33,6 +38,8 @@ public class TareaController {
         model.addAttribute("pendientes", tareaService.obtenerPendientes());
         model.addAttribute("completadas", tareaService.obtenerCompletadas());
         model.addAttribute("eliminadas", tareaService.obtenerEliminadas());
+        List<TipoTareas> tipos = tiposTareasService.findAll();
+        model.addAttribute("tiposTarea", tipos);
         model.addAttribute("nuevaTarea", new Tarea());
         return "tareas";
     }

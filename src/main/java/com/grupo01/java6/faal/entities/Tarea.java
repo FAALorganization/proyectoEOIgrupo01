@@ -26,8 +26,9 @@ public class Tarea implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-//    @Column(name = "tipoTarea", length = 45)
-//    private String tipoTarea;
+    @Column(name="tipo_tarea")
+    private Integer tipoTarea;
+
 
     @Column(name = "fechaInicio")
     private LocalDate fechaInicio;
