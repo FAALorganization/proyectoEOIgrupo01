@@ -14,58 +14,11 @@
     <!--Container Main start-->
     <div class="height-100 aus-container-personal">
         <div class="aus-container-personal-lista">
-            <div class="aus-tabla-usuarios-grupo-container">
-                <div class="aus-tabla-usuarios">
-                    <div class="aus-header-usuarios">
-                        <p>Selección de Usuario</p>
-                    </div>
-                    <div class="aus-content-usuarios">
-                    </div>
-                </div>
-            </div>
-            <div class="aus-mini-calendario-container">
-                <div class="aus-calendar-container">
-                    <div class="aus-calendar-header">
-                        <button class="aus-nav-button" id="aus-prevMonth">&lt;</button>
-                        <div class="aus-month-year" id="aus-monthYearLabel">Abril 2025</div>
-                        <button class="aus-nav-button" id="aus-nextMonth">&gt;</button>
-                        <select id="aus-yearSelect"></select>
-                    </div>
-                    <div class="aus-calendar-grid" id="aus-calendarGrid">
-                        <!-- Grid dinámica -->
-                    </div>
-                </div>
-            </div>
+            <div th:replace="fragments/aus-tabla-usuarios :: aus-tabla-usuarios"></div>
+            <div th:replace="fragments/aus-mini-calendario :: aus-mini-calendario"></div>
         </div>
     </div>
-
-    <div class="aus-modal-background" id="aus-modal-container">
-        <div class="aus-modal-overlay" id="aus-modalOverlay">
-            <div class="aus-modal-overlay-content">
-                <span class="aus-close-btn" id="aus-closeModal">&times;</span>
-                <h2 id="aus-titulo">Ausencias</h2>
-                <div class="aus-modal-content-text">
-                    <table class="aus-tabla-modal-ausencias">
-                        <thead class="aus-table-modal-header">
-                        <tr>
-                            <th>Tipo Ausencia</th>
-                            <th>Fecha Ausencia</th>
-                            <th>Acciones</th>
-                        </tr>
-                        </thead>
-                        <tbody class="aus-table-modal-body">
-
-                            <div id="aus-tooltip" class="aus-tooltip" style="display: none;"></div>
-                        </tbody>
-                    </table>
-                    <div class="modal-buttons-enviarinfo">
-                        <button class="btn btn-primary aus-btn" id="aus-enviarInfo">Enviar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <div th:replace="fragments/aus-modal :: aus-modal"></div>
 </section>
 </body>
 </html>
