@@ -71,20 +71,12 @@
               <th>Horas Extra</th>
             </tr>
             </thead>
-            <tbody id="historial-list">
-            <tr>
-              <td>10/05/2025</td>
-              <td>08:00</td>
-              <td>Presencial</td>
-              <td>17:00</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>10/05/2025</td>
-              <td>08:10</td>
-              <td>Remoto</td>
-              <td>17:05</td>
-              <td>0</td>
+            <tbody id="historial-list" th:fragment="historialCheckins">
+            <tr th:each="checkin : ${checkins}">
+              <td th:text="${checkin.fechaFormatted}"></td>
+              <td th:text="${checkin.horaEntrada}"></td>
+              <td th:text="${checkin.tipo}"></td>
+              <td th:text="${checkin.horaSalida}"></td>
             </tr>
             </tbody>
           </table>
