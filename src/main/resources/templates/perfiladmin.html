@@ -12,7 +12,6 @@
 
 <body>
 <section layout:fragment="content">
-    <div class="container bg-white mt-5 mb-5">
         <div class="row">
             <div class="col-auto border-right">
                 <div class="p-3 py-5">
@@ -54,28 +53,28 @@
                     <div class="modal-body">
                         <h4 class="text-center">Lista de usuarios</h4>
                         <input class="form-control" id="myInput" type="text" onkeyup="buscarUser()" placeholder="Escriba para buscar...">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre</th>
-                                <th>Email</th>
-                                <th>Teléfono</th>
-                                <th>Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody id="myTable">
-                            <tr>
-                                <td>1</td>
-                                <td>nadie</td>
-                                <td>nadie@gmail.com</td>
-                                <td>+34 174 653 478</td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
-                                            onclick="closeFirstModal()">Eliminar</button>
-
-                                </td>
-                            </tr>
+                        <div class="table-responsive"> <!-- Agregar contenedor para la tabla -->
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                <tr>
+                                    <td>1</td>
+                                    <td>nadie</td>
+                                    <td>nadie@gmail.com</td>
+                                    <td>+34 174 653 478</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
+                                                onclick="closeFirstModal()">Eliminar</button>
+                                    </td>
+                                </tr>
                             <tr>
                                 <td>2</td>
                                 <td>alguien</td>
@@ -144,7 +143,6 @@
                 </div>
             </div>
         </div>
-    </div>
     <!-- Modal de Confirmación de Eliminación -->
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
@@ -162,7 +160,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <!-- los scripts-->
     <script th:src="@{js/perfiladmin.js}"></script>
