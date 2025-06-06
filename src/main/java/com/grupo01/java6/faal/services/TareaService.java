@@ -37,7 +37,7 @@ public class TareaService {
         if (tarea != null) {
             tarea.setEstado("completada");
             tarea.setFechaFin(LocalDate.now()); // Guarda la fecha de finalización
-            tareaRepository.save(tarea);
+            tareaRepository.save(tarea); // Guarda el cambio en la BD
         }
     }
 
@@ -62,4 +62,5 @@ public class TareaService {
     public void eliminarDefinitivamente(Integer id) {
         tareaRepository.deleteById(id); // Borra la tarea de la BD
     }
+
 }

@@ -33,14 +33,17 @@ public class TareaController {
 
     @GetMapping
     public String listarTareas(Model model) {
-        Login usuarioActual = obtainUser(); // Método para obtener el usuario autenticado
-        model.addAttribute("usuarioActual", usuarioActual); // Agregarlo al modelo
-        model.addAttribute("pendientes", tareaService.obtenerPendientes());
+        Login usuarioActual = obtainUser();
+        model.addAttribute("usuarioActual", usuarioActual);
+
+        model.addAttribute("pendientes", tareaService.obtenerPendientes()); // Ya filtra expiradas
         model.addAttribute("completadas", tareaService.obtenerCompletadas());
         model.addAttribute("eliminadas", tareaService.obtenerEliminadas());
+
         List<TipoTareas> tipos = tiposTareasService.findAll();
         model.addAttribute("tiposTarea", tipos);
         model.addAttribute("nuevaTarea", new Tarea());
+
         return "tareas";
     }
 
