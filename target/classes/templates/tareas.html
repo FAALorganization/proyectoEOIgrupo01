@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
+<head>
+    <title>Lista de Tareas</title>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}"/>
+    </th:block>
+    <link rel="stylesheet" th:href="@{css/tareas.css}">
+</head>
+
+<body>
+<section layout:fragment="content">
+
+    <!-- botón para añadir tareas -->
+    <div class="mb-3 text-center">
+        <a th:href="@{tareasJefe}" class="btn btn-success">
+            <i class="bi bi-arrow-right-circle"></i> Ir a Añadir Tarea
+        </a>
+    </div>
+
+    <div class="container py-4">
+        <h2 class="text-center mb-4">Lista de Tareas</h2>
+
+        <div class="task-container">
+            <h5 class="task-title">Nueva Tarea</h5>
+            <input type="text" id="taskName" class="form-control mb-2" placeholder="Nombre de la tarea">
+            <textarea id="taskDesc" class="form-control mb-2" placeholder="Descripción de la tarea"></textarea>
+            <button class="btn btn-primary me-2" onclick="addTask(false)"><i class="bi bi-plus-circle"></i> Agregar Tarea</button>
+            <p id="error-msg" class="text-danger mt-2" style="display: none;">⚠ Debes ingresar un nombre de tarea</p>
+        </div>
+
+        <div class="task-container">
+            <h5 class="task-title">Tareas Pendientes</h5>
+            <ul id="taskList" class="list-group"></ul>
+        </div>
+
+        <div class="task-container">
+            <h5 class="task-completed-title">Tareas Terminadas</h5>
+            <ul id="completedTasks" class="list-group"></ul>
+        </div>
+
+        <div class="task-container">
+            <h5 class="task-eliminated-title">Tareas Eliminadas</h5>
+            <ul id="eliminatedTaskList" class="list-group"></ul>
+        </div>
+
+    </div>
+</section>
+
+<script th:src="@{/js/tareas.js}"></script>
+</body>
+</html>

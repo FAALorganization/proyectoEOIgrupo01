@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
+<head>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+    </th:block>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="calendar-container-all">
+        <div class="buttons-calendar-div">
+            <button>General</button>
+            <button>Individual</button>
+        </div>
+
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <span class="arrow" id="prevMonth">&#60;</span>
+                <div class="calendar-header-center">
+                    <select id="monthSelect"></select>
+                    <select id="yearSelect"></select>
+                </div>
+                <span class="arrow" id="nextMonth">&#62;</span>
+            </div>
+
+            <div class="days-of-week">
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mie</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sab</div>
+                <div>Dom</div>
+            </div>
+            <div class="days-grid" id="daysGrid"></div>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-background"  id="modal-container">
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-overlay-content">
+                <span class="close-btn" id="closeModal">&times;</span>
+                <h2 id="modalDate">Day Details</h2>
+                <div class="modal-content-text">
+                    <p>Here will be the tasks for this day.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
