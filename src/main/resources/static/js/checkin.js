@@ -11,3 +11,22 @@ function actualizarReloj() {
 
 // Llamar la función cada segundo (1000ms)
 setInterval(actualizarReloj, 1000);
+function agregarCheck(accion, tipo = null) {
+    const idLogin = 1; // Cambia esto por el ID del usuario actual
+    const url = accion === 'in' ? '/checkin' : '/checkout';
+    const data = tipo ? { tipo, idLogin } : { idLogin };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(data),
+    })
+        .then(response => response.text())
+        .then(message => {
+            document.getElementById('mensaje').innerText = message;
+            actualizarHistorial();
+        })
+        .catch(error => console.error('Error:', error));
+}
