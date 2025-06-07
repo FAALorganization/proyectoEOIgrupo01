@@ -47,6 +47,12 @@ public class LoginService {
 
         return new ArrayList<>(map.values());
     }
+    public void guardarLogin(Login login) {
+        loginRepository.save(login); //metodo para guardar un Login
+        }
+    }
+
+
 
 //    private Login obtenerUsuarioActual() {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -58,4 +64,3 @@ public class LoginService {
 //        }
 //        return null;
 //    }
-}
