@@ -64,7 +64,13 @@ VALUES
     (false,25,'2025-05-09', '2025-05-07',5, 2,null,null),
     (true,25,'2025-05-14', '2025-05-12',5, 1,null,null);
 
-
+INSERT INTO tipo_tareas (tarea) VALUES
+                                    ('Desarrollo'),
+                                    ('Corrección de errores'),
+                                    ('Documentación'),
+                                    ('Testing'),
+                                    ('Revisión de código'),
+                                    ('Reunión')
 
 
 

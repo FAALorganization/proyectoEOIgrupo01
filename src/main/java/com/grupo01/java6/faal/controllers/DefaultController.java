@@ -123,14 +123,6 @@ public class DefaultController {
         return "creacionTicket"; // View name
     }
 
-    @GetMapping("/tareasJefe")
-    public String showtareasJefe()
-    {
-
-        return "tareasJefe"; // View name
-    }
-
-
     @GetMapping("/checkin")
     public String showCheckin()
     {

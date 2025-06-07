@@ -50,4 +50,12 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
 //    AND a.aprobado = true
     List<NombreConAusenciasDTO> obtenerCompanerosConAusencias(@Param("email") String email);
 
+    @Query("""
+    SELECT DISTINCT l FROM Login l
+    JOIN FETCH l.idDetallesDeUsuario d
+    JOIN l.roles r
+    WHERE LOWER(r.descripcion) IN ('usuario', 'visitante')
+""")
+    List<Login> findAllWithRoleUsuarioOrVisitante();
+
 }
