@@ -36,9 +36,11 @@ public class TareaController {
         Login usuarioActual = obtainUser();
         model.addAttribute("usuarioActual", usuarioActual);
 
-        model.addAttribute("pendientes", tareaService.obtenerPendientes()); // Ya filtra expiradas
-        model.addAttribute("completadas", tareaService.obtenerCompletadas());
-        model.addAttribute("eliminadas", tareaService.obtenerEliminadas());
+        Integer idLogin = usuarioActual.getId();
+
+        model.addAttribute("pendientes", tareaService.obtenerPendientesPorUsuario(idLogin));
+        model.addAttribute("completadas", tareaService.obtenerCompletadasPorUsuario(idLogin));
+        model.addAttribute("eliminadas", tareaService.obtenerEliminadasPorUsuario(idLogin));
 
         List<TipoTareas> tipos = tiposTareasService.findAll();
         model.addAttribute("tiposTarea", tipos);

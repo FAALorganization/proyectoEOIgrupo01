@@ -16,17 +16,18 @@ public class TareaService {
         this.tareaRepository = tareaRepository;
     }
 
-    public List<Tarea> obtenerCompletadas() {
-        return tareaRepository.findByEstado("completada"); // Solo tareas completadas
+    public List<Tarea> obtenerPendientesPorUsuario(Integer idLogin) {
+        return tareaRepository.findByEstadoAndLoginTareaId("pendiente", idLogin);
     }
 
-    public List<Tarea> obtenerPendientes() {
-        return tareaRepository.findByEstado("pendiente");
+    public List<Tarea> obtenerCompletadasPorUsuario(Integer idLogin) {
+        return tareaRepository.findByEstadoAndLoginTareaId("completada", idLogin);
     }
 
-    public List<Tarea> obtenerEliminadas() {
-        return tareaRepository.findByEstado("eliminada"); // Solo tareas eliminadas
+    public List<Tarea> obtenerEliminadasPorUsuario(Integer idLogin) {
+        return tareaRepository.findByEstadoAndLoginTareaId("eliminada", idLogin);
     }
+
 
     public void guardarTarea(Tarea tarea) {
         tareaRepository.save(tarea);

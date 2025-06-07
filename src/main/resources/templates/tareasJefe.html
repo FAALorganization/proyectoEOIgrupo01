@@ -17,7 +17,7 @@
     <!-- Selección de usuario -->
     <div class="mb-3">
       <label for="userSelect" class="form-label"><strong>Selecciona un usuario:</strong></label>
-      <select th:field="*{loginTarea}" id="userSelect" class="form-select" required>
+      <select th:field="*{loginTarea.id}" id="userSelect" class="form-select" required>
         <option value="" disabled selected>Elige un usuario</option>
         <option th:each="usuario : ${usuarios}"
                 th:value="${usuario.id}"

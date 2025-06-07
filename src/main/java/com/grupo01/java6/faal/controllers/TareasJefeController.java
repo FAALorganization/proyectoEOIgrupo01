@@ -5,10 +5,9 @@ import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Tarea;
 import com.grupo01.java6.faal.entities.TipoTareas;
 import com.grupo01.java6.faal.repositories.TareaRepository;
-import com.grupo01.java6.faal.repositories.TipoTareasRepository;
+import com.grupo01.java6.faal.repositories.TiposTareasRepository;
 import com.grupo01.java6.faal.services.LoginService;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,21 +23,23 @@ public class TareasJefeController {
     private TareaRepository tareaRepository;
 
     @Autowired
-    private TipoTareasRepository tipoTareasRepository;
+    private TiposTareasRepository tipoTareasRepository;
 
     @Autowired
     private LoginService loginService;
 
-    // Mostrar el formulario para asignar tareas
     @GetMapping("/asignar")
     public String mostrarFormularioAsignarTarea(Model model) {
         model.addAttribute("nuevaTarea", new Tarea());
 
-        // Lista de usuarios para el combo
-        List<UsuarioDTO> usuarios = loginService.getUsuariosDTO();
+        List<UsuarioDTO> usuarios = loginService.getUsuariosDTOConRolUsuarioOVisitante();
+
+        // LOG para depurar
+        System.out.println("Usuarios cargados: " + usuarios.size());
+        usuarios.forEach(u -> System.out.println(u.getId() + ": " + u.getNombre() + " - " + u.getEmail()));
+
         model.addAttribute("usuarios", usuarios);
 
-        // Lista de tipos de tarea
         List<TipoTareas> tipos = tipoTareasRepository.findAll();
         model.addAttribute("tiposTarea", tipos);
 
@@ -49,22 +50,18 @@ public class TareasJefeController {
     @PostMapping("/asignar")
     public String asignarTarea(@ModelAttribute("nuevaTarea") Tarea tarea) {
 
-        String emailUsuario = tarea.getLoginTarea().getEmailPrimario();
-        if (emailUsuario == null || emailUsuario.isEmpty()) {
-            throw new IllegalArgumentException("Email de usuario no puede ser vacío");
+        Integer idLogin = tarea.getLoginTarea().getId();
+
+        if (idLogin == null) {
+            throw new IllegalArgumentException("Debe seleccionar un usuario válido.");
         }
 
-        // Buscar usuario por email
-        Login usuario = loginService.getUserByEmail(emailUsuario);
+        Login usuario = loginService.getUserById(tarea.getLoginTarea().getId());
 
         if (usuario == null) {
-            throw new IllegalArgumentException("Usuario no encontrado con email: " + emailUsuario);
+            throw new IllegalArgumentException("Usuario no encontrado con ID: " + tarea.getLoginTarea().getId());
         }
 
-        // Evita errores de Lazy Fetching
-        Hibernate.initialize(usuario.getIdDetallesDeUsuario());
-
-        // Obtener tipo de tarea
         TipoTareas tipo = tipoTareasRepository.findById(tarea.getTipoTarea().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Tipo de tarea no válido"));
 

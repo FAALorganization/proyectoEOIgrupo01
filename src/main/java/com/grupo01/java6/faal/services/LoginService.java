@@ -54,13 +54,20 @@ public class LoginService {
         return loginRepository.getLoginByEmailPrimario(email).orElse(null);
     }
 
-    public List<UsuarioDTO> getUsuariosDTO() {
-        return loginRepository.findAllWithDetalles().stream()
-                .map(usuario -> new UsuarioDTO(
-                        usuario.getId(),
-                        usuario.getIdDetallesDeUsuario() != null ? usuario.getIdDetallesDeUsuario().getNombre() : "Sin nombre",
-                        usuario.getEmailPrimario()))
-                .collect(Collectors.toList());
+    public Login getUserById(Integer id) {
+        return loginRepository.findById(id).orElse(null);
     }
+
+    public List<UsuarioDTO> getUsuariosDTOConRolUsuarioOVisitante() {
+        List<Login> logins = loginRepository.findAllWithRoleUsuarioOrVisitante();
+        return logins.stream()
+                .map(login -> new UsuarioDTO(
+                        login.getId(),
+                        login.getIdDetallesDeUsuario().getNombre(),
+                        login.getEmailPrimario()
+                ))
+                .toList();
+    }
+
 
 }

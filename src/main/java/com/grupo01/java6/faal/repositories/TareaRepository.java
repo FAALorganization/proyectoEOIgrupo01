@@ -7,10 +7,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TareaRepository extends JpaRepository<Tarea, Integer> {
-    List<Tarea> findByFechaFinNullAndFechaEliminadaNull();
-    List<Tarea> findByFechaFinNotNull();
-    List<Tarea> findByFechaEliminadaNotNull();
-    List<Tarea> findByEstado(String estado);
-    List<Tarea> findByFechaLimiteIsNullOrFechaLimiteGreaterThan(LocalDate fechaActual);
-    List<Tarea> findByFechaLimiteLessThan(LocalDate fechaActual);
+//    List<Tarea> findByFechaFinNullAndFechaEliminadaNull();
+//    List<Tarea> findByFechaFinNotNull();
+//    List<Tarea> findByFechaEliminadaNotNull();
+//    List<Tarea> findByEstado(String estado);
+//    List<Tarea> findByFechaLimiteIsNullOrFechaLimiteGreaterThan(LocalDate fechaActual);
+//    List<Tarea> findByFechaLimiteLessThan(LocalDate fechaActual);
+    List<Tarea> findByEstadoAndLoginTareaId(String estado, Integer loginId);
 }
