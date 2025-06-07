@@ -48,30 +48,47 @@ public class TareasJefeController {
 
     // Procesar el envío del formulario
     @PostMapping("/asignar")
-    public String asignarTarea(@ModelAttribute("nuevaTarea") Tarea tarea) {
+    public String asignarTarea(@ModelAttribute("nuevaTarea") Tarea tarea, Model model) {
+        try {
+            Integer idLogin = tarea.getLoginTarea().getId();
 
-        Integer idLogin = tarea.getLoginTarea().getId();
+            if (idLogin == null) {
+                throw new IllegalArgumentException("Debe seleccionar un usuario válido.");
+            }
 
-        if (idLogin == null) {
-            throw new IllegalArgumentException("Debe seleccionar un usuario válido.");
+            Login usuario = loginService.getUserById(idLogin);
+
+            if (usuario == null) {
+                throw new IllegalArgumentException("Usuario no encontrado con ID: " + idLogin);
+            }
+
+            TipoTareas tipo = tipoTareasRepository.findById(tarea.getTipoTarea().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Tipo de tarea no válido"));
+
+            tarea.setLoginTarea(usuario);
+            tarea.setTipoTarea(tipo);
+            tarea.setFechaEliminada(null);
+
+            tareaRepository.save(tarea);
+
+            model.addAttribute("nuevaTarea", new Tarea());
+
+            model.addAttribute("mensajeExito", "Tarea asignada correctamente.");
+
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("mensajeError", e.getMessage());
+            model.addAttribute("nuevaTarea", tarea);
         }
 
-        Login usuario = loginService.getUserById(tarea.getLoginTarea().getId());
+        // Recargar listas necesarias para el formulario
+        List<UsuarioDTO> usuarios = loginService.getUsuariosDTOConRolUsuarioOVisitante();
+        model.addAttribute("usuarios", usuarios);
 
-        if (usuario == null) {
-            throw new IllegalArgumentException("Usuario no encontrado con ID: " + tarea.getLoginTarea().getId());
-        }
+        List<TipoTareas> tipos = tipoTareasRepository.findAll();
+        model.addAttribute("tiposTarea", tipos);
 
-        TipoTareas tipo = tipoTareasRepository.findById(tarea.getTipoTarea().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Tipo de tarea no válido"));
-
-        tarea.setLoginTarea(usuario);
-        tarea.setTipoTarea(tipo);
-        tarea.setFechaEliminada(null);
-
-        tareaRepository.save(tarea);
-
-        return "redirect:/tareas";
+        return "tareasJefe";
     }
+
 
 }

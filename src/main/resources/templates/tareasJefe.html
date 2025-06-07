@@ -11,6 +11,9 @@
 <body class="container py-4">
 
 <h2 class="text-center mb-4">Asignar Tarea a un Usuario</h2>
+<div th:if="${mensajeExito}" class="alert alert-success" role="alert" th:text="${mensajeExito}"></div>
+<div th:if="${mensajeError}" class="alert alert-danger" role="alert" th:text="${mensajeError}"></div>
+
 
 <div class="card shadow p-4 mb-4">
   <form th:action="@{/tareas/jefe/asignar}" method="post" th:object="${nuevaTarea}">
