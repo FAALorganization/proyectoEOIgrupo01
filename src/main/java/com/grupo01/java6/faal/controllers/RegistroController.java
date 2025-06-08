@@ -43,10 +43,12 @@ public class RegistroController {
                 String contenido = new String(file.getBytes());
                 List<String> lineas = Arrays.asList(contenido.split("\\R"));
                 for (String linea : lineas) {
-                    List <String> columnas = Arrays.asList(linea.split(","));
-                    String nombre = columnas.getFirst().trim();
+                    List<String> columnas = Arrays.asList(linea.split(","));
+                    String nombre = columnas.get(0).trim();
                     String apellido = columnas.get(1).trim();
-                    String email = columnas.getLast().trim();
+                    String email = columnas.get(2).trim();
+                    String nombreJefe = columnas.size() > 3 ? columnas.get(3).trim() : null; // Detectar nombre del jefe
+                    String apellidoJefe = columnas.size() > 4 ? columnas.get(4).trim() : null;
 
                     Detallesdeusuario detallesdeuser = new Detallesdeusuario();
                     detallesdeuser.setNombre(nombre);
@@ -59,6 +61,19 @@ public class RegistroController {
                     login.setIdDetallesDeUsuario(detallesdeuser);
                     login.setEmailPrimario(email);
                     login.setToken(generarTokenAleatorio(10)); // Genera password temporal
+
+                    if (nombreJefe != null && !nombreJefe.isEmpty() && apellidoJefe != null && !apellidoJefe.isEmpty()) {
+                        Detallesdeusuario jefeDetalles = detallesdeusuarioService.findByNombreAndApellidos(nombreJefe, apellidoJefe);
+                        if (jefeDetalles != null) {
+                            boolean esJefe = detallesdeusuarioService.verificarRolJefe(jefeDetalles.getId());
+                            if (esJefe) {
+                                Login jefeLogin = loginService.obtenerPorDetallesUsuario(jefeDetalles);
+                                if (jefeLogin != null) {
+                                    login.setJefeLogin(jefeLogin); // Asociar jefe al usuario
+                                }
+                            }
+                        }
+                    }
 
                     loginService.guardarLogin(login);
                 }

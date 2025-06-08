@@ -6,6 +6,7 @@ import com.grupo01.java6.faal.dtos.NombreDTO;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.repositories.LoginRepository;
 import org.springframework.stereotype.Service;
+import com.grupo01.java6.faal.entities.Detallesdeusuario;
 
 import java.util.*;
 
@@ -50,6 +51,9 @@ public class LoginService {
     public void guardarLogin(Login login) {
         loginRepository.save(login); //metodo para guardar un Login
         }
+    public Login obtenerPorDetallesUsuario(Detallesdeusuario detallesdeusuario) {
+        return loginRepository.findByIdDetallesDeUsuario(detallesdeusuario).orElse(null);
+    }
     }
 
 
