@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -29,7 +28,4 @@ public class Proyecto implements java.io.Serializable {
 
     @Column(name = "fechaFin")
     private LocalDate fechaFin;
-
-
-
 }

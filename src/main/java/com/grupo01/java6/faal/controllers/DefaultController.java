@@ -132,13 +132,6 @@ public class DefaultController {
     public String showCheckinjefe()
     {
         return "checkinjefe";}
-  
-    @GetMapping("/documentacion")
-    public String showDocumentation()
-    {
-
-        return "documentacion"; // View name
-    }
 
     @GetMapping("/perfiljefe")
     public String showPerfiljefe()

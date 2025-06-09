@@ -69,5 +69,7 @@ public class LoginService {
                 .toList();
     }
 
-
+    public Login getUserBy_Id(Integer id) {
+        return loginRepository.findById(id).orElse(null);
+    }
 }
