@@ -3,12 +3,14 @@ package com.grupo01.java6.faal.services;
 import com.grupo01.java6.faal.dtos.EmpleadoConAusenciasDTO;
 import com.grupo01.java6.faal.dtos.NombreConAusenciasDTO;
 import com.grupo01.java6.faal.dtos.NombreDTO;
+import com.grupo01.java6.faal.dtos.UsuarioDTO;
+import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.repositories.LoginRepository;
 import org.springframework.stereotype.Service;
-import com.grupo01.java6.faal.entities.Detallesdeusuario;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class LoginService {
@@ -19,7 +21,7 @@ public class LoginService {
         this.loginRepository = loginRepository;
     }
 
-    public Login obtainUser(String str) {
+    public Login obtainUser(String str){
         Optional<Login> logins = loginRepository.getLoginByEmailPrimario(str);
         return logins.orElse(null);
         // Por ejemplo, devolver el email primario del primer Login
@@ -49,6 +51,29 @@ public class LoginService {
         return new ArrayList<>(map.values());
     }
 
+    public Login getUserByEmail(String email) {
+        return loginRepository.getLoginByEmailPrimario(email).orElse(null);
+    }
+
+    public Login getUserById(Integer id) {
+        return loginRepository.findById(id).orElse(null);
+    }
+
+    public List<UsuarioDTO> getUsuariosDTOConRolUsuarioOVisitante() {
+        List<Login> logins = loginRepository.findAllWithRoleUsuarioOrVisitante();
+        return logins.stream()
+                .map(login -> new UsuarioDTO(
+                        login.getId(),
+                        login.getIdDetallesDeUsuario().getNombre(),
+                        login.getEmailPrimario()
+                ))
+                .toList();
+    }
+
+    public Login getUserBy_Id(Integer id) {
+        return loginRepository.findById(id).orElse(null);
+    }
+
     public void guardarLogin(Login login) {
         loginRepository.save(login); //metodo para guardar un Login
     }
@@ -66,15 +91,3 @@ public class LoginService {
 
 
 
-
-
-//    private Login obtenerUsuarioActual() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null && auth.isAuthenticated()) {
-//            String username = auth.getName();
-//            // Aquí debes recuperar tu Login con ese username
-//            // Por ejemplo, usando un servicio LoginService:
-//            return loginService.buscarPorNombreUsuario(username);
-//        }
-//        return null;
-//    }
