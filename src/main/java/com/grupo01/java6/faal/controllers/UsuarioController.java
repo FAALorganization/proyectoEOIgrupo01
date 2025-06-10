@@ -27,7 +27,7 @@ public class UsuarioController {
 
     @GetMapping("/perfiladmin")
     public String mostrarUsuarios(Model model) {
-        List<Detallesdeusuario> usuarios = detallesdeusuarioService.obtenerTodosLosUsuarios();
+        List<Detallesdeusuario> usuarios = detallesdeusuarioService.obtenerUsuariosActivos();
         model.addAttribute("usuarios", usuarios);
         return "perfiladmin";
     }

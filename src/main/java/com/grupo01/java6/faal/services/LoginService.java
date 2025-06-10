@@ -19,7 +19,7 @@ public class LoginService {
         this.loginRepository = loginRepository;
     }
 
-    public Login obtainUser(String str){
+    public Login obtainUser(String str) {
         Optional<Login> logins = loginRepository.getLoginByEmailPrimario(str);
         return logins.orElse(null);
         // Por ejemplo, devolver el email primario del primer Login
@@ -48,17 +48,23 @@ public class LoginService {
 
         return new ArrayList<>(map.values());
     }
+
     public void guardarLogin(Login login) {
         loginRepository.save(login); //metodo para guardar un Login
-        }
+    }
+
     public Login obtenerPorDetallesUsuario(Detallesdeusuario detallesdeusuario) {
         return loginRepository.findByIdDetallesDeUsuario(detallesdeusuario).orElse(null);
 
     }
+
     public Login obtenerPorId(Integer id) {
         return loginRepository.findById(id).orElse(null);
+
     }
-    }
+}
+
+
 
 
 

@@ -35,4 +35,8 @@ public class DetallesdeusuarioService extends AbstractBusinessService<Detallesde
     public List<Detallesdeusuario> obtenerTodosLosUsuarios() {
         return detallesdeusuarioRepository.findAll();
     }
+
+    public List<Detallesdeusuario> obtenerUsuariosActivos() {
+        return detallesdeusuarioRepository.findUsuariosActivos();
+    }
 }
