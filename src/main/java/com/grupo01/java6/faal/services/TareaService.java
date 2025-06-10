@@ -16,17 +16,18 @@ public class TareaService {
         this.tareaRepository = tareaRepository;
     }
 
-    public List<Tarea> obtenerCompletadas() {
-        return tareaRepository.findByEstado("completada"); // Solo tareas completadas
+    public List<Tarea> obtenerPendientesPorUsuario(Integer idLogin) {
+        return tareaRepository.findByEstadoAndLoginTareaId("pendiente", idLogin);
     }
 
-    public List<Tarea> obtenerPendientes() {
-        return tareaRepository.findByEstado("pendiente");
+    public List<Tarea> obtenerCompletadasPorUsuario(Integer idLogin) {
+        return tareaRepository.findByEstadoAndLoginTareaId("completada", idLogin);
     }
 
-    public List<Tarea> obtenerEliminadas() {
-        return tareaRepository.findByEstado("eliminada"); // Solo tareas eliminadas
+    public List<Tarea> obtenerEliminadasPorUsuario(Integer idLogin) {
+        return tareaRepository.findByEstadoAndLoginTareaId("eliminada", idLogin);
     }
+
 
     public void guardarTarea(Tarea tarea) {
         tareaRepository.save(tarea);
@@ -37,7 +38,7 @@ public class TareaService {
         if (tarea != null) {
             tarea.setEstado("completada");
             tarea.setFechaFin(LocalDate.now()); // Guarda la fecha de finalización
-            tareaRepository.save(tarea);
+            tareaRepository.save(tarea); // Guarda el cambio en la BD
         }
     }
 
@@ -61,5 +62,9 @@ public class TareaService {
 
     public void eliminarDefinitivamente(Integer id) {
         tareaRepository.deleteById(id); // Borra la tarea de la BD
+    }
+
+    public List<Tarea> obtenerTareasEstadoAndUsuario(Integer id, String estado) {
+        return tareaRepository.findByLoginTarea_IdAndEstado(id,estado);
     }
 }

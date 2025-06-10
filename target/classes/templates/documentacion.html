@@ -4,59 +4,64 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/layoutNavBar}">
 <head>
-    <title>Gestión de Archivos</title>
+    <title>Gestión de Documentos</title>
     <th:block layout:fragment="styles">
         <link rel="stylesheet" th:href="@{/css/app.css}"/>
+        <link rel="stylesheet" th:href="@{/css/documentacion.css}"/>
     </th:block>
-    <link rel="stylesheet" th:href="@{css/documentacion.css}">
 </head>
 
 <body>
-<section layout:fragment="content">
+<div layout:fragment="content" class="task-container">
+    <h1 class="task-title">Gestión de Documentación</h1>
 
-    <div class="container mt-5">
-        <h1 class="text-center mb-4"><strong>Documentación</strong></h1>
+    <!-- Botón justo debajo del título -->
+    <div class="mb-4">
+        <a th:href="@{/gestion-proyectos}" class="btn btn-primary">
+            Gestionar proyectos
+        </a>
+    </div>
 
-        <div class="row">
-            <div class="col-12 mb-3">
-                <div class="card p-3">
-                    <h2 class="card-title">Proyectos Generales</h2>
-                    <input type="file" id="fileProyectosGenerales" class="form-control mb-2">
-                    <button class="btn btn-primary" onclick="uploadFile('proyectosGenerales')">Subir Archivo</button>
-                    <ul id="listProyectosGenerales" class="list-group mt-2"></ul>
-                </div>
-            </div>
-
-            <div class="col-12 mb-3">
-                <div class="card p-3">
-                    <h2 class="card-title">Mis Proyectos</h2>
-                    <input type="file" id="fileMisProyectos" class="form-control mb-2">
-                    <button class="btn btn-primary" onclick="uploadFile('misProyectos')">Subir Archivo</button>
-                    <ul id="listMisProyectos" class="list-group mt-2"></ul>
-                </div>
-            </div>
-
-            <div class="col-12 mb-3">
-                <div class="card p-3">
-                    <h2 class="card-title">Ayuda APP</h2>
-                    <input type="file" id="fileAyudaAPP" class="form-control mb-2">
-                    <button class="btn btn-primary" onclick="uploadFile('ayudaAPP')">Subir Archivo</button>
-                    <ul id="listAyudaAPP" class="list-group mt-2"></ul>
-                </div>
-            </div>
-
-            <div class="col-12 mb-3">
-                <div class="card p-3">
-                    <h2 class="card-title">Preguntas Frecuentes</h2>
-                    <input type="file" id="filePreguntasFrecuentes" class="form-control mb-2">
-                    <button class="btn btn-primary" onclick="uploadFile('preguntasFrecuentes')">Subir Archivo</button>
-                    <ul id="listPreguntasFrecuentes" class="list-group mt-2"></ul>
-                </div>
-            </div>
+    <!-- Sección: Documentación General -->
+    <div class="doc-section doc-general mb-5">
+        <h2 class="doc-title">Documentación General</h2>
+        <div th:if="${proyectosGenerales != null && !proyectosGenerales.isEmpty()}">
+            <ul class="list-group">
+                <li th:each="proyecto : ${proyectosGenerales}" class="list-group-item">
+                    <strong th:text="${proyecto.nombre}">Nombre Proyecto</strong><br>
+                    <span th:text="${proyecto.descripcion}">Descripción</span>
+                </li>
+            </ul>
+        </div>
+        <div th:if="${proyectosGenerales == null || proyectosGenerales.isEmpty()}">
+            <p>No hay proyectos generales disponibles.</p>
         </div>
     </div>
-</section>
 
-<script th:src="@{js/documentacion.js}"></script>
+    <!-- Sección: Mis Proyectos -->
+    <div class="doc-section doc-personal">
+        <h2 class="doc-title">Mis Proyectos</h2>
+        <div th:if="${misProyectos != null && !misProyectos.isEmpty()}">
+            <ul class="list-group">
+                <li th:each="proyecto : ${misProyectos}" class="list-group-item">
+                    <strong th:text="${proyecto.nombreProyecto}">Nombre Proyecto</strong><br>
+                    <span th:text="${proyecto.descripcionProyecto}">Descripción</span><br>
+
+                    <!-- Subida de documentos -->
+                    <form th:action="@{/documentacion/subir}" method="post" enctype="multipart/form-data" class="mt-2">
+                        <input type="hidden" th:name="idProyecto" th:value="${proyecto.idProyecto}" />
+                        <input type="file" name="archivo" required>
+                        <button type="submit" class="btn btn-success btn-sm mt-2">Subir Documento</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <div th:if="${misProyectos == null || misProyectos.isEmpty()}">
+            <p>No tienes proyectos asignados.</p>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
