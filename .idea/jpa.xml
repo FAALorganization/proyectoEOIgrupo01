@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpaBuddyIdeaProjectConfig" migrateIndexesAndConstraints="true" reUseTableSchema="true">
+    <option name="migrateIndexesAndConstraints" value="true" />
+    <option name="reLastEntityCreationPackage" value="src/main/java/com/grupo01/java6/faal/entities" />
+    <option name="reverseEngineeringLastDbConnectionId" value="d7f3a8b7-719b-4757-8373-a95d5cf808bb" />
+  </component>
+  <component name="JpaPluginProjectSettings">
+    <option name="entityNameTemplate" value="${className.underscore()}" />
+    <option name="generateJpaOnGetter" value="true" />
+    <option name="generateSerialVersionUID" value="true" />
+    <option name="generateTypeOnEntity" value="true" />
+    <option name="useBuilderSetters" value="true" />
+    <option name="isLombokToString" value="true" />
+    <option name="isLombokBuilder" value="true" />
+    <option name="isLombokAllArgsConstructor" value="true" />
+    <option name="isLombokNoArgsConstructor" value="true" />
+    <option name="useLazyOnToOneAssociations" value="true" />
+  </component>
+</project>

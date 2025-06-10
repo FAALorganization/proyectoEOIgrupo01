@@ -91,22 +91,22 @@ public class AlejandroDataLoader {
      * - Mensaje al inicio del proceso: "Iniciando la carga de datos para el perfil local".
      * - Mensaje exitoso al finalizar: "Datos de entidades cargados correctamente."
      */
-    @PostConstruct
-    public void loadDataLocal() {
-
-        log.info("Iniciando la carga de datos para el perfil local");
-        int numeroEntidades = 50;
-        EntidadPadre[] entidades = new EntidadPadre[numeroEntidades];
-        Arrays.setAll(entidades, i -> new EntidadPadre("Entidad-" + (Integer.valueOf(i)+1)));
-        repository.saveAll(Arrays.asList(entidades));
-        for (EntidadPadre entidadPadre : entidades) {
-            EntidadHija entidadHija = new EntidadHija("Hija de " + entidadPadre.getNombre());
-            entidadHija.setEntidadPadre(entidadPadre);
-            entidadHijaRepository.save(entidadHija);
-        }
-        log.info("Datos de entidades cargados correctamente.");
-
-
-    }
+//    @PostConstruct
+//    public void loadDataLocal() {
+//
+//        log.info("Iniciando la carga de datos para el perfil local");
+//        int numeroEntidades = 50;
+//        EntidadPadre[] entidades = new EntidadPadre[numeroEntidades];
+//        Arrays.setAll(entidades, i -> new EntidadPadre("Entidad-" + (Integer.valueOf(i)+1)));
+//        repository.saveAll(Arrays.asList(entidades));
+//        for (EntidadPadre entidadPadre : entidades) {
+//            EntidadHija entidadHija = new EntidadHija("Hija de " + entidadPadre.getNombre());
+//            entidadHija.setEntidadPadre(entidadPadre);
+//            entidadHijaRepository.save(entidadHija);
+//        }
+//        log.info("Datos de entidades cargados correctamente.");
+//
+//
+//    }
 
 }

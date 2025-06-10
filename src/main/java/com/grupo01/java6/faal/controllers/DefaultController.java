@@ -69,6 +69,10 @@ public class DefaultController {
         return "entidadesHijas"; // View name
     }
 
+    @GetMapping("/test")
+    public String testAusencias(){
+        return "ausencias";
+    }
     @GetMapping("/calendario")
     public String showCalendar()
     {
@@ -89,12 +93,7 @@ public class DefaultController {
 
         return "ticket"; // View name
     }
-    @GetMapping("/gestionVacaciones")
-    public String showgestionVacaciones()
-    {
 
-        return "gestionVacaciones"; // View name
-    }
 
     @GetMapping("/gestionAusencias")
     public String showgestionAusencias()
@@ -124,32 +123,28 @@ public class DefaultController {
         return "creacionTicket"; // View name
     }
 
-    @GetMapping("/tareas")
-    public String showtareas()
-    {
-
-        return "tareas"; // View name
-    }
-
-    @GetMapping("/tareasJefe")
-    public String showtareasJefe()
-    {
-
-        return "tareasJefe"; // View name
-    }
-
-
     @GetMapping("/checkin")
     public String showCheckin()
     {
          return "checkin"; // View name
     }
-  
-    @GetMapping("/documentacion")
-    public String showDocumentation()
+    @GetMapping("/checkinjefe")
+    public String showCheckinjefe()
+    {
+        return "checkinjefe";}
+
+    @GetMapping("/perfiljefe")
+    public String showPerfiljefe()
     {
 
-        return "documentacion"; // View name
+        return "perfiljefe"; // View name
+    }
+
+    @GetMapping("/perfiladmin")
+    public String showPerfiladmin()
+    {
+
+        return "perfiladmin"; // View name
     }
 
     @GetMapping("/perfil")
@@ -159,7 +154,6 @@ public class DefaultController {
         return "perfil"; // View name
     }
 
-
     @GetMapping("/chat")
     public String showChat()
     {
@@ -167,13 +161,30 @@ public class DefaultController {
         return "chat"; // View name
     }
 
-    @GetMapping("/login")
-    public String showLogin()
+
+    @GetMapping("/home")
+    public String showHome()
     {
 
-        return "login"; // View name
- 
+        return "home"; // View name
+
     }
+    @GetMapping("/TicketAdmin")
+    public String showTicketAdmin()
+    {
+
+        return "TicketAdmin"; // View name
+
+    }
+
+    @GetMapping("/TermsAndConditions")
+    public String showTermsAndConditions()
+    {
+
+        return "TermsAndConditions"; // View name
+
+    }
+
 
     /**
      * Gestiona las solicitudes GET para obtener y mostrar la lista de entidades protegidas.
