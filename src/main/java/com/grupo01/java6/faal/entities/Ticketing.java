@@ -46,7 +46,6 @@ public class Ticketing implements Serializable {
 
     @Column(name = "asunto", length = 50)
     private String asunto;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_prior")
     private Prioridades idPrior;
