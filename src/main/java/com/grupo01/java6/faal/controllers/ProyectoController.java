@@ -33,26 +33,10 @@ public class ProyectoController {
 
     @GetMapping("/documentacion")
     public String mostrarDocumentacion(Model model, Principal principal) {
-        // Obtener el usuario logueado por su email
-        Login usuario = loginService.getUserByEmail(principal.getName());
-
-        // Proyectos generales (todos)
-        List<Proyecto> proyectosGenerales = proyectoRepository.findAll();
-
-        // Mis proyectos (asignados)
-        List<AsignacionProyectoUsuario> asignaciones = asignacionProyectoUsuarioRepository.findByUsuario_Id(usuario.getId());
-
-        List<ProyectoAsignadoDTO> misProyectos = asignaciones.stream()
-                .map(a -> new ProyectoAsignadoDTO(
-                        a.getProyecto().getId(),
-                        a.getProyecto().getNombre(),
-                        a.getProyecto().getDescripcion()))
-                .collect(Collectors.toList());
+        List<Proyecto> proyectosGenerales = proyectoRepository.findAll(); // Debe recuperar todos los proyectos
 
         model.addAttribute("proyectosGenerales", proyectosGenerales);
-        model.addAttribute("misProyectos", misProyectos);
-
-        return "documentacion"; // Vista HTML que mostraremos
+        return "documentacion";
     }
 
     @GetMapping("/gestion-proyectos")
@@ -80,7 +64,8 @@ public class ProyectoController {
 
         proyectoRepository.save(nuevoProyecto);
         redirectAttributes.addFlashAttribute("mensaje", "Proyecto creado correctamente");
-        return "redirect:/gestion-proyectos";
+
+        return "redirect:/documentacion"; // Aquí hacemos que la vista se actualice
     }
 
     @PostMapping("/proyectos/asignar")
