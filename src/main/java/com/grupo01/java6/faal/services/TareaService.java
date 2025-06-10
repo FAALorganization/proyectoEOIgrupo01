@@ -62,4 +62,9 @@ public class TareaService {
     public void eliminarDefinitivamente(Integer id) {
         tareaRepository.deleteById(id); // Borra la tarea de la BD
     }
+
+    public List<Tarea> obtenerTareasEstadoAndUsuario(Integer id, String estado) {
+        return tareaRepository.findByLoginTarea_IdAndEstado(id,estado);
+    }
+
 }

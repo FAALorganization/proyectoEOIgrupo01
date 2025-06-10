@@ -26,9 +26,12 @@ public class Tarea implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @Column(name="tipo_tarea")
-    private Integer tipoTarea;
+//    @Column(name="tipo_tarea")
+//    private Integer tipoTarea;
 
+    @ManyToOne
+    @JoinColumn(name = "tipo_tareas", referencedColumnName = "id")
+    private TipoTareas tipoTarea;
 
     @Column(name = "fechaInicio")
     private LocalDate fechaInicio;
@@ -38,6 +41,9 @@ public class Tarea implements Serializable {
 
     @Column(name = "fechaEliminada")
     private LocalDate fechaEliminada;
+
+    @Column(name = "fechaLimite")
+    private LocalDate fechaLimite;
 
     @Column(name = "estado", length = 20, nullable = false)
     private String estado = "pendiente"; // Valor por defecto
