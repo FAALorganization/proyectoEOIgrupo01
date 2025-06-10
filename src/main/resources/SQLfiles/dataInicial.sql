@@ -55,14 +55,17 @@ VALUES
     (false,25,'2025-05-16', '2025-05-15',1, 2,null,null),
     (false,25,'2025-05-13', '2025-05-13',1, 2,null,null),
     (true,25,'2025-05-19', '2025-05-19',1, 2,null,null),
-    (false,25,'2025-04-04', '2025-04-04',1, 2,null,'Salud//adfasd'),
+    (false,25,'2025-04-04', '2025-04-04',1, 2,null,null),
+    (false,25,'2025-04-16', '2025-04-14',4, 2,null,null),
     (false,25,'2025-07-27', '2025-07-23',4, 1,null,null),
     (false,25,'2025-07-18', '2025-07-16',4, 1,null,null),
-    (false,25,'2025-05-26', '2025-05-23',4, 2,null,null),
+    (false,25,'2025-05-23', '2025-05-21',4, 2,'tokenuser1.21_05_2025.23_05_2025.0.just.pdf|tokenuser1.21_05_2025.23_05_2025.1.just.pdf','2//Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur rid'),
+    (false,25,'2025-03-13', '2025-03-13',4, 2,'tokenuser1.13_03_2025.0.just.pdf|tokenuser1.13_03_2025.1.just.pdf','4//Soy un maquina'),
     (false,25,'2025-07-17', '2025-07-14',5, 1,null,null),
     (false,25,'2025-08-22', '2025-08-18',5, 1,null,null),
     (false,25,'2025-05-09', '2025-05-07',5, 2,null,null),
     (true,25,'2025-05-14', '2025-05-12',5, 1,null,null);
+
 
 INSERT INTO tipo_tareas (tarea) VALUES
                                     ('Desarrollo'),
@@ -70,7 +73,5 @@ INSERT INTO tipo_tareas (tarea) VALUES
                                     ('Documentación'),
                                     ('Testing'),
                                     ('Revisión de código'),
-                                    ('Reunión')
-
-
+                                    ('Reunión');
 
