@@ -1,0 +1,17 @@
+/*CSS DOCUMENTACION*/
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px; /* Ajuste del tamaño */
+    font-size: 0.85rem; /* Tamaño de la fuente reducido */
+    border-radius: 4px; /* Bordes más pequeños */
+    cursor: pointer;
+    margin-top: 5px;
+    width: 200px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
