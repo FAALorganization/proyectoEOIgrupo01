@@ -3,6 +3,7 @@ package com.grupo01.java6.faal.repositories;
 
 import com.grupo01.java6.faal.dtos.NombreConAusenciasDTO;
 import com.grupo01.java6.faal.dtos.NombreDTO;
+import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.entities.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -58,4 +59,12 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
 """)
     List<Login> findAllWithRoleUsuarioOrVisitante();
 
+    Optional<Login> findByIdDetallesDeUsuario(Detallesdeusuario detallesdeusuario);
+    @Query("""
+    SELECT l 
+    FROM Login l 
+    WHERE l.activo = true
+""")
+    List<Login> findByActivoTrue();
 }
+

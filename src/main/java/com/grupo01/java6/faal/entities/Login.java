@@ -37,6 +37,9 @@ public class Login implements Serializable {
     @Column(name = "last_login_day")
     private LocalDate lastLoginDay;
 
+    @Column(name = "activo")
+    private Boolean activo = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_jefe")
     private Login jefeLogin;
@@ -55,3 +58,4 @@ public class Login implements Serializable {
     @OneToMany(mappedBy = "loginRol", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Roles> roles;
 }
+

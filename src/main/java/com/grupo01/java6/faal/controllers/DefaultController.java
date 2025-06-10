@@ -133,18 +133,13 @@ public class DefaultController {
     {
         return "checkinjefe";}
 
+
+
     @GetMapping("/perfiljefe")
     public String showPerfiljefe()
     {
 
         return "perfiljefe"; // View name
-    }
-
-    @GetMapping("/perfiladmin")
-    public String showPerfiladmin()
-    {
-
-        return "perfiladmin"; // View name
     }
 
     @GetMapping("/perfil")
