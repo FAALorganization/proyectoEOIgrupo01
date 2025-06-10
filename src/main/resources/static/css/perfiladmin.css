@@ -58,3 +58,14 @@
     table-layout: fixed; /* Ajusta el ancho de las columnas */
     word-wrap: break-word; /* Permite que el texto se ajuste dentro de las celdas */
 }
+/* Transición para el contenido */
+.fade-transition {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.fade-transition.show {
+    opacity: 1;
+    visibility: visible;
+}

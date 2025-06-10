@@ -7,6 +7,8 @@ import com.grupo01.java6.faal.services.mappers.DetallesdeusuarioMapper;
 import org.springframework.stereotype.Service;
 import com.grupo01.java6.faal.dtos.NombreDTO;
 
+import java.util.List;
+
 @Service
 public class DetallesdeusuarioService extends AbstractBusinessService<Detallesdeusuario, Integer, NombreDTO, DetallesDeUsuarioRepository, DetallesdeusuarioMapper> {
 
@@ -28,5 +30,9 @@ public class DetallesdeusuarioService extends AbstractBusinessService<Detallesde
     public boolean verificarRolJefe(Integer idUsuario) {
         String rol = detallesdeusuarioRepository.findRolByUsuarioId(idUsuario);
         return "JEFE".equalsIgnoreCase(rol);
+    }
+
+    public List<Detallesdeusuario> obtenerTodosLosUsuarios() {
+        return detallesdeusuarioRepository.findAll();
     }
 }

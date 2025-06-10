@@ -155,13 +155,6 @@ public class DefaultController {
         return "perfiljefe"; // View name
     }
 
-    @GetMapping("/perfiladmin")
-    public String showPerfiladmin()
-    {
-
-        return "perfiladmin"; // View name
-    }
-
     @GetMapping("/perfil")
     public String showPerfil()
     {

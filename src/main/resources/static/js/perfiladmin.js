@@ -1,81 +1,94 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // Variables para modal y botones
+    const gestionModalEl = document.getElementById('gestionModal');
+    if (!gestionModalEl) return;
 
-counter = 0;
-const buttonNav = document.getElementById("header-toggle");
-buttonNav.addEventListener("click", function(){
-    
-    if (counter%2 == 0){
-        document.querySelectorAll(".nav_name").forEach(link =>{
-            link.style.color = "white";
-            link.classList.add("textenter");    
-        })
-        counter += 1;
-    }else {
-        document.querySelectorAll(".nav_name").forEach(link =>{
-            link.style.color = "#252323";
-            link.classList.remove("textenter");   
-        })
-        counter += 1; 
-    }    
-});
-function buscarUser() {
-    // Declare variables
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("myInput"); // Asegúrate de que el id coincide con el del input
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-  
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[1]; // Aquí estamos buscando el texto en la columna de "Nombre"
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
+    const gestionModal = new bootstrap.Modal(gestionModalEl);
+
+    const gestionContent = document.getElementById('gestionContent');
+    const confirmDeleteContent = document.getElementById('confirmDeleteContent');
+
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const closeGestionBtn = document.getElementById('closeGestionBtn');
+
+    const usuarioIdEliminarInput = document.getElementById('usuarioIdEliminar');
+
+    // Abrir modal de gestión completo
+    const openGestionModalBtn = document.getElementById('openGestionModalBtn');
+    if (openGestionModalBtn) {
+        openGestionModalBtn.addEventListener('click', () => {
+            showGestionView();
+            gestionModal.show();
+        });
+    }
+
+    // Mostrar vista de gestión
+    function showGestionView() {
+        toggleView(true);
+        document.getElementById('gestionModalLabel').textContent = 'Gestión de usuarios';
+    }
+
+    // Mostrar vista de confirmación para eliminar usuario
+    function openConfirmDeleteView(usuarioId) {
+        toggleView(false);
+        document.getElementById('gestionModalLabel').textContent = 'Confirmar Eliminación';
+        if (usuarioIdEliminarInput) {
+            usuarioIdEliminarInput.value = usuarioId; // Asigna el ID del usuario correctamente
         }
-      }
-    }
-  }
-
-function closeFirstModal() {
-    const firstModal = document.getElementById('exampleModal');
-    const bootstrapModal = bootstrap.Modal.getInstance(firstModal);
-    if (bootstrapModal) {
-        bootstrapModal.hide(); // Cierra el primer modal
-    } else {
-        console.warn('El primer modal no tiene una instancia activa.');
-    }
-}
-
-function reopenFirstModal() {
-    const secondModal = document.getElementById('confirmDeleteModal');
-    const bootstrapSecondModal = bootstrap.Modal.getInstance(secondModal);
-    if (bootstrapSecondModal) {
-        bootstrapSecondModal.hide(); // Cierra el segundo modal
-    } else {
-        console.warn('El segundo modal no tiene una instancia activa.');
     }
 
-    const firstModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-    firstModal.show(); // Reabre el primer modal
-}
-// subir usuarios mediante csv
-if (window.location.pathname === '/perfiladmin') {
+    // Alternar entre vistas del modal
+    function toggleView(isGestionView) {
+        if (gestionContent) gestionContent.style.display = isGestionView ? 'block' : 'none';
+        if (confirmDeleteContent) confirmDeleteContent.style.display = isGestionView ? 'none' : 'block';
+        if (cancelDeleteBtn) cancelDeleteBtn.style.display = isGestionView ? 'none' : 'inline-block';
+        if (confirmDeleteBtn) confirmDeleteBtn.style.display = isGestionView ? 'none' : 'inline-block';
+        if (closeGestionBtn) closeGestionBtn.style.display = isGestionView ? 'inline-block' : 'none';
+    }
+
+    // Cancelar eliminación, volver a vista gestión
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', () => {
+            showGestionView();
+        });
+    }
+
+    // Función para buscar usuario en la tabla
+    function buscarUser() {
+        const input = document.getElementById("myInput");
+        if (!input) return;
+
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById("myTable");
+        if (!table) return;
+
+        const tr = table.getElementsByTagName("tr");
+        for (let i = 0; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+    }
+    const myInput = document.getElementById("myInput");
+    if (myInput) {
+        myInput.addEventListener('keyup', buscarUser);
+    }
+
+    // Subir CSV
     async function uploadCsv() {
         try {
-            const formData = new FormData();
             const fileInput = document.getElementById('csvFileInput');
-            const files = fileInput.files;
-
-            if (files.length === 0) {
+            if (!fileInput || fileInput.files.length === 0) {
                 alert('Por favor, selecciona al menos un archivo CSV.');
                 return;
             }
 
-            for (let i = 0; i < files.length; i++) {
-                formData.append('archivo', files[i]);
+            const formData = new FormData();
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('archivo', fileInput.files[i]);
             }
 
             const response = await fetch('/upload', {
@@ -84,21 +97,77 @@ if (window.location.pathname === '/perfiladmin') {
             });
 
             if (!response.ok) {
-                throw new Error('Error al subir archivo (status: ' + response.status + ')');
+                throw new Error(`Error al subir archivo (status: ${response.status})`);
             }
 
             const data = await response.text();
-            console.log('Respuesta del servidor:', data);
-            alert('Subida completada: ' + data);
-
-            const modalElement = document.getElementById('exampleModal');
-            const modal = bootstrap.Modal.getInstance(modalElement);
-            modal.hide();
-            document.querySelectorAll('.modal-backdrop').forEach(el =>el.remove());
+            alert(`Subida completada: ${data}`);
+            gestionModal.hide();
         } catch (error) {
             console.error('Error al subir archivo:', error);
-            alert('Error al subir archivo: ' + error.message);
+            alert(`Error al subir archivo: ${error.message}`);
         }
     }
-    document.getElementById('uploadCsvBtn').addEventListener('click', uploadCsv);
+    const uploadCsvBtn = document.getElementById('uploadCsvBtn');
+    if (uploadCsvBtn) {
+        uploadCsvBtn.addEventListener('click', uploadCsv);
+    }
+
+    // Desactivar usuario (Eliminar)
+    async function desactivarUsuario() {
+        if (!usuarioIdEliminarInput || !usuarioIdEliminarInput.value) {
+            alert('No se encontró el ID del usuario.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/usuarios/desactivar/${usuarioIdEliminarInput.value}`, {
+                method: 'PUT'
+            });
+
+            if (response.ok) {
+                alert('Usuario desactivado correctamente.');
+                gestionModal.hide();
+                // Aquí podrías actualizar la tabla o recargar la página
+            } else {
+                alert('Error al desactivar el usuario.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al desactivar el usuario.');
+        }
+    }
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', desactivarUsuario);
+    }
+
+    // Botón cerrar modal
+    if (closeGestionBtn) {
+        closeGestionBtn.addEventListener('click', () => {
+            gestionModal.hide();
+        });
+    }
+
+    // Exponer funciones al contexto global
+    window.openConfirmDeleteView = openConfirmDeleteView;
+});
+function toggleView(isGestionView) {
+    if (gestionContent && confirmDeleteContent) {
+        // Oculta ambas vistas inicialmente
+        gestionContent.classList.remove('show', 'fade-transition');
+        confirmDeleteContent.classList.remove('show', 'fade-transition');
+
+        // Usa un pequeño retraso para aplicar la transición
+        setTimeout(() => {
+            if (isGestionView) {
+                gestionContent.classList.add('fade-transition', 'show');
+            } else {
+                confirmDeleteContent.classList.add('fade-transition', 'show');
+            }
+        }, 10);
+    }
+
+    if (cancelDeleteBtn) cancelDeleteBtn.style.display = isGestionView ? 'none' : 'inline-block';
+    if (confirmDeleteBtn) confirmDeleteBtn.style.display = isGestionView ? 'none' : 'inline-block';
+    if (closeGestionBtn) closeGestionBtn.style.display = isGestionView ? 'inline-block' : 'none';
 }

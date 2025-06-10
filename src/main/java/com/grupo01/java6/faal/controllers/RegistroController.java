@@ -58,6 +58,7 @@ public class RegistroController {
 
                     // Crear Login asociado
                     Login login = new Login();
+                    login.setActivo(true);
                     login.setIdDetallesDeUsuario(detallesdeuser);
                     login.setEmailPrimario(email);
                     login.setToken(generarTokenAleatorio(10)); // Genera password temporal
