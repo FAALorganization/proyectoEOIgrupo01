@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
+<head>
+  <title>Gestión de Proyectos</title>
+  <th:block layout:fragment="styles">
+    <link rel="stylesheet" th:href="@{/css/app.css}"/>
+  </th:block>
+  <link rel="stylesheet" th:href="@{/css/gestionProyectos.css}">
+</head>
+
+<body>
+<section layout:fragment="content" class="p-4">
+  <h1>Gestión de Proyectos</h1>
+
+  <!-- BOTÓN PARA VOLVER A DOCUMENTACIÓN -->
+  <div class="mb-4">
+    <a th:href="@{/documentacion}" class="btn btn-primary">Volver a Gestión de Documentación</a>
+  </div>
+
+  <!-- FORMULARIO: Añadir nuevo proyecto -->
+  <div class="mb-5">
+    <h2>Añadir nuevo proyecto</h2>
+    <form th:action="@{/proyectos/crear}" method="post">
+      <div class="form-group">
+        <label>Nombre del proyecto:</label>
+        <input type="text" name="nombre" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Descripción:</label>
+        <textarea name="descripcion" class="form-control"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Fecha inicio:</label>
+        <input type="date" name="fechaInicio" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Fecha fin:</label>
+        <input type="date" name="fechaFin" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-success mt-2">Guardar Proyecto</button>
+    </form>
+  </div>
+
+  <!-- FORMULARIO: Asignar proyecto a usuario -->
+  <div>
+    <h2>Asignar proyecto a usuarios</h2>
+    <form th:action="@{/proyectos/asignar}" method="post">
+      <div class="form-group">
+        <label>Proyecto:</label>
+        <select name="idProyecto" class="form-control" required>
+          <option th:each="p : ${proyectos}" th:value="${p.id}" th:text="${p.nombre}"></option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Usuario:</label>
+        <select name="idUsuario" class="form-control" required>
+          <option th:each="u : ${usuarios}" th:value="${u.id}" th:text="${u.nombre} + ' - ' + ${u.email}"></option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-2">Asignar Proyecto</button>
+    </form>
+  </div>
+</section>
+</body>
+</html>
