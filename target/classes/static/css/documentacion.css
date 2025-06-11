@@ -1,63 +1,24 @@
-/* Contenedor principal heredado de tareas */
-.task-container {
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-}
-
-/* Título principal */
-.task-title {
-    padding-left: 5px;
-    font-weight: bold;
-    font-size: 1.6rem;
-    margin-bottom: 10px;
+/* Estilo general de la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
     color: #333;
+    margin: 0;
+    padding: 20px;
 }
 
-/* Estilos de secciones de documentación */
-.doc-section {
+/* Contenedor principal */
+.task-container {
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Diferencia visual entre secciones */
-.doc-general {
-    border-left: 6px solid #007bff;
-    background-color: #f8faff;
-}
-
-.doc-personal {
-    border-left: 6px solid #28a745;
-    background-color: #f7fdf7;
-}
-
-.doc-title {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-    font-weight: 600;
-    color: #444;
-}
-
-/* Lista de proyectos */
-.list-group-item {
-    margin-bottom: 10px;
-    border-radius: 8px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-}
-
-/* Input de archivo */
-input[type="file"] {
-    display: block;
-    margin-top: 10px;
-}
-
-/* Botones pequeños */
-.btn-sm {
-    margin-top: 10px;
+/* Títulos */
+h1, h2, h3 {
+    color: #007bff;
+    text-align: center;
 }
