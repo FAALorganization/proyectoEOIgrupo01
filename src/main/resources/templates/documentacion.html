@@ -36,8 +36,8 @@
 <section layout:fragment="content" class="p-4">
     <h1>Documentación</h1>
 
-    <!-- Sección: Proyectos Generales -->
-    <div class="mb-5">
+    <!-- Sección: Crear Proyecto (solo para rol JEFE) -->
+    <div class="mb-5" th:if="${rolUsuario == 'JEFE'}">
         <h2>Proyectos</h2>
         <form th:action="@{/proyectos/crear}" method="post" onsubmit="return validarFechas()">
             <div class="form-group">
@@ -70,33 +70,36 @@
                 <span th:text="'Fecha Inicio: ' + ${proyecto.fechaInicio}"></span><br>
                 <span th:text="'Fecha Fin: ' + ${proyecto.fechaFin}"></span><br>
 
-                <!-- Subir documento -->
-                <form th:action="@{/documentacion/subir}" method="post" enctype="multipart/form-data" class="mt-2">
-                    <input type="hidden" name="idProyecto" th:value="${proyecto.id}" />
-                    <input type="file" name="archivos" multiple required>
-                    <button type="submit" class="btn btn-success btn-sm mt-2">Subir Documentos</button>
-                </form>
+                <!-- Subir documento (solo para rol JEFE) -->
+                <div th:if="${rolUsuario == 'JEFE'}">
+                    <form th:action="@{/documentacion/subir}" method="post" enctype="multipart/form-data" class="mt-2">
+                        <input type="hidden" name="idProyecto" th:value="${proyecto.id}" />
+                        <input type="file" name="archivos" multiple required>
+                        <button type="submit" class="btn btn-success btn-sm mt-2">Subir Documentos</button>
+                    </form>
+                </div>
 
                 <!-- Mostrar documentos asociados -->
                 <ul class="mt-3" th:if="${proyecto.documentos != null}">
                     <li th:each="documento : ${proyecto.documentos}">
                         <span th:text="${documento.nombre}">Nombre documento</span>
 
-                        <!-- Descargar -->
+                        <!-- Descargar (todos pueden hacerlo) -->
                         <a th:href="@{/documentacion/descargar/{idDocumento}(idDocumento=${documento.id})}"
                            class="btn btn-primary btn-sm ms-2">Descargar</a>
 
-                        <!-- Borrar -->
-                        <form th:action="@{/documentacion/borrar}" method="post" class="d-inline">
+                        <!-- Borrar (solo para rol JEFE) -->
+                        <form th:if="${rolUsuario == 'JEFE'}"
+                              th:action="@{/documentacion/borrar}" method="post" class="d-inline">
                             <input type="hidden" name="idDocumento" th:value="${documento.id}" />
                             <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                         </form>
                     </li>
                 </ul>
             </li>
-
         </ul>
     </div>
+
     <div th:if="${proyectosGenerales == null || proyectosGenerales.isEmpty()}">
         <p>No hay proyectos generales disponibles.</p>
     </div>

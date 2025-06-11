@@ -87,7 +87,10 @@ public class LoginService {
         return loginRepository.findById(id).orElse(null);
 
     }
+
+    public boolean tieneRolJefe(Login login) {
+        return login.getRoles().stream()
+                .anyMatch(rol -> rol.getDescripcion().equalsIgnoreCase("JEFE"));
+    }
+
 }
-
-
-
