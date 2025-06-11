@@ -88,7 +88,7 @@ public class TicketingService implements TicketSrvImpl {
 
     @Override
     @Transactional
-    public static TicketingDTO createTicket(TicketingDTO dto, String username) {
+    public  TicketingDTO createTicket(TicketingDTO dto, String username) {
         Ticketing ticket = modelMapper.map(dto, Ticketing.class);
         ticket.setCreatedBy(username);
         return convertToDto(ticketingRepository.save(ticket));

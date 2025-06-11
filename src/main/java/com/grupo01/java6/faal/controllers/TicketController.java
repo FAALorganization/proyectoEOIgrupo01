@@ -1,7 +1,6 @@
 package com.grupo01.java6.faal.controllers;
 
 import com.grupo01.java6.faal.dtos.TicketingDTO;
-import com.grupo01.java6.faal.services.TicketingService;
 import com.grupo01.java6.faal.services.impl.TicketSrvImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,7 @@ public class TicketController {
     // crear el ticket
     @PostMapping
     public ResponseEntity<TicketingDTO> create(@RequestBody TicketingDTO dto, @RequestParam String username) {
-        TicketingDTO created = TicketingService.createTicket(dto, username);
+        TicketingDTO created = ticketingService.createTicket(dto, username);
         return ResponseEntity.ok(created);
     }
     @GetMapping("/{id}")

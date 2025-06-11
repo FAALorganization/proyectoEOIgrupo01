@@ -143,6 +143,7 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout","/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                // ading roles type
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/TicketAdmin/**").hasRole("ADMIN")
                         .requestMatchers("/ticket/create").hasAnyRole("USER", "ADMIN")
