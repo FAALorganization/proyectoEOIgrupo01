@@ -74,3 +74,4 @@ INSERT INTO tipo_tareas (tarea) VALUES
                                     ('Testing'),
                                     ('Revisión de código'),
                                     ('Reunión');
+
