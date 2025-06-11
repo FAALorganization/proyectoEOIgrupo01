@@ -5,16 +5,13 @@ import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.services.DetallesdeusuarioService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/perfil")
 public class PerfilController {
 
     private final DetallesdeusuarioService detallesdeusuarioService;
@@ -23,88 +20,35 @@ public class PerfilController {
         this.detallesdeusuarioService = detallesdeusuarioService;
     }
 
-    @PostMapping("/perfil/guardar")
+    @PostMapping("/guardar")
     public String guardarPerfil(@ModelAttribute Detallesdeusuario detallesdeusuario) {
+        // Obtener el usuario autenticado
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        // Obtener el email o identificador del usuario desde UserDetailsImpl
         String emailPrimario = userDetails.getUsername();
 
+        // Buscar los detalles existentes del usuario por email
         Detallesdeusuario detallesExistentes = detallesdeusuarioService.findByEmail(emailPrimario);
 
         if (detallesExistentes != null) {
-            if (detallesdeusuario.getNombre() != null && !detallesdeusuario.getNombre().isBlank()) {
-                detallesExistentes.setNombre(detallesdeusuario.getNombre());
-            }
-            if (detallesdeusuario.getApellidos() != null && !detallesdeusuario.getApellidos().isBlank()) {
-                detallesExistentes.setApellidos(detallesdeusuario.getApellidos());
-            }
-            if (detallesdeusuario.getTlf() != null && !detallesdeusuario.getTlf().isBlank()) {
-                detallesExistentes.setTlf(detallesdeusuario.getTlf());
-            }
-            if (detallesdeusuario.getTlf2() != null && !detallesdeusuario.getTlf2().isBlank()) {
-                detallesExistentes.setTlf2(detallesdeusuario.getTlf2());
-            }
-            if (detallesdeusuario.getDireccion() != null && !detallesdeusuario.getDireccion().isBlank()) {
-                detallesExistentes.setDireccion(detallesdeusuario.getDireccion());
-            }
-            if (detallesdeusuario.getCodigoPostal() != null && detallesdeusuario.getCodigoPostal() != 0) {
-                detallesExistentes.setCodigoPostal(detallesdeusuario.getCodigoPostal());
-            }
-            if (detallesdeusuario.getEmailPersonal() != null && !detallesdeusuario.getEmailPersonal().isBlank()) {
-                detallesExistentes.setEmailPersonal(detallesdeusuario.getEmailPersonal());
-            }
-            if (detallesdeusuario.getContactoEmergencia() != null && !detallesdeusuario.getContactoEmergencia().isBlank()) {
-                detallesExistentes.setContactoEmergencia(detallesdeusuario.getContactoEmergencia());
-            }
-            if (detallesdeusuario.getPais() != null && !detallesdeusuario.getPais().isBlank()) {
-                detallesExistentes.setPais(detallesdeusuario.getPais());
-            }
-            if (detallesdeusuario.getPoblacion() != null && !detallesdeusuario.getPoblacion().isBlank()) {
-                detallesExistentes.setPoblacion(detallesdeusuario.getPoblacion());
-            }
+            // Actualizar los detalles existentes
+            detallesExistentes.setNombre(detallesdeusuario.getNombre());
+            detallesExistentes.setApellidos(detallesdeusuario.getApellidos());
+            detallesExistentes.setTlf(detallesdeusuario.getTlf());
+            detallesExistentes.setTlf2(detallesdeusuario.getTlf2());
+            detallesExistentes.setDireccion(detallesdeusuario.getDireccion());
+            detallesExistentes.setCodigoPostal(detallesdeusuario.getCodigoPostal());
+            detallesExistentes.setEmailPersonal(detallesdeusuario.getEmailPersonal());
+            detallesExistentes.setContactoEmergencia(detallesdeusuario.getContactoEmergencia());
+            detallesExistentes.setPais(detallesdeusuario.getPais());
+            detallesExistentes.setPoblacion(detallesdeusuario.getPoblacion());
 
+            // Guardar los cambios
             detallesdeusuarioService.guardar(detallesExistentes);
         }
 
-        return "redirect:/perfil";
-    }
-
-    @GetMapping("/perfil")
-    public String perfilAdmin(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-
-        String emailPrimario;
-
-        if (principal instanceof UserDetailsImpl) {
-            emailPrimario = ((UserDetailsImpl) principal).getUsername();
-        } else if (principal instanceof UserDetails) {
-            emailPrimario = ((UserDetails) principal).getUsername();
-        } else {
-            emailPrimario = principal.toString();
-        }
-
-        Detallesdeusuario detalles = detallesdeusuarioService.findByEmail(emailPrimario);
-        if (detalles == null) {
-            detalles = new Detallesdeusuario();
-            detalles.setEmailPersonal(emailPrimario);
-        }
-
-        List<Detallesdeusuario> usuarios = detallesdeusuarioService.obtenerUsuariosActivos();
-
-        // Verificar si el usuario tiene el rol de administrador
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-
-        // Verificar si el usuario tiene el rol de jefe
-        boolean isJefe = authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_JEFE"));
-
-        model.addAttribute("detallesdeusuario", detalles);
-        model.addAttribute("usuarios", usuarios);
-        model.addAttribute("isAdmin", isAdmin); // Añadir atributo al modelo
-        model.addAttribute("isJefe", isJefe);   // Añadir atributo al modelo
-
-        return "perfil";
+        return "redirect:/perfiladmin"; // Redirige al perfil después de guardar
     }
 }
