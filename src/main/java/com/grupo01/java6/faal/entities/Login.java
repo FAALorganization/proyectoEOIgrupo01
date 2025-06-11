@@ -31,9 +31,6 @@ public class Login implements Serializable {
     @Column(name = "token", length = 50)
     private String token;
 
-    @Column(name = "img_avatar", length = 50)
-    private String imgAvatar;
-
     @Column(name = "last_login_day")
     private LocalDate lastLoginDay;
 
