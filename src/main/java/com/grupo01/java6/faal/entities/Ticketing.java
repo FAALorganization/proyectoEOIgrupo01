@@ -49,5 +49,7 @@ public class Ticketing implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_prior")
     private Prioridades idPrior;
-
+// username add
+    public void setCreatedBy(String username) {
+    }
 }

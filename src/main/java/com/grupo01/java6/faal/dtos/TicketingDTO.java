@@ -19,4 +19,6 @@ public class TicketingDTO {
     private LocalDate fechaFin;
     private Boolean aprobado;
     private String prioridad;
+
+
 }

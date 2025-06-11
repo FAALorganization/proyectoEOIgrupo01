@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TicketingRepository extends JpaRepository<Ticketing, Integer> {
   // is it approved or not
 
-  // Details of the ticket on a singel query since i used fetch lazy it s more rapido for the memoire
+  // Details of the ticket on a single query since  for the memoire
   @Query("""
     SELECT new com.grupo01.java6.faal.dtos.TicketingDTO(
         t.id,
@@ -27,7 +28,17 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Integer> {
     )
     FROM Ticketing t
     JOIN t.idPrior p
+    WHERE (:aprobado IS NULL OR t.aprobado = :aprobado)
+    
 """)
   // Efficient only the approved one  Builds a database query with LIMIT and OFFSET (or equivalent SQL syntax) using the page size and number.
-  Page<TicketingDTO> findAllByAprobado(Boolean aprobado, Pageable pageable);
+  Page<Ticketing> findAllByAprobado(Boolean aprobado, Pageable pageable);
+
+  List<Ticketing> findByAprobado(Boolean aprobado);
+
+  Page<Ticketing> findFilteredTickets(Boolean aprobado, String search, Pageable pageable);
+
+  Optional<Ticketing> findActiveById(Integer id);
+
+  List<Ticketing> id(Integer id);
 }

@@ -143,6 +143,10 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout","/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/TicketAdmin/**").hasRole("ADMIN")
+                        .requestMatchers("/ticket/create").hasAnyRole("USER", "ADMIN")
+                )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .usernameParameter("correo")     // nombre del campo usuario en el formulario
@@ -160,6 +164,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
 //        @Bean
 //        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
