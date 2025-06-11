@@ -142,13 +142,6 @@ public class DefaultController {
         return "perfiljefe"; // View name
     }
 
-    @GetMapping("/perfil")
-    public String showPerfil()
-    {
-
-        return "perfil"; // View name
-    }
-
     @GetMapping("/chat")
     public String showChat()
     {

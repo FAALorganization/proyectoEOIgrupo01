@@ -77,7 +77,18 @@ document.addEventListener('DOMContentLoaded', () => {
         myInput.addEventListener('keyup', buscarUser);
     }
 
-    // Subir CSV
+    // Mostrar tokens generados en el contenedor
+    function mostrarTokensEnGestion(tokens) {
+        const tokensGeneratedContent = document.getElementById('tokensGeneratedContent');
+        const tokensGenerated = document.getElementById('tokensGenerated');
+
+        if (tokensGeneratedContent && tokensGenerated) {
+            tokensGenerated.textContent = tokens; // Muestra los tokens en el contenedor
+            tokensGeneratedContent.style.display = 'block'; // Muestra el contenedor
+        }
+    }
+
+// Modificar la función de subida de CSV
     async function uploadCsv() {
         try {
             const fileInput = document.getElementById('csvFileInput');
@@ -101,8 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.text();
-            alert(`Subida completada: ${data}`);
-            gestionModal.hide();
+            mostrarTokensEnGestion(data); // Llama a la función para mostrar los tokens
         } catch (error) {
             console.error('Error al subir archivo:', error);
             alert(`Error al subir archivo: ${error.message}`);
@@ -171,3 +181,4 @@ function toggleView(isGestionView) {
     if (confirmDeleteBtn) confirmDeleteBtn.style.display = isGestionView ? 'none' : 'inline-block';
     if (closeGestionBtn) closeGestionBtn.style.display = isGestionView ? 'inline-block' : 'none';
 }
+
