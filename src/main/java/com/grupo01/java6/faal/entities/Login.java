@@ -54,4 +54,8 @@ public class Login implements Serializable {
 
     @OneToMany(mappedBy = "loginRol", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Roles> roles;
+
+    public String getContrasena() {
+        return password;
+    }
 }

@@ -9,8 +9,7 @@ import java.util.Optional;
 
 public interface PrioridadesRepository extends JpaRepository<Prioridades, Integer> {
 
-     List<Prioridades> findByNombre(String nombre);
-    List<Prioridades> findById();
+    Optional<Prioridades> findById(Integer id);
 
     Optional<Object> findByPrioridadesEnum(String prioridad);
 }

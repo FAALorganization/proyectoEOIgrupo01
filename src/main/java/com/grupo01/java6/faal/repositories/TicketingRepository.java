@@ -1,11 +1,11 @@
 package com.grupo01.java6.faal.repositories;
 
-import com.grupo01.java6.faal.dtos.TicketingDTO;
 import com.grupo01.java6.faal.entities.Ticketing;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +36,15 @@ public interface TicketingRepository extends JpaRepository<Ticketing, Integer> {
 
   List<Ticketing> findByAprobado(Boolean aprobado);
 
-  Page<Ticketing> findFilteredTickets(Boolean aprobado, String search, Pageable pageable);
+  @Query("""
+        SELECT t FROM Ticketing t
+        WHERE (:aprobado IS NULL OR t.aprobado = :aprobado)
+        AND (:search IS NULL OR LOWER(t.descripcion) LIKE LOWER(CONCAT('%', :search, '%')))
+        AND t.eliminacion IS NULL
+        """)
+  Page<Ticketing> findFilteredTickets(@Param("aprobado") Boolean aprobado,
+                                      @Param("search") String search,
+                                      Pageable pageable);
 
   Optional<Ticketing> findActiveById(Integer id);
 

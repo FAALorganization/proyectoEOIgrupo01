@@ -34,6 +34,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+
 public class SecurityConfig {
 
 
@@ -69,6 +70,7 @@ public class SecurityConfig {
      *
      * @Author No se especificó autor.
      */
+
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        String name = environment.getProperty("spring.security.user.name", "user");
@@ -140,19 +142,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout","/css/**", "/js/**", "/images/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                // ading roles type
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/TicketAdmin/**").hasRole("ADMIN")
-                        .requestMatchers("/ticket/create").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/TicketAdmin/**").hasRole("Admin")
+                        .requestMatchers("/ticket/create").hasAnyRole("Usuario", "Admin", "Visitante")
+                        .anyRequest().authenticated()  // siempre al final
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .usernameParameter("correo")     // nombre del campo usuario en el formulario
-                        .passwordParameter("contrasena")// Tu página de login personalizada
-                        .defaultSuccessUrl("/home", true)  // A dónde ir después de login correcto
+                        .usernameParameter("correo")
+                        .passwordParameter("contrasena")
+                        .defaultSuccessUrl("/home", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -165,6 +164,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
 
 //        @Bean

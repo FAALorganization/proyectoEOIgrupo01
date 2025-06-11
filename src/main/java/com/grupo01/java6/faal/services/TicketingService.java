@@ -1,8 +1,10 @@
 package com.grupo01.java6.faal.services;
 
 import com.grupo01.java6.faal.dtos.TicketingDTO;
+import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Prioridades;
 import com.grupo01.java6.faal.entities.Ticketing;
+import com.grupo01.java6.faal.repositories.LoginRepository;
 import com.grupo01.java6.faal.repositories.PrioridadesRepository;
 import com.grupo01.java6.faal.repositories.TicketingRepository;
 import com.grupo01.java6.faal.services.impl.TicketSrvImpl;
@@ -17,16 +19,18 @@ import java.util.List;
 
 @Service
 public class TicketingService implements TicketSrvImpl {
-
+    private final LoginRepository loginRepository; ;
     private final TicketingRepository ticketingRepository;
     private final PrioridadesRepository prioridadesRepository;
     private final ModelMapper modelMapper;
-
+// constructor 1
     public TicketingService(TicketingRepository ticketingRepository,
                             PrioridadesRepository prioridadesRepository,
+                            LoginRepository loginRepository,
                             ModelMapper modelMapper) {
         this.ticketingRepository = ticketingRepository;
         this.prioridadesRepository = prioridadesRepository;
+        this.loginRepository = loginRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -36,7 +40,7 @@ public class TicketingService implements TicketSrvImpl {
         if (dto.getPrioridad() == null) {
             throw new ResourceNotFoundException("Prioridad no especificada");
         }
-
+// no es un enum por tema de preferncies si es un enum you can add .name () metohd
         Prioridades prioridad = (Prioridades) prioridadesRepository.findByPrioridadesEnum(dto.getPrioridad())
                 .orElseThrow(() -> new ResourceNotFoundException("Prioridad no encontrada"));
 
@@ -46,7 +50,7 @@ public class TicketingService implements TicketSrvImpl {
         ticket.setAprobado(false);
         ticket.setModificacion(null);
         ticket.setEliminacion(null);
-
+        ticket.setCreatedBy(null);
         return convertToDto(ticketingRepository.save(ticket));
     }
 
@@ -55,7 +59,7 @@ public class TicketingService implements TicketSrvImpl {
     public TicketingDTO findById(Integer id) {
         return ticketingRepository.findActiveById(id)
                 .map(this::convertToDto)
-                .orElseThrow(() -> new ResourceNotFoundException( "Ticket no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado"));
     }
 
     @Override
@@ -88,25 +92,31 @@ public class TicketingService implements TicketSrvImpl {
 
     @Override
     @Transactional
-    public  TicketingDTO createTicket(TicketingDTO dto, String username) {
+    public TicketingDTO createTicket(TicketingDTO dto, Login usuario) {
         Ticketing ticket = modelMapper.map(dto, Ticketing.class);
-        ticket.setCreatedBy(username);
+        ticket.setCreatedBy(usuario);
         return convertToDto(ticketingRepository.save(ticket));
     }
 
     @Override
     @Transactional
     public TicketingDTO updateTicket(Integer id, TicketingDTO ticketDTO){
-        ticketDTO.setId(id.intValue());
+        ticketDTO.setId(id);
         return update(ticketDTO);
     }
 
-    @Override
+
+
     @Transactional
-    public void approveTicket(Integer id) {
+    public void approveTicket(Integer id, String email) {
         Ticketing ticket = ticketingRepository.findActiveById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado"));
+
+        Login aprobador = loginRepository.getLoginByEmailPrimario(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario aprobador no encontrado"));
+
         ticket.setAprobado(true);
+        ticket.setUsuarioAprobador(aprobador);
         ticket.setModificacion(LocalDate.now());
         ticketingRepository.save(ticket);
     }
@@ -141,6 +151,7 @@ public class TicketingService implements TicketSrvImpl {
         }
         return dto;
     }
+
     static class ResourceNotFoundException extends RuntimeException {
         public ResourceNotFoundException(String message) {
             super(message);
