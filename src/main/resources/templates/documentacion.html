@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<section layout:fragment="content" class="documentacion-container p-4">
+<div layout:fragment="content" class="documentacion-container p-4">
     <h1 class="mb-4">Gestión de Documentación</h1>
 
     <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
@@ -58,12 +58,13 @@
 
                         <!-- Botón subir documentos -->
                         <div th:if="${rolUsuario == 'JEFE'}" class="mt-2">
-                            <button class="btn btn-secondary btn-sm"
+                            <button class="btn btn-secondary btn-sm aus-btn-justificar"
                                     type="button"
                                     th:onclick="|abrirModal('${proyecto.id}')|">
                                 Subir Documentos
                             </button>
                         </div>
+
 
                         <!-- Lista de documentos -->
                         <ul class="list-group list-group-flush mt-3" th:if="${proyecto.documentos != null}">
@@ -89,7 +90,8 @@
     <div th:if="${proyectosGenerales == null || proyectosGenerales.isEmpty()}">
         <p class="text-muted">No hay proyectos generales disponibles.</p>
     </div>
-</section>
+    <div th:replace="fragments/modal-justificacion :: modal-justificacion"></div>
+</div>
 
 <!-- Modal de subida -->
 <div id="modalSubida" class="modal">
@@ -104,7 +106,8 @@
     </div>
 </div>
 
-<script th:src="@{/js/documentacion.js}"></script>
-
+<th:block layout:fragment="scripts">
+    <script th:src="@{/js/documentacion.js}"></script>
+</th:block>
 </body>
 </html>

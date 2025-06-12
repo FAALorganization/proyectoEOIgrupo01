@@ -191,6 +191,15 @@ body {
     padding: 2rem 2.5rem;
     z-index: 1050;
     animation: modalShow 0.3s ease forwards;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-doc form {
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 /* Reutilizamos animación */
@@ -212,6 +221,7 @@ body {
     color: #333;
     margin-bottom: 1.2rem;
     text-align: center;
+    flex-shrink: 0; /* evita que se encoja */
 }
 
 /* Botones modal */
@@ -298,3 +308,20 @@ body {
     font-size: 1rem;
     padding: 0.4rem 0.8rem;
 }
+
+#modalSubida {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    z-index: 1040;
+
+    display: flex; /* Se activará por JS */
+    justify-content: center;
+    align-items: center;
+}
+

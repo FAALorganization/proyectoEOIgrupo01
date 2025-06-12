@@ -18,11 +18,6 @@ function validarFechas() {
     return true;
 }
 
-function abrirModal(idProyecto) {
-    document.getElementById('modalProyectoId').value = idProyecto;
-    document.getElementById('modalSubida').style.display = 'flex';  // mejor usar flex para centrar modal
-}
-
 function cerrarModal() {
     document.getElementById('modalSubida').style.display = 'none';
 }
@@ -34,3 +29,58 @@ window.onclick = function(event) {
         cerrarModal();
     }
 }
+
+//modal para subir documentos
+function abrirModal(){
+    const modalJustificacionEl = document.getElementById('aus-modal-justificacion');
+    const ausModalJustificacion = modalJustificacionEl ? new bootstrap.Modal(modalJustificacionEl) : null;
+    const botones = document.querySelectorAll('.aus-btn-justificar');
+    console.log(modalJustificacionEl, ausModalJustificacion, botones);
+    console.log("IGUALDAD: " + (botones && ausModalIncidencias && ausModalJustificacion));
+
+
+    if (botones && ausModalIncidencias && ausModalJustificacion) {
+        botones.forEach(btn => {
+            btn.addEventListener('click', () => {
+                console.log("NO FUNCIONA");
+                ausModalIncidencias.hide();
+                btnIncidencias.focus();
+                ausModalJustificacion.show();
+            });
+        });
+    }
+
+
+    const btnVolver = document.getElementById('aus-btn-volver');
+    if (btnVolver && ausModalIncidencias && ausModalJustificacion) {
+        btnVolver.addEventListener('click', () => {
+            ausModalJustificacion.hide();
+            btnIncidencias.focus();
+            ausModalIncidencias.show();
+        });
+    }
+
+    const formJustificacion = document.getElementById('aus-form-justificacion');
+    if (formJustificacion && ausModalJustificacion) {
+        formJustificacion.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const asunto = document.getElementById('aus-asunto')?.value.trim();
+            const descripcion = document.getElementById('aus-descripcion')?.value.trim();
+            const archivos = document.getElementById('aus-archivos')?.files;
+
+            if (!asunto || !descripcion) {
+                alert("Por favor completa asunto y descripción.");
+                return;
+            }
+
+            ausModalJustificacion.hide();
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        abrirModal();
+    });
+}
+
+alert ("El modal de justificación se ha abierto correctamente. Puedes proceder a completar el formulario.");
