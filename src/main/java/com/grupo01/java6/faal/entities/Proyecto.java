@@ -32,4 +32,7 @@ public class Proyecto implements java.io.Serializable {
 
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Documento> documentos;  // <-- Importante para obtener documentos relacionados
+
+    @ManyToMany
+    private List<Login> usuarios;
 }

@@ -1,6 +1,15 @@
-/* documetacion.css */
+/* === 1. Layout general === */
+body {
+    max-width: 900px;
+    margin: auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.1rem;
+    color: #222;
+}
 
-/* Contenedor general para las secciones de documentación */
+/* === 2. Contenedores === */
 .doc-container {
     max-width: 800px;
     margin: 1.5rem auto;
@@ -11,27 +20,28 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* Títulos de secciones */
+/* === 3. Títulos y textos === */
 .doc-title {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 700;
     margin-bottom: 1rem;
     color: #333;
 }
 
-/* Detalles de la documentación */
 .doc-details strong {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     color: #222;
 }
 
 .doc-details span {
     font-size: 1rem;
     color: #555;
-    line-height: 1.3;
+    line-height: 1.4;
+    display: block;
+    margin-top: 0.2rem;
 }
 
-/* Lista de documentos */
+/* === 4. Lista de documentos === */
 .doc-list-item {
     padding: 1rem 1.25rem;
     font-size: 1rem;
@@ -40,13 +50,19 @@
     background-color: #fafafa;
     border: 1px solid #ddd;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-/* Botones de acción */
+.descripcion-doc {
+    white-space: normal;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+/* === 5. Botones === */
 .btn-doc {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     padding: 0.6rem 1.2rem;
     border-radius: 0.4rem;
     cursor: pointer;
@@ -57,18 +73,14 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
+    text-decoration: none;
+    justify-content: center;
 }
 
 .btn-doc:hover {
     background-color: #0056b3;
 }
 
-.btn-doc.btn-sm {
-    font-size: 1rem;
-    padding: 0.35rem 0.75rem;
-}
-
-/* Botón eliminar en rojo */
 .btn-doc.eliminar {
     background-color: #dc3545;
 }
@@ -77,7 +89,6 @@
     background-color: #a71d2a;
 }
 
-/* Botón restaurar en amarillo */
 .btn-doc.restaurar {
     background-color: #ffc107;
     color: #222;
@@ -87,9 +98,9 @@
     background-color: #d39e00;
 }
 
-/* Formulario y campos */
+/* === 6. Formularios === */
 form label {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     color: #222;
     display: block;
@@ -99,7 +110,7 @@ form label {
 input.doc-form-control,
 textarea.doc-form-control,
 select.doc-form-select {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     padding: 0.5rem 0.75rem;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -111,131 +122,69 @@ select.doc-form-select {
     transition: border-color 0.3s ease;
 }
 
-input.doc-form-control:focus,
-textarea.doc-form-control:focus,
-select.doc-form-select:focus {
+input:focus,
+textarea:focus,
+select:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0,123,255,0.5);
 }
 
-/* Botón para subir documento */
-.mb-3.text-center a.btn-doc {
-    font-size: 1.25rem;
-    padding: 0.75rem 1.5rem;
+/* === 7. Acciones === */
+.doc-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
-/* Espaciado general */
-.mb-3 {
-    margin-bottom: 1rem !important;
+.doc-actions form {
+    margin-bottom: 0;
 }
 
-.text-center {
-    text-align: center !important;
-}
-
-/* Card para formularios */
-.card-doc {
-    max-width: 600px;
-    margin: 1.5rem auto;
-    padding: 2rem;
-    border-radius: 8px;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* Alertas */
-.alert {
-    max-width: 600px;
-    margin: 1rem auto;
-    font-size: 1.1rem;
-}
-
-/* Iconos */
-.btn-doc i {
-    font-size: 1.2rem;
-}
-
-/* Body y contenedor general */
-body.container,
-body {
-    max-width: 900px;
-    margin: auto;
-    padding: 1rem;
-    background-color: #f9f9f9;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.1rem;
-    color: #222;
-}
-
-/* Modal semitransparente */
-.modal-backdrop {
+/* === 8. Modales === */
+.modal {
+    display: none;
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(3px);
-    z-index: 1040;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Contenedor modal */
+.modal.show {
+    display: flex;
+}
+
 .modal-doc {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 500px;
-    width: 90%;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     padding: 2rem 2.5rem;
-    z-index: 1050;
-    animation: modalShow 0.3s ease forwards;
+    width: 90%;
+    max-width: 500px;
     max-height: 90vh;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    position: relative;
+    animation: modalShow 0.3s ease forwards;
 }
 
-.modal-doc form {
-    flex-grow: 1;
-    overflow-y: auto;
-}
-
-/* Reutilizamos animación */
-@keyframes modalShow {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -55%) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
-/* Título modal */
 .modal-doc h2 {
     font-size: 1.6rem;
     font-weight: 700;
     color: #333;
     margin-bottom: 1.2rem;
     text-align: center;
-    flex-shrink: 0; /* evita que se encoja */
 }
 
-/* Botones modal */
-.modal-doc .btn-doc {
-    width: 100%;
-    font-size: 1.15rem;
-    padding: 0.65rem 0;
-    border-radius: 0.5rem;
-    margin-top: 1rem;
-    display: block;
-    text-align: center;
-}
-
-/* Botón cerrar modal */
 .modal-doc .close-btn {
     position: absolute;
     top: 0.8rem;
@@ -253,75 +202,56 @@ body {
     color: #007bff;
 }
 
-/* Inputs y selects dentro del modal */
-.modal-doc input.doc-form-control,
-.modal-doc textarea.doc-form-control,
-.modal-doc select.doc-form-select {
-    font-size: 1.1rem;
-    padding: 0.6rem 0.9rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    transition: border-color 0.3s ease;
+@keyframes modalShow {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
-.modal-doc input.doc-form-control:focus,
-.modal-doc textarea.doc-form-control:focus,
-.modal-doc select.doc-form-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
-    outline: none;
-}
-
-/* Descripción de documento */
-.descripcion-doc {
-    white-space: normal;
-    overflow-wrap: break-word;
-    margin: 0;
-    max-width: 100%;
-    width: 100%;
-}
-
-/* Contenedor acciones */
-.doc-actions {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-/* Ajustamos para que cada lista-item con acciones sea columna flexible */
-.doc-list-item.d-flex.flex-column {
-    align-items: flex-start;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Botones pequeños con espacio entre ellos */
-.doc-actions form {
-    margin-bottom: 0;
-}
-
-/* Ajustes finos para botones pequeños */
-.doc-actions .btn-doc {
+/* === 9. Buscador de proyectos === */
+#buscador-proyectos {
+    max-width: 400px;
+    margin: 1rem auto 1.5rem;
+    display: block;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
     font-size: 1rem;
-    padding: 0.4rem 0.8rem;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
-#modalSubida {
-    display: none; /* Oculto por defecto */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(3px);
-    z-index: 1040;
-
-    display: flex; /* Se activará por JS */
-    justify-content: center;
-    align-items: center;
+/* === 10. Utilidades === */
+.text-center {
+    text-align: center !important;
 }
 
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.alert {
+    max-width: 600px;
+    margin: 1rem auto;
+    font-size: 1.05rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.25rem;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}

@@ -1,10 +1,12 @@
 package com.grupo01.java6.faal.controllers;
 
+import com.grupo01.java6.faal.dtos.ProyectoDTO;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Proyecto;
 import com.grupo01.java6.faal.repositories.ProyectoRepository;
 import com.grupo01.java6.faal.services.DocumentoService;
 import com.grupo01.java6.faal.services.LoginService;
+import com.grupo01.java6.faal.services.ProyectoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -21,19 +23,29 @@ import java.util.List;
 public class ProyectoController {
 
     private final ProyectoRepository proyectoRepository;
+    private final ProyectoService proyectoService;
     private final DocumentoService documentoService;
     private final LoginService loginService;
 
     @GetMapping("/documentacion")
-    public String mostrarDocumentacion(Model model, Principal principal) {
-        List<Proyecto> proyectosGenerales = documentoService.obtenerProyectosConDocumentos();
-        model.addAttribute("proyectosGenerales", proyectosGenerales);
+    public String mostrarDocumentacion(@RequestParam(required = false) String nombreProyecto,
+                                       Model model, Principal principal) {
 
-        if (principal != null) {
-            Login usuario = loginService.getUserByEmail(principal.getName());
-            boolean esJefe = loginService.tieneRolJefe(usuario);
-            model.addAttribute("rolUsuario", esJefe ? "JEFE" : "NO_JEFE");
+        List<ProyectoDTO> proyectosDTO;
+        if (nombreProyecto != null && !nombreProyecto.isEmpty()) {
+            proyectosDTO = proyectoService.buscarProyectosDTOporNombre(nombreProyecto);
+        } else {
+            proyectosDTO = proyectoService.obtenerProyectosDTO();
         }
+
+        model.addAttribute("proyectos", proyectosDTO);
+
+        Login usuarioActual = loginService.getUserByEmail(principal.getName());
+        model.addAttribute("usuario", usuarioActual);
+
+        boolean esJefe = usuarioActual.getRoles().stream()
+                .anyMatch(r -> r.getNombre().trim().equalsIgnoreCase("Jefe"));
+        model.addAttribute("esJefe", esJefe);
 
         return "documentacion";
     }
