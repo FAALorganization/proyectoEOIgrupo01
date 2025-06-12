@@ -126,7 +126,7 @@ public class DefaultController {
     @GetMapping("/checkin")
     public String showCheckin()
     {
-        return "checkin"; // View name
+         return "checkin"; // View name
     }
     @GetMapping("/checkinjefe")
     public String showCheckinjefe()
@@ -134,12 +134,28 @@ public class DefaultController {
         return "checkinjefe";}
 
 
+
+    @GetMapping("/perfiljefe")
+    public String showPerfiljefe()
+    {
+
+        return "perfiljefe"; // View name
+    }
+
+    @GetMapping("/perfil")
+    public String showPerfil()
+    {
+
+        return "perfil"; // View name
+    }
+
 //    @GetMapping("/chat")
 //    public String showChat()
 //    {
 //
 //        return "chat"; // View name
 //    }
+
 
     @GetMapping("/home")
     public String showHome()
