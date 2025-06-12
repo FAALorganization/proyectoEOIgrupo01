@@ -14,7 +14,7 @@
 <body>
 <div layout:fragment="content" class="content-container">
     <!-- botón para añadir tareas (Jefe) -->
-    <div class="mb-3 text-center">
+    <div class="mb-3 text-center" th:if="${esJefe}">
         <a th:href="@{/tareas/jefe/asignar}" class="btn-gestion">
             <i class="bi bi-arrow-right-circle"></i> Ir a Añadir Tarea
         </a>

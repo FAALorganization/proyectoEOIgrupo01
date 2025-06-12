@@ -36,6 +36,9 @@ public class TareaController {
         Login usuarioActual = obtainUser();
         model.addAttribute("usuarioActual", usuarioActual);
 
+        boolean esJefe = tieneRolJefe(usuarioActual);
+        model.addAttribute("esJefe", esJefe);
+
         Integer idLogin = usuarioActual.getId();
 
         model.addAttribute("pendientes", tareaService.obtenerPendientesPorUsuario(idLogin));
@@ -48,6 +51,7 @@ public class TareaController {
 
         return "tareas";
     }
+
 
     private Login obtainUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -94,4 +98,11 @@ public class TareaController {
         tareaService.eliminarDefinitivamente(id);
         return "redirect:/tareas";
     }
+
+    private boolean tieneRolJefe(Login usuario) {
+        if (usuario.getRoles() == null) return false;
+        return usuario.getRoles().stream()
+                .anyMatch(rol -> "JEFE".equalsIgnoreCase(rol.getNombre())); // Asumo que Roles tiene un getNombre()
+    }
+
 }
