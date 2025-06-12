@@ -1,5 +1,6 @@
 package com.grupo01.java6.faal.services;
 
+import com.grupo01.java6.faal.dtos.Mensaje2DTO;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.repositories.MensajeRepository;
@@ -59,6 +60,12 @@ public class MensajeService {
         }
 
         return new ArrayList<>(ultimos.values());
+    }
+
+    public List<Mensaje2DTO> obtenerMensajesPrivadosEntreUsuariosUltimoMes(Login usuarioA, Login usuarioB) {
+        LocalDateTime haceUnMes = LocalDateTime.now().minusMonths(1);
+        // Devuelve todos los mensajes entre usuarioA y usuarioB en el último mes, ordenados por fecha
+        return mensajeRepository.findMensajesPrivadosEntreUsuariosDesde(usuarioA.getId(), usuarioB.getId(), haceUnMes);
     }
 
 }

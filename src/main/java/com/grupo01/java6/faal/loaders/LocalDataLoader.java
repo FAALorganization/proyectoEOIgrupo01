@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -39,6 +40,8 @@ public class LocalDataLoader {
     private final RolesRepository rolesRepository;
     private final TiposAusenciasRepository tiposAusenciasRepository;
     private final AusenciasRepository ausenciaRepository;
+    private final ChatAbiertoRepository chatAbiertoRepository;
+    private final MensajeRepository mensajeRepository;
 
     /**
      * Constructor de la clase {@code LocalDataLoader}.
@@ -53,7 +56,7 @@ public class LocalDataLoader {
      *                                Es utilizado para gestionar datos de la entidad hija y su relación con
      *                                la entidad padre.
      */
-    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository) {
+    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
         this.repository = repository;
         this.entidadHijaRepository = entidadHijaRepository;
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
@@ -61,6 +64,8 @@ public class LocalDataLoader {
         this.rolesRepository = rolesRepository;
         this.tiposAusenciasRepository = tiposAusenciasRepository;
         this.ausenciaRepository = ausenciaRepository;
+        this.chatAbiertoRepository = chatAbiertoRepository;
+        this.mensajeRepository = mensajeRepository;
     }
 
     /**
@@ -229,9 +234,75 @@ public class LocalDataLoader {
             ausenciaRepository.save(ausencia);
         }
 
+        int[] userIds = {1, 3, 4, 5, 6, 7, 8, 9, 10}; // omitimos el ID 2 (usuario "vacío")
+
+        for (int i = 0; i < userIds.length; i++) {
+            for (int j = 0; j < userIds.length; j++) {
+                if (i != j) {
+                    Integer idA = userIds[i];
+                    Integer idB = userIds[j];
+
+                    Login usuarioA = loginRepository.findById(idA).orElse(null);
+                    Login usuarioB = loginRepository.findById(idB).orElse(null);
+
+                    if (usuarioA != null && usuarioB != null) {
+                        ChatAbierto chat = new ChatAbierto();
+                        chat.setUsuarioA(usuarioA);
+                        chat.setUsuarioB(usuarioB);
+                        chat.setActivo(false); // todos los chats cerrados por defecto
+                        chatAbiertoRepository.save(chat);
+                    }
+                }
+            }
+        }
+
+        Login usuario5 = loginRepository.findById(5).orElseThrow(() -> new RuntimeException("Usuario 5 no encontrado"));
+        Login usuario4 = loginRepository.findById(4).orElseThrow(() -> new RuntimeException("Usuario 4 no encontrado"));
+
+        Mensaje[] mensajes = new Mensaje[5];
+
+        mensajes[0] = new Mensaje();
+        mensajes[0].setEmisor(usuario5);
+        mensajes[0].setReceptor(usuario4);
+        mensajes[0].setContenido("Hola, ¿cómo estás?");
+        mensajes[0].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 0));
+        mensajes[0].setEsGrupal(false);
+        mensajes[0].setEsLeido(true);
+
+        mensajes[1] = new Mensaje();
+        mensajes[1].setEmisor(usuario4);
+        mensajes[1].setReceptor(usuario5);
+        mensajes[1].setContenido("¡Hola! Bien, gracias. ¿Y tú?");
+        mensajes[1].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 2));
+        mensajes[1].setEsGrupal(false);
+        mensajes[1].setEsLeido(true);
+
+        mensajes[2] = new Mensaje();
+        mensajes[2].setEmisor(usuario5);
+        mensajes[2].setReceptor(usuario4);
+        mensajes[2].setContenido("Todo bien, trabajando en el proyecto.");
+        mensajes[2].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 5));
+        mensajes[2].setEsGrupal(false);
+        mensajes[2].setEsLeido(true);
+
+        mensajes[3] = new Mensaje();
+        mensajes[3].setEmisor(usuario4);
+        mensajes[3].setReceptor(usuario5);
+        mensajes[3].setContenido("¡Genial! ¿Necesitas ayuda con algo?");
+        mensajes[3].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 7));
+        mensajes[3].setEsGrupal(false);
+        mensajes[3].setEsLeido(true);
+
+        mensajes[4] = new Mensaje();
+        mensajes[4].setEmisor(usuario5);
+        mensajes[4].setReceptor(usuario4);
+        mensajes[4].setContenido("Por ahora no, gracias! Te aviso si surge algo.");
+        mensajes[4].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 10));
+        mensajes[4].setEsGrupal(false);
+        mensajes[4].setEsLeido(true);
+
+        mensajeRepository.saveAll(Arrays.asList(mensajes));
     }
-
-
 
 
 
