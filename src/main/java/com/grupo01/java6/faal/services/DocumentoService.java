@@ -25,7 +25,7 @@ public class DocumentoService {
     private final String CARPETA_SUBIDA = "uploads/";
 
     /** 🔹 Obtener un documento por su ID */
-    public Documento obtenerPorId(Long id) {
+    public Documento obtenerPorId(Integer id) {
         return documentoRepository.findById(id).orElse(null);
     }
 
@@ -77,7 +77,7 @@ public class DocumentoService {
     }
 
     /** 🔹 Eliminar documento y su archivo del servidor */
-    public boolean eliminarDocumento(Long idDocumento) {
+    public boolean eliminarDocumento(Integer idDocumento) {
         Documento documento = documentoRepository.findById(idDocumento).orElse(null);
         if (documento != null) {
             Path rutaArchivo = Paths.get(documento.getRutaArchivo());
