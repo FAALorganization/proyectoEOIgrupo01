@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -49,12 +50,41 @@ public class Ticketing implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_prior")
     private Prioridades idPrior;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_aprobador")
     private Login usuarioAprobador;
 
-    // username add
+    // NEW: Add creator field
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario_creador")
+    private Login usuarioCreador;
+
+    // Audit fields
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    // Helper method for setting creator
     public void setCreatedBy(Login usuario) {
-        this.usuarioAprobador=usuario ;
+        this.usuarioCreador = usuario;
+    }
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        if (fechaInicio == null) {
+            fechaInicio = LocalDate.now();
+        }
+        if (aprobado == null) {
+            aprobado = false;
+        }
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+        modificacion = LocalDate.now();
     }
 }

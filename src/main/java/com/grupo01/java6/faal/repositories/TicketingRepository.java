@@ -5,48 +5,33 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TicketingRepository extends JpaRepository<Ticketing, Integer> {
-  // is it approved or not
 
-  // Details of the ticket on a single query since  for the memoire
-  @Query("""
-    SELECT new com.grupo01.java6.faal.dtos.TicketingDTO(
-        t.id,
-        t.nombre,
-        t.asunto,
-        t.descripcion,
-        t.tipoTicket,
-        t.fechaInicio,
-        t.fechaFin,
-        t.aprobado,
-        p.prioridadesEnum
-    )
-    FROM Ticketing t
-    JOIN t.idPrior p
-    WHERE (:aprobado IS NULL OR t.aprobado = :aprobado)
-    
-""")
-  // Efficient only the approved one  Builds a database query with LIMIT and OFFSET (or equivalent SQL syntax) using the page size and number.
-  Page<Ticketing> findAllByAprobado(Boolean aprobado, Pageable pageable);
-
-  List<Ticketing> findByAprobado(Boolean aprobado);
-
-  @Query("""
-        SELECT t FROM Ticketing t
-        WHERE (:aprobado IS NULL OR t.aprobado = :aprobado)
-        AND (:search IS NULL OR LOWER(t.descripcion) LIKE LOWER(CONCAT('%', :search, '%')))
-        AND t.eliminacion IS NULL
-        """)
-  Page<Ticketing> findFilteredTickets(@Param("aprobado") Boolean aprobado,
-                                      @Param("search") String search,
-                                      Pageable pageable);
-
+  /**
+   * Find a single ticket by ID only if it is not marked as deleted.
+   */
+  @Query("SELECT t FROM Ticketing t WHERE t.id = :id AND t.eliminacion IS NULL")
   Optional<Ticketing> findActiveById(Integer id);
 
-  List<Ticketing> id(Integer id);
+  /**
+   * Find all tickets not marked as deleted.
+   */
+  @Query("SELECT t FROM Ticketing t WHERE t.eliminacion IS NULL")
+  List<Ticketing> findAllActive();
+
+  /**
+   * Find tickets created by a specific user (by primary email), excluding deleted.
+   */
+  @Query("SELECT t FROM Ticketing t WHERE t.usuarioCreador.emailPrimario = :email AND t.eliminacion IS NULL")
+  List<Ticketing> findByCreatorEmail(String email);
+
+  /**
+   * Paginated query to find tickets by approval status, excluding deleted.
+   */
+  @Query("SELECT t FROM Ticketing t WHERE t.aprobado = :aprobado AND t.eliminacion IS NULL")
+  Page<Ticketing> findByAprobadoAndEliminacionIsNull(Boolean aprobado, Pageable pageable);
 }

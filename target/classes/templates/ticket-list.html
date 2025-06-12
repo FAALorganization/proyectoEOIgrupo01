@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Tickets</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Mis Tickets</h2>
+
+    <!-- Success message -->
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+    <!-- Error message -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <!-- Tickets Table -->
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Asunto</th>
+            <th>Descripción</th>
+            <th>Tipo</th>
+            <th>Fecha Inicio</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ticket : ${tickets}">
+            <td th:text="${ticket.id}">1</td>
+            <td th:text="${ticket.asunto}">Problema con login</td>
+            <td th:text="${ticket.descripcion}">No puedo entrar al sistema</td>
+            <td th:text="${ticket.tipoTicket}">Soporte</td>
+            <td th:text="${ticket.fechaInicio}">2024-06-10</td>
+            <td th:text="${ticket.aprobado} ? 'Aprobado' : 'Pendiente'">Pendiente</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Optional user info -->
+    <p class="text-muted">Usuario: <span th:text="${userEmail}"></span></p>
+</div>

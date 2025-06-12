@@ -191,17 +191,14 @@
 
     <div class="main-block">
         <h4>Historial de Tickets</h4>
-        <select size="5" multiple>
-            <option>ticket1</option>
-            <option>ticket2</option>
-            <option>ticket3</option>
-            <option>ticket4</option>
-            <option>ticket5</option>
-            <option>ticket6</option>
-            <option>ticket7</option>
-            <option>ticket8</option>
-            <option>ticket9</option>
-        </select>
+        <form th:action="@{/ticket/list}" method="get">
+            <select name="ticketId" size="5" onchange="this.form.submit()">
+                <option th:each="ticket : ${userTickets}"
+                        th:value="${ticket.id}"
+                        th:text="'Ticket #' + ${ticket.id} + ' - ' + ${ticket.asunto}">
+                </option>
+            </select>
+        </form>
     </div>
 </div>
 

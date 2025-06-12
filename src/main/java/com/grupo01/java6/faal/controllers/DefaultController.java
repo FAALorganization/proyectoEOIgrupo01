@@ -195,7 +195,7 @@ public class DefaultController {
     public String showTicketAdmin()
     {
 
-        return "TicketAdmin"; // View name
+        return "admin-tickets"; // View name
 
     }
 

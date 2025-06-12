@@ -1,18 +1,11 @@
 package com.grupo01.java6.faal.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class TicketingDTO {
-    private Integer id;
+public class CreateTicketDTO {
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 45, message = "El nombre no puede exceder 45 caracteres")
     private String nombre;
@@ -27,27 +20,6 @@ public class TicketingDTO {
     @NotBlank(message = "El tipo de ticket es obligatorio")
     private String tipoTicket;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechaInicio;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechaFin;
-
-    private Boolean aprobado;
-
     @NotBlank(message = "La prioridad es obligatoria")
     private String prioridad;
-
-    // Additional fields for display
-    private String usuarioCreador;
-    private String usuarioAprobador;
-    private String estado;
-
-    public String getEstado() {
-        if (aprobado == null) return "PENDIENTE";
-        return aprobado ? "APROBADO" : "RECHAZADO";
-    }
 }
-
-
-
