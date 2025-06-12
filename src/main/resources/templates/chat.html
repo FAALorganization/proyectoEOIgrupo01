@@ -32,20 +32,20 @@
                 <ul class="list-group flex-grow-1 overflow-auto" id="userList" style="border: none;">
                     <li th:each="usuario : ${usuarios}"
                         th:data-user-id="${usuario.id}"
-                        th:text="${usuario.nombre}"
+                        th:text="${usuario.nombre + ' ' + usuario.apellidos}"
                         class="list-group-item list-group-item-action"
                         onclick="selectUser(this)">
                     </li>
                 </ul>
 
                 <!-- Mostrar chats abiertos -->
-                <div th:each="mensaje : ${mensajesRecientes}" class="mt-3 border-top pt-2">
-                    <div>
-                        <strong th:text="${mensaje.esGrupal} ? 'Chat grupal' : (mensaje.emisor.id == usuarioLogueado.id ? mensaje.receptor.nombre : mensaje.emisor.nombre)"></strong>
-                        <p th:text="${mensaje.contenido}"></p>
-                        <small th:text="${#temporals.format(mensaje.fechaEnvio, 'dd/MM/yyyy HH:mm')}"></small>
-                    </div>
-                </div>
+<!--                <div th:each="mensaje : ${mensajesRecientes}" class="mt-3 border-top pt-2">-->
+<!--                    <div>-->
+<!--                        <strong th:text="${mensaje.esGrupal} ? 'Chat grupal' : (mensaje.emisor.id == usuarioLogueado.id ? mensaje.receptor.nombre : mensaje.emisor.nombre)"></strong>-->
+<!--                        <p th:text="${mensaje.contenido}"></p>-->
+<!--                        <small th:text="${#temporals.format(mensaje.fechaEnvio, 'dd/MM/yyyy HH:mm')}"></small>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <button class="btn btn-outline-primary mt-3" onclick="createGroupChat()">
                     <i class="bi bi-people-fill me-1"></i> Crear Chat Grupal

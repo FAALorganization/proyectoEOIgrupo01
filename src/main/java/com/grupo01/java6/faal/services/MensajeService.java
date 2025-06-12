@@ -1,7 +1,7 @@
 package com.grupo01.java6.faal.services;
 
-import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.entities.Login;
+import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.repositories.MensajeRepository;
 import org.springframework.stereotype.Service;
 
