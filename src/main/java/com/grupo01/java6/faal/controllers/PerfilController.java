@@ -96,11 +96,15 @@ public class PerfilController {
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 
+        // Verificar si el usuario tiene el rol de jefe
+        boolean isJefe = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_JEFE"));
+
         model.addAttribute("detallesdeusuario", detalles);
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("isAdmin", isAdmin); // Añadir atributo al modelo
+        model.addAttribute("isJefe", isJefe);   // Añadir atributo al modelo
 
         return "perfil";
     }
-
 }
