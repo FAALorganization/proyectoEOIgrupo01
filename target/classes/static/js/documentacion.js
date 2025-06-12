@@ -20,9 +20,17 @@ function validarFechas() {
 
 function abrirModal(idProyecto) {
     document.getElementById('modalProyectoId').value = idProyecto;
-    document.getElementById('modalSubida').style.display = 'block';
+    document.getElementById('modalSubida').style.display = 'flex';  // mejor usar flex para centrar modal
 }
 
 function cerrarModal() {
     document.getElementById('modalSubida').style.display = 'none';
+}
+
+// Cerrar modal al hacer click fuera del contenido
+window.onclick = function(event) {
+    const modal = document.getElementById('modalSubida');
+    if (event.target === modal) {
+        cerrarModal();
+    }
 }

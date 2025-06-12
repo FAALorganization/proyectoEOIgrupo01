@@ -7,15 +7,16 @@
     <title>Gestor de Documentos</title>
     <th:block layout:fragment="styles">
         <link rel="stylesheet" th:href="@{/css/app.css}"/>
-    </th:block>
-    <th:block layout:fragment="scripts">
-        <script th:src="@{/js/documentacion.js}"></script>
+        <link rel="stylesheet" th:href="@{/css/documentacion.css}"/>
     </th:block>
 </head>
 
 <body>
 <section layout:fragment="content" class="documentacion-container p-4">
     <h1 class="mb-4">Gestión de Documentación</h1>
+
+    <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <!-- Crear Proyecto -->
     <div class="card p-4 mb-5" th:if="${rolUsuario == 'JEFE'}">
@@ -59,7 +60,9 @@
                         <div th:if="${rolUsuario == 'JEFE'}" class="mt-2">
                             <button class="btn btn-secondary btn-sm"
                                     type="button"
-                                    onclick="abrirModal([[${proyecto.id}]])">Subir Documentos</button>
+                                    th:onclick="|abrirModal('${proyecto.id}')|">
+                                Subir Documentos
+                            </button>
                         </div>
 
                         <!-- Lista de documentos -->
@@ -100,5 +103,8 @@
         </form>
     </div>
 </div>
+
+<script th:src="@{/js/documentacion.js}"></script>
+
 </body>
 </html>
