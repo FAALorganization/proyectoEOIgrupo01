@@ -133,15 +133,6 @@ public class DefaultController {
     {
         return "checkinjefe";}
 
-
-
-    @GetMapping("/perfiljefe")
-    public String showPerfiljefe()
-    {
-
-        return "perfiljefe"; // View name
-    }
-
     @GetMapping("/chat")
     public String showChat()
     {
