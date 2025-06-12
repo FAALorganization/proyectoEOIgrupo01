@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
+<head>
+    <title>Gestor de Documentos</title>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}"/>
+    </th:block>
+    <th:block layout:fragment="scripts">
+        <script th:src="@{/js/documentacion.js}"></script>
+    </th:block>
+</head>
+
+<body>
+<section layout:fragment="content" class="documentacion-container p-4">
+    <h1 class="mb-4">Gestión de Documentación</h1>
+
+    <!-- Crear Proyecto -->
+    <div class="card p-4 mb-5" th:if="${rolUsuario == 'JEFE'}">
+        <h2 class="mb-3">Nuevo Proyecto</h2>
+        <form th:action="@{/proyectos/crear}" method="post" onsubmit="return validarFechas()" class="row g-3">
+            <div class="col-md-6">
+                <label>Nombre del Proyecto:</label>
+                <input type="text" name="nombre" class="form-control" maxlength="50" required>
+            </div>
+            <div class="col-12">
+                <label>Descripción:</label>
+                <textarea name="descripcion" class="form-control" maxlength="200"></textarea>
+            </div>
+            <div class="col-md-6">
+                <label>Fecha Inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label>Fecha Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="form-control" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Crear Proyecto</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Lista de Proyectos -->
+    <div th:if="${proyectosGenerales != null && !proyectosGenerales.isEmpty()}">
+        <h2 class="mb-3">Proyectos Actuales</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col" th:each="proyecto : ${proyectosGenerales}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${proyecto.nombre}">Nombre Proyecto</h5>
+                        <p class="card-text" th:text="${proyecto.descripcion}">Descripción</p>
+                        <p><strong>Inicio:</strong> <span th:text="${proyecto.fechaInicio}"></span></p>
+                        <p><strong>Fin:</strong> <span th:text="${proyecto.fechaFin}"></span></p>
+
+                        <!-- Botón subir documentos -->
+                        <div th:if="${rolUsuario == 'JEFE'}" class="mt-2">
+                            <button class="btn btn-secondary btn-sm"
+                                    type="button"
+                                    onclick="abrirModal([[${proyecto.id}]])">Subir Documentos</button>
+                        </div>
+
+                        <!-- Lista de documentos -->
+                        <ul class="list-group list-group-flush mt-3" th:if="${proyecto.documentos != null}">
+                            <li th:each="documento : ${proyecto.documentos}" class="list-group-item d-flex justify-content-between align-items-center">
+                                <span th:text="${documento.nombre}">Nombre documento</span>
+                                <div>
+                                    <a th:href="@{/documentacion/descargar/{idDocumento}(idDocumento=${documento.id})}"
+                                       class="btn btn-outline-primary btn-sm me-1">Descargar</a>
+                                    <form th:if="${rolUsuario == 'JEFE'}"
+                                          th:action="@{/documentacion/borrar}" method="post" class="d-inline">
+                                        <input type="hidden" name="idDocumento" th:value="${documento.id}" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${proyectosGenerales == null || proyectosGenerales.isEmpty()}">
+        <p class="text-muted">No hay proyectos generales disponibles.</p>
+    </div>
+</section>
+
+<!-- Modal de subida -->
+<div id="modalSubida" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <h2>Subir Documentos</h2>
+        <form th:action="@{/documentacion/subir}" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="modalProyectoId" name="idProyecto" />
+            <input type="file" name="archivos" multiple required class="form-control mt-3" />
+            <button type="submit" class="btn btn-primary mt-3">Subir</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
