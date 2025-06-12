@@ -23,13 +23,17 @@
         <div class="row vh-100">
 
             <!-- Sidebar -->
+            <!-- Sidebar -->
             <aside class="col-md-3 bg-white shadow-sm border-end p-3 d-flex flex-column">
                 <h4 class="mb-3 text-primary">Usuarios</h4>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control rounded" id="searchUser" placeholder="Buscar usuario..." onkeyup="filterUsers()">
-                </div>
 
-                <ul class="list-group flex-grow-1 overflow-auto" id="userList" style="border: none;">
+                <!-- Filtro solo visible si hay mensajes -->
+<!--                <div class="input-group mb-3" th:if="${!#lists.isEmpty(mensajesRecientes)}">-->
+<!--                    <input type="text" class="form-control rounded" id="searchUser" placeholder="Buscar usuario..." onkeyup="filterUsers()">-->
+<!--                </div>-->
+
+                <!-- Mostrar lista de usuarios si hay mensajes previos -->
+                <ul class="list-group flex-grow-1 overflow-auto" id="userList" style="border: none;" th:if="${!#lists.isEmpty(mensajesRecientes)}">
                     <li th:each="usuario : ${usuarios}"
                         th:data-user-id="${usuario.id}"
                         th:text="${usuario.nombre + ' ' + usuario.apellidos}"
@@ -38,19 +42,23 @@
                     </li>
                 </ul>
 
-                <!-- Mostrar chats abiertos -->
-<!--                <div th:each="mensaje : ${mensajesRecientes}" class="mt-3 border-top pt-2">-->
-<!--                    <div>-->
-<!--                        <strong th:text="${mensaje.esGrupal} ? 'Chat grupal' : (mensaje.emisor.id == usuarioLogueado.id ? mensaje.receptor.nombre : mensaje.emisor.nombre)"></strong>-->
-<!--                        <p th:text="${mensaje.contenido}"></p>-->
-<!--                        <small th:text="${#temporals.format(mensaje.fechaEnvio, 'dd/MM/yyyy HH:mm')}"></small>-->
-<!--                    </div>-->
+                <!-- Mostrar select si no hay chats abiertos -->
+<!--                <div th:if="${#lists.isEmpty(mensajesRecientes)}">-->
+<!--                    <select class="form-select mb-3" onchange="startChatWithUser(this)">-->
+<!--                        <option value="">&#45;&#45; Selecciona un usuario para iniciar chat &#45;&#45;</option>-->
+<!--                        <option th:each="usuario : ${usuariosCerrados}"-->
+<!--                                th:value="${usuario.id}"-->
+<!--                                th:text="${usuario.nombre + ' ' + usuario.apellidos}">-->
+<!--                        </option>-->
+<!--                    </select>-->
+
 <!--                </div>-->
 
                 <button class="btn btn-outline-primary mt-3" onclick="createGroupChat()">
                     <i class="bi bi-people-fill me-1"></i> Crear Chat Grupal
                 </button>
             </aside>
+
 
             <!-- Chat principal -->
             <main class="col-md-9 d-flex flex-column bg-light">
@@ -63,9 +71,22 @@
                 </div>
 
                 <div class="chat-footer bg-white border-top p-3 shadow-sm">
-                    <div class="input-group">
+<!--                    <div class="input-group">-->
+<!--                        <input type="text" id="chatInput" class="form-control" placeholder="Escribe un mensaje...">-->
+<!--                        <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>-->
+<!--                    </div>-->
+                    <div class="input-group" id="chatInputGroup">
                         <input type="text" id="chatInput" class="form-control" placeholder="Escribe un mensaje...">
                         <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
+                    </div>
+
+                    <div class="input-group d-none" id="selectUserGroup">
+                        <select class="form-select" id="selectUserToChat" onchange="startChatWithUser(this)">
+                            <option value="">-- Selecciona un usuario para chatear --</option>
+                            <option th:each="usuario : ${usuarios}"
+                                    th:value="${usuario.id}"
+                                    th:text="${usuario.nombre + ' ' + usuario.apellidos}"></option>
+                        </select>
                     </div>
                 </div>
             </main>
