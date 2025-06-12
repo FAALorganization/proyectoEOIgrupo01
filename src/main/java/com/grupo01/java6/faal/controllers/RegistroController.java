@@ -30,6 +30,8 @@ public class RegistroController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("archivo") MultipartFile[] files) {
+        StringBuilder tokensGenerados = new StringBuilder();
+
         if (files.length == 0) {
             return ResponseEntity.badRequest().body("No se envió ningún archivo.");
         }
@@ -47,8 +49,6 @@ public class RegistroController {
                     String nombre = columnas.get(0).trim();
                     String apellido = columnas.get(1).trim();
                     String email = columnas.get(2).trim();
-                    String nombreJefe = columnas.size() > 3 ? columnas.get(3).trim() : null; // Detectar nombre del jefe
-                    String apellidoJefe = columnas.size() > 4 ? columnas.get(4).trim() : null;
 
                     Detallesdeusuario detallesdeuser = new Detallesdeusuario();
                     detallesdeuser.setNombre(nombre);
@@ -56,27 +56,16 @@ public class RegistroController {
 
                     detallesdeusuarioService.guardarEntityEntity(detallesdeuser);
 
-                    // Crear Login asociado
                     Login login = new Login();
                     login.setActivo(true);
                     login.setIdDetallesDeUsuario(detallesdeuser);
                     login.setEmailPrimario(email);
-                    login.setToken(generarTokenAleatorio(10)); // Genera password temporal
-
-                    if (nombreJefe != null && !nombreJefe.isEmpty() && apellidoJefe != null && !apellidoJefe.isEmpty()) {
-                        Detallesdeusuario jefeDetalles = detallesdeusuarioService.findByNombreAndApellidos(nombreJefe, apellidoJefe);
-                        if (jefeDetalles != null) {
-                            boolean esJefe = detallesdeusuarioService.verificarRolJefe(jefeDetalles.getId());
-                            if (esJefe) {
-                                Login jefeLogin = loginService.obtenerPorDetallesUsuario(jefeDetalles);
-                                if (jefeLogin != null) {
-                                    login.setJefeLogin(jefeLogin); // Asociar jefe al usuario
-                                }
-                            }
-                        }
-                    }
+                    String token = generarTokenAleatorio(10);
+                    login.setToken(token);
 
                     loginService.guardarLogin(login);
+
+                    tokensGenerados.append("Usuario: ").append(email).append(", Token: ").append(token).append("\n");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -87,7 +76,7 @@ public class RegistroController {
             }
         }
 
-        return ResponseEntity.ok("Archivos CSV procesados y usuarios creados correctamente.");
+        return ResponseEntity.ok("Usuarios creados correctamente. Tokens:\n" + tokensGenerados.toString());
     }
 
     private String generarTokenAleatorio(int longitud) {
