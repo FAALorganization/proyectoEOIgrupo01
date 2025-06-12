@@ -181,4 +181,3 @@ function toggleView(isGestionView) {
     if (confirmDeleteBtn) confirmDeleteBtn.style.display = isGestionView ? 'none' : 'inline-block';
     if (closeGestionBtn) closeGestionBtn.style.display = isGestionView ? 'inline-block' : 'none';
 }
-
