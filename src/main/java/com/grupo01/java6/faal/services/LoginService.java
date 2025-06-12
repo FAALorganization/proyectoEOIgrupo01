@@ -93,4 +93,12 @@ public class LoginService {
                 .anyMatch(rol -> rol.getDescripcion().equalsIgnoreCase("JEFE"));
     }
 
+    // LoginService.java
+    public List<Login> obtenerTodosMenosActual(Integer idActual) {
+        return loginRepository.findAll().stream()
+                .filter(user -> !user.getId().equals(idActual))
+                .toList();
+    }
+
+
 }
