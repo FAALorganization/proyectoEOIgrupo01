@@ -4,10 +4,10 @@ import com.grupo01.java6.faal.dtos.CreateTicketDTO;
 import com.grupo01.java6.faal.dtos.TicketingDTO;
 import com.grupo01.java6.faal.services.impl.TicketService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +39,7 @@ public class TicketController {
         if (bindingResult.hasErrors()) {
             log.warn("Validation errors in ticket creation: {}", bindingResult.getAllErrors());
             model.addAttribute("createTicketDTO", createTicketDTO);
-            return "ticket"; // View: ticket.html
+            return "ticket";
         }
 
         try {
@@ -62,6 +62,8 @@ public class TicketController {
     public String listTickets(Model model, Authentication authentication) {
         String userEmail = authentication.getName();
         List<TicketingDTO> tickets = ticketingService.findUserTickets(userEmail);
+        log.info("User {} requested their ticket list", userEmail);
+        log.info("User {} requested their ticket list", userEmail);
 
         model.addAttribute("tickets", tickets);
         model.addAttribute("userEmail", userEmail);
@@ -70,8 +72,10 @@ public class TicketController {
     }
 
     @GetMapping("/admin")
-    public String adminTickets(Model model) {
+    public String adminTickets(Model model, Authentication authentication) {
+        log.info("Admin access attempted by: {}", authentication.getName());
         List<TicketingDTO> allTickets = ticketingService.findAll();
+        log.debug("Retrieved {} tickets for admin view", allTickets.size());
         model.addAttribute("tickets", allTickets);
         return "admin-tickets"; // View: admin-tickets.html
     }
@@ -83,8 +87,8 @@ public class TicketController {
             RedirectAttributes redirectAttributes) {
 
         try {
-            String approverEmail = authentication.getName();
-            ticketingService.approveTicket(id, approverEmail);
+            String approvedEmail = authentication.getName();
+            ticketingService.approveTicket(id, approvedEmail);
             redirectAttributes.addFlashAttribute("successMessage", "Ticket aprobado exitosamente");
         } catch (Exception e) {
             log.error("Error approving ticket: ", e);
@@ -103,7 +107,7 @@ public class TicketController {
     }
 
 }
-
+// ask if i can do a @Restcontolor to get json
 //    @GetMapping("/{id}")
 //    public ResponseEntity<TicketingDTO> getById(@PathVariable Integer id) {
 //        return ResponseEntity.ok(ticketingService.findById(id));

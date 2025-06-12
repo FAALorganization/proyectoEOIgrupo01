@@ -40,8 +40,6 @@ public class LoginController {
         return "loginFaal"; // View name
     }
 
-
-
     @PostMapping("/login")
     public String login(
             @RequestParam String correo,

@@ -132,13 +132,13 @@ public class TicketingService implements TicketService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public void approveTicket(Integer id, String approverEmail) {
-        log.info("Approving ticket {} by user {}", id, approverEmail);
+    public void approveTicket(Integer id, String approveEmail) {
+        log.info("Approving ticket {} by user {}", id, approveEmail);
 
         Ticketing ticket = ticketingRepository.findActiveById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado"));
 
-        Login aprobador = loginRepository.getLoginByEmailPrimario(approverEmail)
+        Login aprobador = loginRepository.getLoginByEmailPrimario(approveEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario aprobador no encontrado"));
 
         ticket.setAprobado(true);
@@ -146,7 +146,7 @@ public class TicketingService implements TicketService {
         ticket.setModificacion(LocalDate.now());
 
         ticketingRepository.save(ticket);
-        log.info("Ticket {} approved successfully by {}", id, approverEmail);
+        log.info("Ticket {} approved successfully by {}", id, approveEmail);
     }
 
     public void rejectTicket(Integer id, String approverEmail) {

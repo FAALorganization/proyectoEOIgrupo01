@@ -762,7 +762,7 @@
                 <h3>Controles de Administración</h3>
                 <div class="sla">
                     Tiempo SLA:
-                    <strong id="slaTimer">04:25:13</strong>
+                    <strong id="slaTimer">00:00:00</strong>
                 </div>
                 <div class="btn-group">
                     <button type="button" id="pauseSlaBtn">
@@ -853,6 +853,86 @@
         </form>
     </div>
 </div>
+<script>
+    let slaTimerInterval = null;
+    let currentTicketId = null;
+
+    // Initialize SLA timer with priority from database
+    function initSlaTimer(ticketId, priorityId) {
+        if (slaTimerInterval) {
+            clearInterval(slaTimerInterval);
+        }
+
+        currentTicketId = ticketId; // save
+
+        fetch(`/api/sla/${ticketId}/start?priorityId=${priorityId}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                startSlaTimerUpdates(ticketId);
+            } else {
+                console.error("Error al iniciar el temporizador SLA.");
+            }
+        }).catch(error => {
+            console.error("Error en la petición fetch:", error);
+        });
+    }
+
+    // Function to periodically update SLA timer display
+    function startSlaTimerUpdates(ticketId) {
+        slaTimerInterval = setInterval(() => {
+            fetch(`/api/sla/${ticketId}/time`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('sla-timer-display').textContent = data.elapsedTime;
+                })
+                .catch(error => {
+                    console.error("Error al obtener el tiempo SLA:", error);
+                });
+        }, 1000); // Update every second
+    }
+
+    // Handle ticket selection from dropdown
+    document.querySelector('.open-tickets select').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption) {
+            const ticketId = selectedOption.dataset.ticketId;
+            const priorityId = selectedOption.dataset.priorityId;
+
+            if (ticketId && priorityId) {
+                initSlaTimer(ticketId, priorityId);
+            } else {
+                console.warn("ticketId o priorityId no definidos en el option seleccionado.");
+            }
+        }
+    });
+
+    // Handle ticket closure and SLA completion
+    document.getElementById('closeTicketBtn').addEventListener('click', function () {
+        const reason = document.getElementById('close-reason').value;
+
+        if (!reason || reason === 'Motivo de Cierre') {
+            alert("Por favor seleccione un motivo de cierre primero.");
+            return;
+        }
+
+        if (currentTicketId) {
+            fetch(`/api/sla/${currentTicketId}/complete`, {
+                method: 'POST'
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('contact-subject').value = `Ticket Cerrado: ${reason}`;
+                    document.getElementById('contactModal').style.display = 'flex';
+                } else {
+                    console.error("Error al completar el SLA.");
+                }
+            }).catch(error => {
+                console.error("Error en la petición fetch:", error);
+            });
+        }
+    });
+</script>
+
 <script>
     // javascript
 

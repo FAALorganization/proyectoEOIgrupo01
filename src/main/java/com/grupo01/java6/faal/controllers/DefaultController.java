@@ -191,13 +191,22 @@ public class DefaultController {
         return "home"; // View name
 
     }
-    @GetMapping("/TicketAdmin")
-    public String showTicketAdmin()
-    {
 
-        return "admin-tickets"; // View name
 
-    }
+//    @GetMapping("/ticket/admin")
+//    public String showTicketAdmin()
+//    {
+//
+//       return "admin-tickets"; // View name
+//
+// }
+//    @GetMapping("ticket")
+//    public String showTicket()
+//    {
+//
+//        return "ticket"; // View name
+//
+//    }
 
     @GetMapping("/TermsAndConditions")
     public String showTermsAndConditions()
