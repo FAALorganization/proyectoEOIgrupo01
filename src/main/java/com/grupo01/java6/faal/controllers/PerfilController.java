@@ -66,10 +66,10 @@ public class PerfilController {
             detallesdeusuarioService.guardar(detallesExistentes);
         }
 
-        return "redirect:/perfiladmin";
+        return "redirect:/perfil";
     }
 
-    @GetMapping("/perfiladmin")
+    @GetMapping("/perfil")
     public String perfilAdmin(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
@@ -79,10 +79,8 @@ public class PerfilController {
         if (principal instanceof UserDetailsImpl) {
             emailPrimario = ((UserDetailsImpl) principal).getUsername();
         } else if (principal instanceof UserDetails) {
-            // Esto es por si te devuelve un User de Spring
             emailPrimario = ((UserDetails) principal).getUsername();
         } else {
-            // fallback de seguridad por si acaso
             emailPrimario = principal.toString();
         }
 
@@ -94,9 +92,15 @@ public class PerfilController {
 
         List<Detallesdeusuario> usuarios = detallesdeusuarioService.obtenerUsuariosActivos();
 
+        // Verificar si el usuario tiene el rol de administrador
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+
         model.addAttribute("detallesdeusuario", detalles);
         model.addAttribute("usuarios", usuarios);
-        return "perfiladmin";
+        model.addAttribute("isAdmin", isAdmin); // Añadir atributo al modelo
+
+        return "perfil";
     }
 
 }
