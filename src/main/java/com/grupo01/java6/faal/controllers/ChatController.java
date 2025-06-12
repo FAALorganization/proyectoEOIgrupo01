@@ -1,19 +1,16 @@
 package com.grupo01.java6.faal.controllers;
 
 import com.grupo01.java6.faal.dtos.CompaneroDTO;
-import com.grupo01.java6.faal.entities.Detallesdeusuario;
-import com.grupo01.java6.faal.entities.Mensaje;
-import com.grupo01.java6.faal.services.DetallesdeusuarioService;
-import com.grupo01.java6.faal.services.MensajeService;
 import com.grupo01.java6.faal.entities.Login;
+import com.grupo01.java6.faal.entities.Mensaje;
+import com.grupo01.java6.faal.services.ChatAbiertoService;
 import com.grupo01.java6.faal.services.LoginService;
+import com.grupo01.java6.faal.services.MensajeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,39 +18,34 @@ public class ChatController {
 
     private final LoginService loginService;
     private final MensajeService mensajeService;
-    private final DetallesdeusuarioService detallesdeusuarioService;
+    private final ChatAbiertoService chatAbiertoService;
 
-    public ChatController(LoginService loginService, MensajeService mensajeService, DetallesdeusuarioService detallesdeusuarioService) {
+    public ChatController(LoginService loginService, MensajeService mensajeService, ChatAbiertoService chatAbiertoService) {
         this.loginService = loginService;
         this.mensajeService = mensajeService;
-        this.detallesdeusuarioService = detallesdeusuarioService;
+        this.chatAbiertoService = chatAbiertoService;
     }
 
     @GetMapping("/chat")
     public String mostrarChat(Model model, Principal principal) {
-        System.out.println(principal.getName() + " ha accedido al chat");
+        // Obtener usuario actual
         Login usuario = loginService.getUserByEmail(principal.getName());
-        List<Login> otrosUsuarios = loginService.obtenerTodosMenosActual(usuario.getId());
-        List<Detallesdeusuario> detalles = detallesdeusuarioService.obtenerTodosLosUsuarios();
-        System.out.println(usuario.getId() + " ha accedido al chat");
-        List<Mensaje> ultimosMensajes = mensajeService.obtenerUltimosMensajesPorConversacion(usuario);
+        System.out.println(usuario.getEmailPrimario() + " ha accedido al chat");
 
-        List<CompaneroDTO> usuariosDTO = new ArrayList<>();
-        for (Detallesdeusuario user : detalles) {
-            if (usuario.getId() != user.getId() && user.getId() != 2) {
-                CompaneroDTO companeroDTO = new CompaneroDTO();
-                companeroDTO.setId(user.getId());
-                companeroDTO.setNombre(user.getNombre());
-                companeroDTO.setApellidos(user.getApellidos());
+        List<List<CompaneroDTO>> todosChats = chatAbiertoService.obtenerListaCompanerosDTOChatsCerradosYAbiertos(usuario);
+        // Obtener usuarios con chat abierto
+        List<CompaneroDTO> usuariosConChatAbierto = todosChats.get(0);
 
-                usuariosDTO.add(companeroDTO);
-            }
-        }
+        // Obtener usuarios sin chat abierto (cerrados)
+        List<CompaneroDTO> usuariosConChatCerrado = todosChats.get(1);
 
-        System.out.println("Usuarios enviados al chat: " + usuariosDTO.size());
+        // Obtener últimos mensajes
+        //List<Mensaje> ultimosMensajes = mensajeService.obtenerUltimosMensajesPorConversacion(usuario);
 
+        // Agregar al modelo
         model.addAttribute("usuarioLogueado", usuario);
-        model.addAttribute("usuarios", usuariosDTO);
+        model.addAttribute("usuarios", usuariosConChatAbierto);
+        model.addAttribute("usuariosCerrados", usuariosConChatCerrado); // Nuevo
         //model.addAttribute("mensajesRecientes", ultimosMensajes);
 
         return "chat";

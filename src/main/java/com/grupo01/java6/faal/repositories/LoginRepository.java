@@ -66,5 +66,8 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     WHERE l.activo = true
 """)
     List<Login> findByActivoTrue();
+    @Query("SELECT l FROM Login l WHERE l.id <> :idActual")
+    List<Login> obtenerTodosMenosActual(@Param("idActual") Integer idActual);
+
 }
 
