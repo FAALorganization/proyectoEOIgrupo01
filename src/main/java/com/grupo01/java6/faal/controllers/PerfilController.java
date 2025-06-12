@@ -5,6 +5,7 @@ import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.services.DetallesdeusuarioService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,10 +71,20 @@ public class PerfilController {
 
     @GetMapping("/perfiladmin")
     public String perfilAdmin(Model model) {
-        // Datos del usuario autenticado
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        String emailPrimario = userDetails.getUsername();
+        Object principal = authentication.getPrincipal();
+
+        String emailPrimario;
+
+        if (principal instanceof UserDetailsImpl) {
+            emailPrimario = ((UserDetailsImpl) principal).getUsername();
+        } else if (principal instanceof UserDetails) {
+            // Esto es por si te devuelve un User de Spring
+            emailPrimario = ((UserDetails) principal).getUsername();
+        } else {
+            // fallback de seguridad por si acaso
+            emailPrimario = principal.toString();
+        }
 
         Detallesdeusuario detalles = detallesdeusuarioService.findByEmail(emailPrimario);
         if (detalles == null) {
@@ -87,4 +98,5 @@ public class PerfilController {
         model.addAttribute("usuarios", usuarios);
         return "perfiladmin";
     }
+
 }
