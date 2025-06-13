@@ -18,6 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
+
       - name: Configurar JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
