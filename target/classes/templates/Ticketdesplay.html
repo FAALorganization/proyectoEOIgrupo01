@@ -1,6 +1,8 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -453,11 +455,7 @@
 <body>
 
 <!-- Header Navigation -->
-<div class="header-nav">
-    <a th:href="@{/index}">
-        <img th:src="@{/resources/images/faal.png}" alt="Home Icon" width="30" height="30">
-    </a>
-</div>
+
 
 <div class="container" th:classappend="${userRole == 'Admin'} ? 'admin-layout' : 'user-layout'">
 

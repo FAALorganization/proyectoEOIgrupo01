@@ -144,7 +144,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/ticket/admin").hasRole("ADMIN")
-                        .requestMatchers("/ticket").hasAnyRole("USUARIO", "ADMIN", "VISITANTE", "JEFE")
+                        .requestMatchers("/ticket").hasAnyRole("USUARIO", "VISITANTE", "JEFE")
                         .anyRequest().authenticated()  // siempre al final
                 )
                 .formLogin(form -> form

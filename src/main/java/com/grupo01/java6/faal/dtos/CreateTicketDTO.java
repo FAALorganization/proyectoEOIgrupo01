@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 
 @Data
 public class CreateTicketDTO {
+    // message para desplegar
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 45, message = "El nombre no puede exceder 45 caracteres")
     private String nombre;
