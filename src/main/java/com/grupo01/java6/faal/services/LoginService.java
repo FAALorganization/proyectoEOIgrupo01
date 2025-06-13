@@ -116,5 +116,10 @@ public class LoginService {
                 .toList();
     }
 
+    public List<Login> obtenerTrabajadoresPorJefe(Integer idJefe) {
+        return loginRepository.findAll().stream()
+                .filter(login -> login.getJefeLogin() != null && login.getJefeLogin().getId().equals(idJefe))
+                .toList();
+    }
 
 }

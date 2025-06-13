@@ -133,22 +133,6 @@ public class DefaultController {
     {
         return "checkinjefe";}
 
-
-
-    @GetMapping("/perfiljefe")
-    public String showPerfiljefe()
-    {
-
-        return "perfiljefe"; // View name
-    }
-
-    @GetMapping("/perfil")
-    public String showPerfil()
-    {
-
-        return "perfil"; // View name
-    }
-
 //    @GetMapping("/chat")
 //    public String showChat()
 //    {
@@ -180,6 +164,13 @@ public class DefaultController {
 
     }
 
+    @GetMapping("/GestionEquipos")
+    public String showGestionEquipos()
+    {
+
+        return "GestionEquipos"; // View name
+
+    }
 
     /**
      * Gestiona las solicitudes GET para obtener y mostrar la lista de entidades protegidas.

@@ -1,0 +1,84 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
+
+<head>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+    </th:block>
+    <link rel="stylesheet" th:href="@{/css/equipos.css}">
+</head>
+
+<body>
+<section layout:fragment="content">
+
+    <h2 class="mb-4 mt-5 text-center"
+        th:text="${equipo.id} != null ? 'Editar equipo' : 'Crear nuevo equipo'">
+        Crear nuevo equipo
+    </h2>
+
+    <form method="post"
+          th:action="${equipo != null and equipo.id != null} ? @{/gestionEquipos/editar/{id}(id=${equipo.id})} : @{/gestionEquipos/crear}"
+          th:object="${equipo}">
+        <div class="mb-3">
+            <label for="nombreEquipo" class="form-label">Nombre del equipo</label>
+            <input type="text" class="form-control" id="nombreEquipo" th:field="*{nombre}" placeholder="Nombre del equipo" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcionEquipo" class="form-label">Descripción</label>
+            <textarea class="form-control" id="descripcionEquipo" th:field="*{descripcion}" rows="3" placeholder="Describe el propósito del equipo"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="miembrosSelect" class="form-label">Seleccionar miembros</label>
+            <select multiple class="form-select" id="miembrosSelect" th:field="*{listaLoginIds}">
+                <option th:each="login : ${logins}"
+                        th:value="${login.id}"
+                        th:text="${login.idDetallesDeUsuario.nombre}">
+                </option>
+            </select>
+        </div>
+
+        <div class="text-end">
+            <a th:href="@{/perfil}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary"
+                    th:text="${equipo.id} != null ? 'Guardar cambios' : 'Crear equipo'">
+                Crear equipo
+            </button>
+        </div>
+    </form>
+
+    <h3 class="mt-5 text-center">Equipos existentes</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Miembros</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="equipoItem : ${equipos}">
+                <td th:text="${equipoItem.nombre}"></td>
+                <td th:text="${equipoItem.descripcion}"></td>
+                <td>
+                    <ul class="mb-0">
+                        <li th:each="miembro : ${equipoItem.listaLogin}" th:text="${miembro.idDetallesDeUsuario.nombre}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <a th:href="@{/gestionEquipos/editar/{id}(id=${equipoItem.id})}" class="btn btn-sm btn-warning">Editar</a>
+                    <a th:href="@{/gestionEquipos/eliminar/{id}(id=${equipoItem.id})}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+</body>
+</html>
