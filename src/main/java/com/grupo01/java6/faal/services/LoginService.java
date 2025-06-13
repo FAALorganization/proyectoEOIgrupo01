@@ -6,11 +6,13 @@ import com.grupo01.java6.faal.dtos.NombreDTO;
 import com.grupo01.java6.faal.dtos.UsuarioDTO;
 import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.entities.Login;
+import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.repositories.LoginRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class LoginService {
@@ -87,10 +89,32 @@ public class LoginService {
         return loginRepository.findById(id).orElse(null);
 
     }
+    public List<Login> obtenerUsuariosSinConversacion(Login actual, List<Mensaje> recientes) {
+        Set<Integer> idsConConversacion = recientes.stream()
+                .flatMap(m -> Stream.of(m.getEmisor().getId(), m.getReceptor() != null ? m.getReceptor().getId() : null))
+                .filter(Objects::nonNull)
+                .filter(id -> !id.equals(actual.getId()))
+                .collect(Collectors.toSet());
+
+        List<Login> todos = obtenerTodosMenosActual(actual.getId());
+
+        return todos.stream()
+                .filter(u -> !idsConConversacion.contains(u.getId()))
+                .collect(Collectors.toList());
+    }
+
 
     public boolean tieneRolJefe(Login login) {
         return login.getRoles().stream()
                 .anyMatch(rol -> rol.getDescripcion().equalsIgnoreCase("JEFE"));
     }
+
+    // LoginService.java
+    public List<Login> obtenerTodosMenosActual(Integer idActual) {
+        return loginRepository.findAll().stream()
+                .filter(user -> !user.getId().equals(idActual))
+                .toList();
+    }
+
 
 }

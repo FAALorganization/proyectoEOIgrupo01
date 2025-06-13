@@ -25,12 +25,12 @@ public class UsuarioController {
         this.loginService = loginService;
     }
 
-    @GetMapping("/perfiladmin")
-    public String mostrarUsuarios(Model model) {
-        List<Detallesdeusuario> usuarios = detallesdeusuarioService.obtenerUsuariosActivos();
-        model.addAttribute("usuarios", usuarios);
-        return "perfiladmin";
-    }
+    //@GetMapping("/perfiladmin")
+    //public String mostrarUsuarios(Model model) {
+    //    List<Detallesdeusuario> usuarios = detallesdeusuarioService.obtenerUsuariosActivos();
+    //    model.addAttribute("usuarios", usuarios);
+    //    return "perfiladmin";
+    //}
 
     @PutMapping("/usuarios/desactivar/{id}")
     public ResponseEntity<String> desactivarUsuario(@PathVariable Integer id) {
