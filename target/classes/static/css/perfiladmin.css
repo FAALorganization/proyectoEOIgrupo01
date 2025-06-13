@@ -48,3 +48,24 @@
 .modal.fade {
     z-index: 1056 !important;
 }
+
+.modal-body {
+    max-height: 400px; /* Limita la altura del contenido */
+    overflow-y: auto; /* Habilita el scroll vertical */
+}
+
+.table {
+    table-layout: fixed; /* Ajusta el ancho de las columnas */
+    word-wrap: break-word; /* Permite que el texto se ajuste dentro de las celdas */
+}
+/* Transición para el contenido */
+.fade-transition {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.fade-transition.show {
+    opacity: 1;
+    visibility: visible;
+}

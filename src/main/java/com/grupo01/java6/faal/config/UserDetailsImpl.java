@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-
 public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     private final Login login;
@@ -22,7 +21,7 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return login.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getNombre().toUpperCase()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -32,7 +31,7 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     @Override
     public String getUsername() {
-        return login.getEmailPrimario(); // Cambia si usas otro campo como "username"
+        return login.getEmailPrimario();
     }
 
     @Override
@@ -52,7 +51,7 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     @Override
     public boolean isEnabled() {
-        return true; // Puedes vincularlo a algún campo en tu entidad `Login`
+        return true; // Puedes atarlo a algún campo como login.isActivo()
     }
 
     public Login getLogin() {
@@ -61,7 +60,6 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     @Override
     public void eraseCredentials() {
-
+        // Podrías limpiar la contraseña si se desea
     }
 }
-
