@@ -1,5 +1,10 @@
 name: ${COMPOSE_NAME}
 
+volumes:
+  produccion_pgdata:
+  produccion_javadata:
+
+
 # Definimos los servicios que se ejecutarán en los contenedores Docker.
 services:
   java:
@@ -10,6 +15,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/producciondb
       SPRING_DATASOURCE_USERNAME: produccionuser
       SPRING_DATASOURCE_PASSWORD: produccionpassword
+      SPRING_PROFILES_ACTIVE: produccion
     depends_on:
       db:
         condition: service_healthy
@@ -19,6 +25,8 @@ services:
       timeout: 10s
       retries: 3
     restart: always
+    volumes:
+      - produccion_javadata:/var/lib/data/
 
   db:
     image: postgres:latest
@@ -31,3 +39,5 @@ services:
       timeout: 20s
       retries: 10
     restart: always
+    volumes:
+      - produccion_pgdata:/var/lib/postgresql/data/
