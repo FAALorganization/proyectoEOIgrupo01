@@ -1,7 +1,8 @@
 let socket;
 let stompClient;
 let selectedUserId = null;
-const currentUserId = document.getElementById("userId")?.value || null;
+const currentUserId = parseInt(document.getElementById("userId")?.value) || null;
+const mensajesMostrados = new Set(); // Para evitar mostrar mensajes duplicados
 
 window.addEventListener("load", () => {
     connectWebSocket();
@@ -28,34 +29,71 @@ window.addEventListener("load", () => {
 });
 
 function connectWebSocket() {
-    socket = new SockJS("/chat-websocket");
+    socket = new SockJS("/ws");
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, () => {
+        if (currentUserId) {
+            stompClient.subscribe(`/user/queue/mensajes/${currentUserId}`, (messageOutput) => {
+                const mensaje = JSON.parse(messageOutput.body);
+
+                if (mensajesMostrados.has(mensaje.id)) return; // Ya mostrado, ignorar
+                mensajesMostrados.add(mensaje.id);
+
+                // Mostrar solo si es del chat abierto
+                if (selectedUserId) {
+                    const idSelected = Number(selectedUserId);
+                    const esChatPrivado =
+                        (mensaje.idEmisor == idSelected && mensaje.idReceptor == currentUserId) ||
+                        (mensaje.idEmisor == currentUserId && mensaje.idReceptor == idSelected);
+
+                    if (esChatPrivado) {
+                        mostrarMensaje(mensaje);
+                    }
+                }
+            });
+        }
+
         stompClient.subscribe('/topic/mensajes', (messageOutput) => {
             const mensaje = JSON.parse(messageOutput.body);
-            mostrarMensaje(mensaje);
+
+            if (!selectedUserId && !mensajesMostrados.has(mensaje.id)) {
+                mensajesMostrados.add(mensaje.id);
+                mostrarMensaje(mensaje);
+            }
         });
     });
 }
 
 function mostrarMensaje(mensaje) {
-    const mensajeDiv = document.createElement("div");
-    mensajeDiv.classList.add("mb-2");
+    const chatBox = document.getElementById("chatMessages");
 
-    const esMio = mensaje.emisorId === currentUserId;
-    mensajeDiv.classList.add(esMio ? "text-end" : "text-start");
+    // Solo mostrar si el mensaje es del chat actual
+    const chatEsPrivado = selectedUserId !== null;
+
+    if (chatEsPrivado) {
+        const receptorMatch = mensaje.idReceptor === currentUserId && mensaje.idEmisor === selectedUserId;
+        const emisorMatch = mensaje.idEmisor === currentUserId && mensaje.idReceptor === selectedUserId;
+        if (!(receptorMatch || emisorMatch)) return;
+    } else {
+        if (mensaje.idReceptor) return;
+    }
+
+    const mensajeDiv = document.createElement("div");
+    mensajeDiv.classList.add("mensaje");
+
+    const esMio = mensaje.idEmisor === currentUserId;
+    mensajeDiv.classList.add(esMio ? "mensaje-emisor" : "mensaje-receptor");
 
     mensajeDiv.innerHTML = `
-      <div class="d-inline-block p-2 rounded ${esMio ? 'bg-primary text-white' : 'bg-white border'}">
-          <strong>${mensaje.emisorNombre}</strong><br/>
-          ${mensaje.contenido}
-      </div>
-  `;
+      <div class="contenido">${mensaje.contenido}</div>
+      <div class="fecha">${mensaje.fechaEnvio ? mensaje.fechaEnvio.replace('T', ' ').slice(0, 16) : ''}</div>
+    `;
 
-    document.getElementById("chatMessages").appendChild(mensajeDiv);
+    chatBox.appendChild(mensajeDiv);
     scrollToBottom();
 }
+
 
 function scrollToBottom() {
     const chatBox = document.getElementById("chatMessages");
@@ -68,20 +106,40 @@ function sendMessage() {
     const contenido = input.value.trim();
     if (contenido === "") return;
 
-    const mensaje = {
+    // Crear ID temporal para evitar duplicados en la UI (NO se envía al backend)
+    const tempId = 'temp-' + Date.now();
+
+    // Mostrar mensaje en UI con tempId para evitar duplicados
+    const mensajeLocal = {
+        id: tempId, // solo para UI local
         contenido: contenido,
-        emisorId: currentUserId,
-        receptorId: selectedUserId || null,
-        esGrupal: !selectedUserId
+        idEmisor: parseInt(currentUserId),
+        idReceptor:parseInt(selectedUserId) || null,
+        esGrupal: !selectedUserId,
+        fechaEnvio: new Date().toISOString()
     };
 
-    stompClient.send("/app/chat", {}, JSON.stringify(mensaje));
+    mostrarMensaje(mensajeLocal);
+    mensajesMostrados.add(tempId);
+
+    // Crear mensaje para backend SIN id (porque backend espera Integer)
+    const mensajeParaBackend = {
+        contenido: contenido,
+        idEmisor: currentUserId,
+        idReceptor: selectedUserId || null,
+        esGrupal: !selectedUserId,
+        fechaEnvio: mensajeLocal.fechaEnvio
+    };
+
+    stompClient.send("/app/enviarMensaje", {}, JSON.stringify(mensajeParaBackend));
     input.value = "";
 }
+
 
 function limpiarMensajes() {
     const chatBox = document.getElementById("chatMessages");
     chatBox.innerHTML = "";
+    mensajesMostrados.clear();
 }
 
 function onUserSelectChange(event) {
@@ -110,6 +168,19 @@ function onUserSelectChange(event) {
         .catch(error => {
             console.error('Error en fetch:', error);
             alert('Error en la comunicación con el servidor');
+        });
+
+    fetch('/chat/mensajes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ usuarioBId: selectedUserId }).toString()
+    })
+        .then(response => {
+            if (!response.ok) throw new Error("No se pudieron cargar mensajes");
+            return response.json();
+        })
+        .then(mensajes => {
+            mostrarMensajesEnPantalla(mensajes);
         });
 }
 
@@ -148,6 +219,7 @@ function mostrarMensajesEnPantalla(mensajes, nombreUsuario = "") {
     const usuarioActualId = parseInt(document.getElementById('userId').value);
 
     chatMessages.innerHTML = ''; // Limpiar mensajes anteriores
+    mensajesMostrados.clear();
 
     if (mensajes.length === 0) {
         const mensajeVacio = document.createElement("div");
@@ -161,6 +233,7 @@ function mostrarMensajesEnPantalla(mensajes, nombreUsuario = "") {
     }
 
     mensajes.forEach(mensaje => {
+        mensajesMostrados.add(mensaje.id);
         const esEmisor = mensaje.idEmisor === usuarioActualId;
         const mensajeDiv = document.createElement('div');
         mensajeDiv.classList.add('mensaje', esEmisor ? 'mensaje-emisor' : 'mensaje-receptor');
