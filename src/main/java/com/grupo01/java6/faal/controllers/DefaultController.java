@@ -183,14 +183,21 @@ public class DefaultController {
         return "chat"; // View name
     }
 
-
     @GetMapping("/home")
-    public String showHome()
+    public String showhome()
     {
 
         return "home"; // View name
+    }
+    @GetMapping("/Ticketdesplay")
+    public String showTicketdesplay()
+    {
+
+        return "Ticketdesplay"; // View name
 
     }
+
+
 
 
 //    @GetMapping("/ticket/admin")
