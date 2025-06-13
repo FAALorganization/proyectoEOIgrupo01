@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -27,18 +28,21 @@ public class DocumentacionController {
 
     /** 🔹 Ver todos los documentos de un proyecto */
     @GetMapping("/ver/{idProyecto}")
-    public ResponseEntity<List<Documento>> verDocumentos(@PathVariable Long idProyecto) {
+    public ResponseEntity<List<Documento>> verDocumentos(@PathVariable Integer idProyecto) {
         List<Documento> documentos = documentoRepository.findByProyecto_Id(idProyecto);
         return ResponseEntity.ok(documentos);
     }
 
     /** 🔹 Subir documento asociado a un proyecto */
     @PostMapping("/subir")
-    public ResponseEntity<String> subirDocumentos(@RequestParam Long idProyecto,
-                                                  @RequestParam("archivos") MultipartFile[] archivos) {
+    public String subirDocumentos(@RequestParam Long idProyecto,
+                                  @RequestParam("archivos") MultipartFile[] archivos,
+                                  RedirectAttributes redirectAttributes) {
+
         Proyecto proyecto = proyectoRepository.findById(Math.toIntExact(idProyecto)).orElse(null);
         if (proyecto == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proyecto no encontrado.");
+            redirectAttributes.addFlashAttribute("error", "❌ Proyecto no encontrado.");
+            return "redirect:/documentacion";
         }
 
         boolean algunoFalló = false;
@@ -52,17 +56,21 @@ public class DocumentacionController {
             }
         }
 
-        if (archivos.length == 0 || (archivos.length > 0 && algunoFalló)) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir uno o más documentos.");
+        if (archivos.length == 0) {
+            redirectAttributes.addFlashAttribute("error", "⚠️ No se seleccionaron archivos para subir.");
+        } else if (algunoFalló) {
+            redirectAttributes.addFlashAttribute("error", "⚠️ Algunos documentos no se pudieron subir.");
+        } else {
+            redirectAttributes.addFlashAttribute("mensaje", "✅ Documentos subidos correctamente.");
         }
 
-        return ResponseEntity.ok("Documentos subidos correctamente.");
+        return "redirect:/documentacion";
     }
 
 
     /** 🔹 Descargar documento */
     @GetMapping("/descargar/{idDocumento}")
-    public ResponseEntity<Resource> descargarDocumento(@PathVariable Long idDocumento) {
+    public ResponseEntity<Resource> descargarDocumento(@PathVariable Integer idDocumento) {
         Documento documento = documentoService.obtenerPorId(idDocumento);
         if (documento == null || documento.getRutaArchivo() == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -80,7 +88,7 @@ public class DocumentacionController {
 
     /** 🔹 Borrar documento */
     @PostMapping("/borrar")
-    public ResponseEntity<String> borrarDocumento(@RequestParam Long idDocumento) {
+    public ResponseEntity<String> borrarDocumento(@RequestParam Integer idDocumento) {
         boolean eliminado = documentoService.eliminarDocumento(idDocumento);
         return eliminado ? ResponseEntity.ok("Documento eliminado correctamente.")
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo eliminar el documento.");
