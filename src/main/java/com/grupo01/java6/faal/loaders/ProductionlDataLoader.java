@@ -2,6 +2,7 @@ package com.grupo01.java6.faal.loaders;
 
 import com.grupo01.java6.faal.entities.*;
 import com.grupo01.java6.faal.repositories.*;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @Configuration
 @Log4j2
-@Profile("produccion")
+@Profile("producciodnRESETDATA")
 public class ProductionlDataLoader {
 
     private final DetallesDeUsuarioRepository detallesDeUsuarioRepository;
@@ -38,7 +39,7 @@ public class ProductionlDataLoader {
     }
 
 
-    @Profile("produccionRESETDATA")
+    @PostConstruct
     public void loadDataProduccion() {
         //int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         String[] nombres = {"Ana", "General", "Luis", "Marta", "Carlos", "Elena", "Javier", "Lucía", "Pedro", "Sara"};
