@@ -3,6 +3,8 @@ package com.grupo01.java6.faal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class Sla implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idSla", nullable = false)
+    @Column(name = "id_Sla", nullable = false)
     private Integer id;
 
     @Column(name = "prioridades_enum", nullable = false, length = 100)
@@ -34,6 +36,19 @@ public class Sla implements Serializable{
     private LocalDate fechaIni;
 
     @Column(name = "fecha_fin")
+
     private LocalDate fechaFin;
+
+    private Instant slaStartTime;
+    // When SLA timer started or resumed
+    private Duration slaElapsed = Duration.ZERO; // Total elapsed time before pause
+    private boolean slaPaused = true;
+    /*
+    @OneToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticketing ticket;
+
+     */
+
 
 }
