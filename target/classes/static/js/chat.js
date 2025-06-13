@@ -1,187 +1,283 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+let socket;
+let stompClient;
+let selectedUserId = null;
+const currentUserId = parseInt(document.getElementById("userId")?.value) || null;
+const mensajesMostrados = new Set(); // Para evitar mostrar mensajes duplicados
 
-    const showNavbar = (toggleId, navId, bodyId, headerId) =>{
-        const toggle = document.getElementById(toggleId),
-            nav = document.getElementById(navId),
-            bodypd = document.getElementById(bodyId),
-            headerpd = document.getElementById(headerId)
+window.addEventListener("load", () => {
+    connectWebSocket();
 
-        // Validate that all variables exist
-        if(toggle && nav && bodypd && headerpd){
-            toggle.addEventListener('click', ()=>{
-                // show navbar
-                nav.classList.toggle('show')
-                // change icon
-                toggle.classList.toggle('bx-x')
-                // add padding to body
-                bodypd.classList.toggle('body-pd')
-                // add padding to header
-                headerpd.classList.toggle('body-pd')
-            })
-        }
+    const select = document.getElementById("selectUserToChat");
+    if (select) {
+        select.addEventListener("change", onUserSelectChange);
     }
 
-    showNavbar('header-toggle','nav-bar','body-pd','header')
-
-    /*===== LINK ACTIVE =====*/
-    const linkColor = document.querySelectorAll('.nav_link')
-
-    function colorLink(){
-        if(linkColor){
-            linkColor.forEach(l=> l.classList.remove('active'))
-            this.classList.add('active')
-        }
+    const sendButton = document.getElementById("sendMessageBtn");
+    if (sendButton) {
+        sendButton.addEventListener("click", sendMessage);
     }
-    linkColor.forEach(l=> l.addEventListener('click', colorLink))
 
-    // Your code to run since DOM is loaded and ready
-});
-
-counter = 0;
-const buttonNav = document.getElementById("header-toggle");
-buttonNav.addEventListener("click", function(){
-
-    if (counter%2 == 0){
-        document.querySelectorAll(".nav_name").forEach(link =>{
-            link.style.color = "white";
-            link.classList.add("textenter");
-        })
-        counter += 1;
-    }else {
-        document.querySelectorAll(".nav_name").forEach(link =>{
-            link.style.color = "#252323";
-            link.classList.remove("textenter");
-        })
-        counter += 1;
+    const chatInput = document.getElementById("chatInput");
+    if (chatInput) {
+        chatInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
     }
 });
 
-/*JS CHAT*/
+function connectWebSocket() {
+    socket = new SockJS("/ws");
+    stompClient = Stomp.over(socket);
 
-document.addEventListener("DOMContentLoaded", function () {
-    const users = [
-        { name: 'Usuario A', avatar: 'https://i.pravatar.cc/40?u=alice' },
-        { name: 'Usuario B', avatar: 'https://i.pravatar.cc/40?u=bob' },
-        { name: 'Usuario C', avatar: 'https://i.pravatar.cc/40?u=carlos' },
-        { name: 'Usuario D', avatar: 'https://i.pravatar.cc/40?u=diana' }
-    ];
+    stompClient.connect({}, () => {
+        if (currentUserId) {
+            stompClient.subscribe(`/user/queue/mensajes/${currentUserId}`, (messageOutput) => {
+                const mensaje = JSON.parse(messageOutput.body);
 
-    let currentChatUser = null;
-    let chatHistory = {};
-    let isGroupChat = false;
+                if (mensajesMostrados.has(mensaje.id)) return; // Ya mostrado, ignorar
+                mensajesMostrados.add(mensaje.id);
 
-    const userList = document.getElementById('userList');
-    const chatBox = document.getElementById('chatBox');
-    const chatHeader = document.getElementById('chatHeader');
-    const messageInput = document.getElementById('messageInput');
+                // Mostrar solo si es del chat abierto
+                if (selectedUserId) {
+                    const idSelected = Number(selectedUserId);
+                    const esChatPrivado =
+                        (mensaje.idEmisor == idSelected && mensaje.idReceptor == currentUserId) ||
+                        (mensaje.idEmisor == currentUserId && mensaje.idReceptor == idSelected);
 
-    // Mostrar lista de usuarios
-    users.forEach(user => {
-        const btn = document.createElement('div');
-        btn.className = 'flex items-center gap-3 p-3 cursor-pointer hover:bg-blue-100';
-        btn.innerHTML = `
-        <img src="${user.avatar}" alt="avatar" class="w-8 h-8 rounded-full">
-        <div>${user.name}</div>
-      `;
-        btn.onclick = () => openChat(user.name);
-        userList.appendChild(btn);
+                    if (esChatPrivado) {
+                        mostrarMensaje(mensaje);
+                    }
+                }
+            });
+        }
+
+        stompClient.subscribe('/topic/mensajes', (messageOutput) => {
+            const mensaje = JSON.parse(messageOutput.body);
+
+            if (!selectedUserId && !mensajesMostrados.has(mensaje.id)) {
+                mensajesMostrados.add(mensaje.id);
+                mostrarMensaje(mensaje);
+            }
+        });
+    });
+}
+
+function mostrarMensaje(mensaje) {
+    const chatBox = document.getElementById("chatMessages");
+
+    // Solo mostrar si el mensaje es del chat actual
+    const chatEsPrivado = selectedUserId !== null;
+
+    if (chatEsPrivado) {
+        const receptorMatch = mensaje.idReceptor === currentUserId && mensaje.idEmisor === selectedUserId;
+        const emisorMatch = mensaje.idEmisor === currentUserId && mensaje.idReceptor === selectedUserId;
+        if (!(receptorMatch || emisorMatch)) return;
+    } else {
+        if (mensaje.idReceptor) return;
+    }
+
+    const mensajeDiv = document.createElement("div");
+    mensajeDiv.classList.add("mensaje");
+
+    const esMio = mensaje.idEmisor === currentUserId;
+    mensajeDiv.classList.add(esMio ? "mensaje-emisor" : "mensaje-receptor");
+
+    mensajeDiv.innerHTML = `
+      <div class="contenido">${mensaje.contenido}</div>
+      <div class="fecha">${mensaje.fechaEnvio ? mensaje.fechaEnvio.replace('T', ' ').slice(0, 16) : ''}</div>
+    `;
+
+    chatBox.appendChild(mensajeDiv);
+    scrollToBottom();
+}
+
+
+function scrollToBottom() {
+    const chatBox = document.getElementById("chatMessages");
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function sendMessage() {
+    const input = document.getElementById("chatInput");
+    if (!input) return;
+    const contenido = input.value.trim();
+    if (contenido === "") return;
+
+    // Crear ID temporal para evitar duplicados en la UI (NO se envía al backend)
+    const tempId = 'temp-' + Date.now();
+
+    // Mostrar mensaje en UI con tempId para evitar duplicados
+    const mensajeLocal = {
+        id: tempId, // solo para UI local
+        contenido: contenido,
+        idEmisor: parseInt(currentUserId),
+        idReceptor:parseInt(selectedUserId) || null,
+        esGrupal: !selectedUserId,
+        fechaEnvio: new Date().toISOString()
+    };
+
+    mostrarMensaje(mensajeLocal);
+    mensajesMostrados.add(tempId);
+
+    // Crear mensaje para backend SIN id (porque backend espera Integer)
+    const mensajeParaBackend = {
+        contenido: contenido,
+        idEmisor: currentUserId,
+        idReceptor: selectedUserId || null,
+        esGrupal: !selectedUserId,
+        fechaEnvio: mensajeLocal.fechaEnvio
+    };
+
+    stompClient.send("/app/enviarMensaje", {}, JSON.stringify(mensajeParaBackend));
+    input.value = "";
+}
+
+
+function limpiarMensajes() {
+    const chatBox = document.getElementById("chatMessages");
+    chatBox.innerHTML = "";
+    mensajesMostrados.clear();
+}
+
+function onUserSelectChange(event) {
+    selectedUserId = event.target.value;
+    console.log("Usuario seleccionado:", selectedUserId);
+
+    if (!selectedUserId) {
+        console.log("No se seleccionó usuario válido");
+        limpiarMensajes();
+        return;
+    }
+
+    fetch('/chat/activar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ usuarioBId: selectedUserId }).toString()
+    })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+                limpiarMensajes();
+            } else {
+                response.text().then(text => alert('Error: ' + text));
+            }
+        })
+        .catch(error => {
+            console.error('Error en fetch:', error);
+            alert('Error en la comunicación con el servidor');
+        });
+
+    fetch('/chat/mensajes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ usuarioBId: selectedUserId }).toString()
+    })
+        .then(response => {
+            if (!response.ok) throw new Error("No se pudieron cargar mensajes");
+            return response.json();
+        })
+        .then(mensajes => {
+            mostrarMensajesEnPantalla(mensajes);
+        });
+}
+
+function cerrarChat(usuarioId) {
+    fetch('/chat/desactivar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ usuarioBId: usuarioId }).toString()
+    })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                response.text().then(text => alert('Error: ' + text));
+            }
+        })
+        .catch(error => {
+            console.error('Error en fetch:', error);
+            alert('Error en la comunicación con el servidor');
+        });
+}
+
+function createGroupChat() {
+    selectedUserId = null;
+    const chatTitle = document.getElementById("chatTitle");
+    if (chatTitle) chatTitle.textContent = "Chat grupal";
+
+    document.getElementById("chatInputGroup")?.classList.remove("d-none");
+    document.getElementById("selectUserGroup")?.classList.add("d-none");
+
+    limpiarMensajes();
+}
+
+function mostrarMensajesEnPantalla(mensajes, nombreUsuario = "") {
+    const chatMessages = document.getElementById('chatMessages');
+    const usuarioActualId = parseInt(document.getElementById('userId').value);
+
+    chatMessages.innerHTML = ''; // Limpiar mensajes anteriores
+    mensajesMostrados.clear();
+
+    if (mensajes.length === 0) {
+        const mensajeVacio = document.createElement("div");
+        mensajeVacio.textContent = `El chat está vacío. Comienza a chatear con ${nombreUsuario}`;
+        mensajeVacio.style.textAlign = "center";
+        mensajeVacio.style.marginTop = "50px";
+        mensajeVacio.style.fontStyle = "italic";
+        mensajeVacio.style.color = "#777";
+        chatMessages.appendChild(mensajeVacio);
+        return;
+    }
+
+    mensajes.forEach(mensaje => {
+        mensajesMostrados.add(mensaje.id);
+        const esEmisor = mensaje.idEmisor === usuarioActualId;
+        const mensajeDiv = document.createElement('div');
+        mensajeDiv.classList.add('mensaje', esEmisor ? 'mensaje-emisor' : 'mensaje-receptor');
+
+        mensajeDiv.innerHTML = `
+            <div class="contenido">${mensaje.contenido}</div>
+            <div class="fecha">${mensaje.fechaEnvio ? mensaje.fechaEnvio.replace('T', ' ').slice(0, 16) : ''}</div>
+        `;
+
+        chatMessages.appendChild(mensajeDiv);
     });
 
-    function openChat(user) {
-        isGroupChat = false;
-        currentChatUser = user;
-        chatHeader.textContent = `Chat con ${user}`;
-        displayMessages(chatHistory[user] || []);
-        messageInput.value = ''; // Limpiar el input al abrir el chat
-        messageInput.focus(); // Opcional: enfocar el input
-    }
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 
-    function sendMessage() {
-        const msg = messageInput.value.trim();
-        if (!msg || !currentChatUser) return;
+document.querySelectorAll('.list-group-item').forEach(elemento => {
+    elemento.addEventListener('click', (event) => {
+        const userId = event.currentTarget.getAttribute('data-user-id');
+        const nombre = event.currentTarget.innerText || "este usuario";
+        selectedUserId = userId;
 
-        if (!chatHistory[currentChatUser]) chatHistory[currentChatUser] = [];
-        chatHistory[currentChatUser].push(msg);
-        messageInput.value = '';
-        displayMessages(chatHistory[currentChatUser]);
-    }
+        console.log('Usuario seleccionado con ID:', userId);
 
-    function displayMessages(messages) {
-        chatBox.innerHTML = '';
-        messages.forEach(msg => {
-            const div = document.createElement('div');
-            div.className = 'mb-3 flex';
-            div.innerHTML = `
-        <div class="bg-blue-100 text-gray-800 shadow px-4 py-2 rounded-xl max-w-[80%]">
-        ${msg}
-        </div>
-      `;
-
-            chatBox.appendChild(div);
-        });
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    // MODAL
-    function openGroupModal() {
-        document.getElementById('groupModal').classList.remove('hidden');
-        const list = document.getElementById('groupUserList');
-        list.innerHTML = '';
-        users.forEach(user => {
-            const label = document.createElement('label');
-            label.className = 'flex items-center gap-2';
-            label.innerHTML = `
-          <input type="checkbox" value="${user.name}" class="form-checkbox" />
-          <span>${user.name}</span>
-        `;
-            list.appendChild(label);
-        });
-    }
-
-    function closeGroupModal() {
-        document.getElementById('groupModal').classList.add('hidden');
-    }
-
-    function createGroupChat() {
-        const checkboxes = document.querySelectorAll('#groupUserList input:checked');
-        const groupName = document.getElementById('groupNameInput').value.trim();
-        if (checkboxes.length < 2 || !groupName) {
-            alert('Selecciona al menos 2 usuarios y pon un nombre al grupo.');
-            return;
-        }
-
-        const participants = Array.from(checkboxes).map(cb => cb.value);
-        currentChatUser = groupName;
-        isGroupChat = true;
-        chatHistory[groupName] = chatHistory[groupName] || [];
-
-        if (!document.getElementById(`group-${groupName}`)) {
-            const div = document.createElement('div');
-            div.id = `group-${groupName}`;
-            div.className = 'cursor-pointer px-3 py-2 rounded-xl hover:bg-blue-100';
-            div.textContent = `👥 ${groupName}`;
-            div.onclick = () => {
-                currentChatUser = groupName;
-                isGroupChat = true;
-                chatHeader.textContent = `Grupo: ${groupName}`;
-                displayMessages(chatHistory[groupName]);
-                messageInput.value = ''; // limpiar input al abrir grupo
-                messageInput.focus();
-            };
-            userList.appendChild(div);
-        }
-
-        chatHeader.textContent = `Grupo: ${groupName}`;
-        displayMessages(chatHistory[groupName]);
-        closeGroupModal();
-        messageInput.value = '';
-        messageInput.focus();
-    }
-
-    // Exponer funciones globalmente si se usan desde HTML
-    window.openGroupModal = openGroupModal;
-    window.closeGroupModal = closeGroupModal;
-    window.createGroupChat = createGroupChat;
-    window.sendMessage = sendMessage;
+        fetch('/chat/mensajes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                usuarioBId: userId
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudieron obtener los mensajes');
+                }
+                return response.json();
+            })
+            .then(mensajes => {
+                console.log('Mensajes recibidos:', mensajes);
+                mostrarMensajesEnPantalla(mensajes, nombre);
+            })
+            .catch(error => {
+                console.error('Error al cargar mensajes:', error);
+            });
+    });
 });
-
