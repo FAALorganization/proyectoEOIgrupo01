@@ -3,6 +3,7 @@ package com.grupo01.java6.faal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -87,4 +88,33 @@ public class Ticketing implements Serializable {
         updatedAt = LocalDateTime.now();
         modificacion = LocalDate.now();
     }
+
+    // Adtional fieled not stored in bd
+    @org.springframework.data.annotation.Transient
+    private String telefono;
+    @org.springframework.data.annotation.Transient // not stored in bd
+    private Integer fechaQuejaDay;
+
+    @org.springframework.data.annotation.Transient
+    private Integer fechaQuejaMonth;
+
+    @org.springframework.data.annotation.Transient
+    private Integer fechaQuejaYear;
+
+    @org.springframework.data.annotation.Transient
+    private LocalDate fechaQueja ;
+    @Transient
+    public LocalDate getFechaQueja() {
+        if (fechaQuejaYear != null && fechaQuejaMonth != null && fechaQuejaDay != null) {
+            try {
+                return LocalDate.of(fechaQuejaYear, fechaQuejaMonth, fechaQuejaDay);
+            } catch (DateTimeException e) {
+                return null; // Handle invalid date
+            }
+        }
+        return null;
+    }
+    @org.springframework.data.annotation.Transient
+    // transient bc m to lazy to modify the entiy so i will do it later  : )
+    private String correoGerente;
 }

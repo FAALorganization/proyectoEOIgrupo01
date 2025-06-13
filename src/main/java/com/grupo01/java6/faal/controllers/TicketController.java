@@ -28,12 +28,6 @@ public class TicketController {
         this.ticketingService = ticketingService;
     }
     // visitor panel //
-// i used creatTicketDTO instead os TicketDto
-@GetMapping("/ticket")
-public String showTicketForm(Model model) {
-    model.addAttribute("ticketForm", new TicketingDTO());
-    return "ticket";
-}
     @PostMapping("/submit")
     public String createTicket(
             @Valid @ModelAttribute TicketingDTO ticketingDTO,
@@ -64,12 +58,11 @@ public String showTicketForm(Model model) {
             return "ticket";
         }
     }
-
+//Gets all tickets submitted by the current user.
     @GetMapping("/list")
     public String listTickets(Model model, Authentication authentication) {
         String userEmail = authentication.getName();
         List<TicketingDTO> tickets = ticketingService.findUserTickets(userEmail);
-        log.info("User {} requested their ticket list", userEmail);
         log.info("User {} requested their ticket list", userEmail);
 
         model.addAttribute("tickets", tickets);
@@ -81,26 +74,24 @@ public String showTicketForm(Model model) {
 
     ///  admin section ///
     /// mostrar ///
-    @GetMapping("/ticket/admin")
-    public String showAdminTickets(Model model) {
+
+    @GetMapping("/admin")
+    public String showAdminTickets(Model model, Authentication authentication) {
+        log.info("Admin access attempted by: {}", authentication.getName());
         model.addAttribute("ticketingDTO", new TicketingDTO());
         model.addAttribute("ticketsList", ticketingService.findAll());
         return "admin-tickets";
     }
-    @GetMapping("/Access")
-    public String adminTickets(Model model, Authentication authentication) {
-        log.info("Admin access attempted by: {}", authentication.getName());
-        List<TicketingDTO> allTickets = ticketingService.findAll();
-        log.debug("Retrieved {} tickets for admin view", allTickets.size());
-        model.addAttribute("tickets", allTickets);
-        return "admin-tickets"; // View: admin-tickets.html
-    }
 
+
+// aprove a Ticket  usuarioAprobador esta en el ux
     @PostMapping("/approve/{id}")
     public String approveTicket(
-            @PathVariable Integer id,
+            @PathVariable Integer id,@RequestParam("usuarioAprobador") String usuarioAprobador,
             Authentication authentication,
             RedirectAttributes redirectAttributes) {
+        // just to check
+        log.info("Quien ha Aprobado el Ticket: {}", usuarioAprobador);
 
         try {
             String approvedEmail = authentication.getName();
@@ -112,7 +103,12 @@ public String showTicketForm(Model model) {
         }
 
         return "redirect:/ticket/admin";
+
     }
+
+
+    // guardar el ticket
+
     @PostMapping("/tickets/save")
     public String saveTicket(@Valid @ModelAttribute TicketingDTO ticketingDTO,
                              BindingResult result, @RequestParam("telefono") String telefono,
@@ -135,6 +131,9 @@ public String showTicketForm(Model model) {
 
         return "redirect:/tickets/list";
     }
+
+    // Update the ticket Admin
+
 /*
     @GetMapping("/create-form")
     public String showCreateForm(Model model, Authentication authentication) {

@@ -24,8 +24,14 @@ public class TicketingDTO {
 
     @Size(max = 1000, message = "La descripción no puede exceder 1000 caracteres")
     private String descripcion;
-
-
+/// why tipoTicket dosnt work
+//    public String getTipoTicket() {
+//        return tipoTicket;
+//    }
+//
+//    public void setTipoTicket(String tipoTicket) {
+//        this.tipoTicket = tipoTicket;
+//    }
     @NotBlank(message = "El tipo de ticket es obligatorio")
     private String tipoTicket;
 
@@ -46,9 +52,18 @@ public class TicketingDTO {
     private String estado;
     @Transient
     private String telefono;
+    @Transient // not stored in bd
+    private Integer fechaQuejaDay;
+
+    @Transient
+    private Integer fechaQuejaMonth;
+
+    @Transient
+    private Integer fechaQuejaYear;
+
     @Transient
     private LocalDate fechaQueja ;
-    @Transient      // transient bc m to lazy to modify the entiy so i will do it later  : ) 
+    @Transient      // transient bc m to lazy to modify the entiy so i will do it later  : )
     private String correoGerente;
     public String getEstado() {
         if (aprobado == null) return "PENDIENTE";

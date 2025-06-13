@@ -587,7 +587,7 @@
     <!-- LEFT SECTION -->
     <div class="left-section">
         <div class="main-block">
-            <form th:action="@{/ticket/save}" th:object="${ticketingDTO}" method="post" enctype="multipart/form-data">
+            <form th:object="${ticketingDTO}" th:action="@{/tickets/save}" method="post">
             <form id="ticketForm">
                 <h1>Sistema de Tickets</h1>
                 <input type="hidden" th:field="*{id}">
@@ -611,12 +611,14 @@
                         <div class="form-group">
                             <label for="telefono">Teléfono</label>
                             <input type="tel" id="telefono" th:field="*{telefono}" placeholder="Ingrese su número telefónico" required>
-                        </div>                        </div>
+                        </div>
+                    </div>
 
                         <div class="form-group">
                             <label for="correoGerente">Correo del Gerente*</label>
-                            <input type="email" id="correoGerente" th:field="*{correoGerente}" placeholder="xxxxxxx@dominio.com" required>                        </div>
-               </div>
+                            <input type="email" id="correoGerente" th:field="*{correoGerente}" placeholder="xxxxxxx@dominio.com" required>
+                        </div>
+        </div>
 
                     <div class="form-group">
                         <label for="assigned">Asignado A</label>
@@ -627,19 +629,27 @@
                             <option value="email">angel@faal.com</option>
                         </select>
                     </div>
-                </fieldset>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="usuarioAprobador">Usuario Aprobador</label>
+                <input type="text" name="usuarioAprobador" id="usuarioAprobador" placeholder="Usuario que aprueba el ticket">
+            </div>
+
+            </fieldset>
 
                 <fieldset>
                     <legend><h3>Detalles del Ticket</h3></legend>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="ticketType">Tipo de Ticket</label>
-                            <select id="ticketType" name="ticketType">
+                            <label for="tipoTicket">Tipo de Ticket</label>
+                            <select name="tipoTicket" id="tipoTicket" required>
+                            <!-- Ask why <select th:field="*{tipoTicket}" id="tipoTicket">-->
                                 <option value="task" selected>Tarea</option>
                                 <option value="complaint">Queja</option>
                                 <option value="other">Otro</option>
                             </select>
+<!--                            <div th:if="${#fields.hasErrors('tipoTicket')}" th:errors="*{tipoTicket}" class="error-message"></div>-->
                         </div>
 
                         <div class="form-group">
@@ -650,6 +660,15 @@
                                 <option value="medium" selected>Media</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="aprobado">Estado de Aprobación</label>
+                        <select th:name="aprobado" id="aprobado"required>
+<!--                        <select th:field="*{aprobado}" id="aprobado">-->
+                            <option value="">Pendiente</option>
+                            <option th:value="true">Aprobado</option>
+                            <option th:value="false">Rechazado</option>
+                        </select>
                     </div>
 
                     <div class="form-group">

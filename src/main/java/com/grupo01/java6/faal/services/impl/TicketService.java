@@ -15,6 +15,7 @@ public interface TicketService {
     TicketingDTO findById(Integer id);
     List<TicketingDTO> findAll();
     TicketingDTO update(TicketingDTO dto);
+    TicketingDTO updateTicket (Integer id, TicketingDTO ticketDTO);
     TicketingDTO createTicket(TicketingDTO ticketDTO, String userEmail);
     void approveTicket(Integer id, String approverEmail);
     void rejectTicket(Integer id, String approverEmail);

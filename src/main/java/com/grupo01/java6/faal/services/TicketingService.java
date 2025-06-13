@@ -1,4 +1,5 @@
 package com.grupo01.java6.faal.services;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -105,6 +107,7 @@ public class TicketingService implements TicketService {
             ticket.setFechaInicio(LocalDate.now());
             ticket.setModificacion(LocalDate.now());
             ticket.setCreatedBy(usuario) ;
+            ticket.setFechaInicio(LocalDate.now());
             ticket.setAprobado(false);
         }
         Ticketing saved = ticketingRepository.save(ticket);
@@ -131,7 +134,8 @@ public class TicketingService implements TicketService {
         if (dto.getAsunto() != null) existing.setAsunto(dto.getAsunto());
         if (dto.getDescripcion() != null) existing.setDescripcion(dto.getDescripcion());
         if (dto.getTipoTicket() != null) existing.setTipoTicket(dto.getTipoTicket());
-        if (dto.getFechaFin() != null) existing.setFechaFin(dto.getFechaFin());
+        // to do modify entity later on with the ux
+        if (dto.getFechaFin() != null) existing.setFechaFin(dto.getFechaQueja());
 
         return convertToDto(ticketingRepository.save(existing));
     }
@@ -139,6 +143,10 @@ public class TicketingService implements TicketService {
 
     public TicketingDTO updateTicket(Integer id, TicketingDTO ticketDTO) {
         ticketDTO.setId(id);
+        Optional<TicketingDTO> existingTicket = Optional.ofNullable(findById(id));
+        if (existingTicket.isEmpty()) {
+            throw new EntityNotFoundException("Ticket with ID " + id + " not found");
+        }
         return update(ticketDTO);
     }
  // aprove solo di es un Admin  tal que el aprovemeail en la entity es emaiprimario
