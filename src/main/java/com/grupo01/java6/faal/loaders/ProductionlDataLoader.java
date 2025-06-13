@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Configuration
 @Log4j2
-@Profile("produccion")
+@Profile("produccionRESETDATA")
 public class ProductionlDataLoader {
 
     private final DetallesDeUsuarioRepository detallesDeUsuarioRepository;
@@ -37,8 +37,7 @@ public class ProductionlDataLoader {
         this.mensajeRepository = mensajeRepository;
     }
 
-
-    @Profile("produccionRESETDATA")
+    @PostConstruct
     public void loadDataProduccion() {
         //int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         String[] nombres = {"Ana", "General", "Luis", "Marta", "Carlos", "Elena", "Javier", "Lucía", "Pedro", "Sara"};
