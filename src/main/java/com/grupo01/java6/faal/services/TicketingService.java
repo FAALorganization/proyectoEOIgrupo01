@@ -2,7 +2,6 @@ package com.grupo01.java6.faal.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.grupo01.java6.faal.dtos.CreateTicketDTO;
 import com.grupo01.java6.faal.dtos.TicketingDTO;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Prioridades;
@@ -12,8 +11,6 @@ import com.grupo01.java6.faal.repositories.PrioridadesRepository;
 import com.grupo01.java6.faal.repositories.TicketingRepository;
 import com.grupo01.java6.faal.services.impl.TicketService;
 import org.modelmapper.ModelMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -81,7 +78,43 @@ public class TicketingService implements TicketService {
                 .map(this::convertToDto)
                 .toList();
     }
-// update priority media alta
+    @Override
+    public TicketingDTO  save (TicketingDTO ticketingDTO, String userEmail) {
+        log.info("Saving ticket (ID: {}) by user {}", ticketingDTO.getId(), userEmail);
+
+        Login usuario = loginRepository.getLoginByEmailPrimario(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + userEmail));
+        Prioridades prioridades = (Prioridades) prioridadesRepository.findByPrioridadesEnum(ticketingDTO.getPrioridad())
+                .orElseThrow(()->new ResourceNotFoundException("prorodades no encontrada:"+ticketingDTO.getPrioridad()));
+        // instnce
+        Ticketing ticket;
+
+        if (ticketingDTO.getId()!=null) {
+
+            ticket =ticketingRepository.findActiveById(ticketingDTO.getId())
+                    .orElseThrow(()->new org.springframework.data.rest.webmvc.ResourceNotFoundException("Ticket Activo no encontrado con el ID:"+ ticketingDTO.getId()));
+            ticket.setAsunto(ticketingDTO.getAsunto());
+            ticket.setModificacion(LocalDate.now());
+            ticket.setCreatedBy(usuario) ;
+
+        } else {
+            // 4. New ticket (create)
+            ticket = modelMapper.map(ticketingDTO,
+                    Ticketing.class);
+            ticket.setIdPrior(prioridades);
+            ticket.setFechaInicio(LocalDate.now());
+            ticket.setModificacion(LocalDate.now());
+            ticket.setCreatedBy(usuario) ;
+            ticket.setAprobado(false);
+        }
+        Ticketing saved = ticketingRepository.save(ticket);
+        log.info("Ticket (ID: {}) saved successfully by {}", saved.getId(), userEmail);
+
+        return convertToDto(saved);
+    }
+
+
+    // update priority media alta
     @Override
     public TicketingDTO update(TicketingDTO dto) {
         Ticketing existing = ticketingRepository.findActiveById(dto.getId())
@@ -145,6 +178,8 @@ public class TicketingService implements TicketService {
         ticketingRepository.save(ticket);
         log.info("Ticket {} rejected by {}", id, approverEmail);
     }
+
+
 // delet a ticket
     @Override
     public void delete(Integer id) {

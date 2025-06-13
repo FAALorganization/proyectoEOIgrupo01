@@ -587,6 +587,7 @@
     <!-- LEFT SECTION -->
     <div class="left-section">
         <div class="main-block">
+            <form th:action="@{/ticket/save}" th:object="${ticketingDTO}" method="post" enctype="multipart/form-data">
             <form id="ticketForm">
                 <h1>Sistema de Tickets</h1>
 

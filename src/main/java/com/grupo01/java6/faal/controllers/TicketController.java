@@ -26,6 +26,7 @@ public class TicketController {
     public TicketController(TicketService ticketingService) {
         this.ticketingService = ticketingService;
     }
+    // visitor panel //
 // i used creatTicketDTO instead os TicketDto
 @GetMapping("/ticket")
 public String showTicketForm(Model model) {
@@ -77,9 +78,16 @@ public String showTicketForm(Model model) {
     }
 
 
-    ///  admin section
+    ///  admin section ///
+    /// mostrar
     ///
-    @GetMapping("/admin")
+    @GetMapping("/ticket/admin")
+    public String showAdminTickets(Model model) {
+        model.addAttribute("ticketingDTO", new TicketingDTO());
+        model.addAttribute("ticketsList", ticketingService.findAll());
+        return "admin-tickets";
+    }
+    @GetMapping("/Access")
     public String adminTickets(Model model, Authentication authentication) {
         log.info("Admin access attempted by: {}", authentication.getName());
         List<TicketingDTO> allTickets = ticketingService.findAll();
@@ -105,7 +113,23 @@ public String showTicketForm(Model model) {
 
         return "redirect:/ticket/admin";
     }
+    @PostMapping("/tickets/save")
+    public String saveTicket(@Valid @ModelAttribute TicketingDTO ticketingDTO,
+                             BindingResult result,
+                             Model model,
+                             Authentication authentication) {
 
+        if (result.hasErrors()) {
+            model.addAttribute("ticketsList", ticketingService.findAll());
+            return "admin-tickets";
+        }
+
+        String userEmail = authentication.getName(); //  current user's email
+        ticketingService.save(ticketingDTO, userEmail);
+
+        return "redirect:/tickets/list";
+    }
+/*
     @GetMapping("/create-form")
     public String showCreateForm(Model model, Authentication authentication) {
         String userEmail = authentication.getName();
@@ -114,7 +138,8 @@ public String showTicketForm(Model model) {
         return "ticket"; // the view name for your form page
     }
 
-}
+}*/
+
 // ask if i can do a @Restcontolor to get json
 
 //    @GetMapping("/{id}")
@@ -142,4 +167,4 @@ public String showTicketForm(Model model) {
 //    public ResponseEntity<Page<TicketingDTO>> findByAprobado(@RequestParam Boolean aprobado, Pageable pageable) {
 //        return ResponseEntity.ok(ticketingService.findByAprobado(aprobado, pageable));
 //    }
-//}
+}

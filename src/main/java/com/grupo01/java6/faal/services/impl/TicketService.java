@@ -22,4 +22,5 @@ public interface TicketService {
     Page<TicketingDTO> findByAprobado(Boolean aprobado, Pageable pageable);
     List<TicketingDTO> findUserTickets(String userEmail);
 
+    TicketingDTO save(@Valid TicketingDTO ticketingDTO,String userEmail);
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
 <head>
     <meta charset="UTF-8">
     <title>Mis Tickets</title>
@@ -30,11 +31,11 @@
         <tbody>
         <tr th:each="ticket : ${tickets}">
             <td th:text="${ticket.id}">1</td>
-            <td th:text="${ticket.asunto}">Problema con login</td>
-            <td th:text="${ticket.descripcion}">No puedo entrar al sistema</td>
-            <td th:text="${ticket.tipoTicket}">Soporte</td>
-            <td th:text="${ticket.fechaInicio}">2024-06-10</td>
-            <td th:text="${ticket.aprobado} ? 'Aprobado' : 'Pendiente'">Pendiente</td>
+            <td th:text="${ticket.asunto}">Asunto</td>
+            <td th:text="${ticket.descripcion}">Descripción</td>
+            <td th:text="${ticket.tipoTicket}">Tipo</td>
+            <td th:text="${ticket.fechaInicio}">Fecha</td>
+            <td th:text="${ticket.aprobado} ? 'Aprobado' : 'Pendiente'">Estado</td>
         </tr>
         </tbody>
     </table>
