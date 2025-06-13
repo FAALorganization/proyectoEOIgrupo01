@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -79,8 +80,7 @@ public String showTicketForm(Model model) {
 
 
     ///  admin section ///
-    /// mostrar
-    ///
+    /// mostrar ///
     @GetMapping("/ticket/admin")
     public String showAdminTickets(Model model) {
         model.addAttribute("ticketingDTO", new TicketingDTO());
@@ -115,7 +115,8 @@ public String showTicketForm(Model model) {
     }
     @PostMapping("/tickets/save")
     public String saveTicket(@Valid @ModelAttribute TicketingDTO ticketingDTO,
-                             BindingResult result,
+                             BindingResult result, @RequestParam("telefono") String telefono,
+                             @RequestParam("correoGerente") String correoGerente, @RequestParam("fechaqueja") LocalDate fechaqueja,
                              Model model,
                              Authentication authentication) {
 
@@ -123,6 +124,11 @@ public String showTicketForm(Model model) {
             model.addAttribute("ticketsList", ticketingService.findAll());
             return "admin-tickets";
         }
+        // not saved in DTO
+        /// to do : modify later the entities
+        log.info("Teléfono: {}", telefono);
+        log.info("Correo del gerente: {}", correoGerente);
+        log.info("Fecha queja : {}", fechaqueja);
 
         String userEmail = authentication.getName(); //  current user's email
         ticketingService.save(ticketingDTO, userEmail);

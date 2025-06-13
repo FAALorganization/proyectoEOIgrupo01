@@ -27,10 +27,10 @@ public class Ticketing implements Serializable {
     @Column(name = "nombre", length = 45)
     private String nombre;
 
-    @Column(name = "fechaInicio")
+    @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
 
-    @Column(name = "fechaFin")
+    @Column(name = "fecha_fin")
     private LocalDate fechaFin;
 
     @Column(name = "modificacion")
@@ -42,7 +42,7 @@ public class Ticketing implements Serializable {
     @Column(name = "aprobado")
     private Boolean aprobado;
 
-    @Column(name = "tipoTicket", length = 45)
+    @Column(name = "tipo_ticket", length = 45)
     private String tipoTicket;
 
     @Column(name = "asunto", length = 50)
