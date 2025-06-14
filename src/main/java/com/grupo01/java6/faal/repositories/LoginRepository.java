@@ -69,5 +69,9 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     @Query("SELECT l FROM Login l WHERE l.id <> :idActual")
     List<Login> obtenerTodosMenosActual(@Param("idActual") Integer idActual);
 
+
+    @Query("SELECT l FROM Login l LEFT JOIN FETCH l.subordinados WHERE l.id = :id")
+    Optional<Login> findByIdWithSubordinados(@Param("id") Integer id);
+
 }
 

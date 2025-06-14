@@ -1,0 +1,104 @@
+
+/* === Bienvenida === */
+.text-center h1 {
+    font-size: 2.5rem;
+    color: #252323;
+    margin-bottom: 10px;
+}
+
+.text-center p.lead {
+    color: #555;
+    padding: 10px
+}
+
+/* === Tarjetas de Eventos y Tareas === */
+.card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    background-color: var(--white-color);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Títulos de las tarjetas */
+.card-title {
+    color: var(--first-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Texto de las tarjetas */
+.card-text {
+    color: #555;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #252323 !important;
+    border: none !important;
+    border-radius: 30px;
+    padding: 10px 25px !important;
+    transition: 0.3s !important;
+    font-weight: bold !important;
+    font-size: 1.2rem !important;
+}
+
+.btn-primary:hover {
+    background-color:#01040f !important;
+}
+
+/* Botón de Check-In */
+.btn-success {
+    background-color: #1B17FF !important;
+    color: #F5F1ED;
+    border: none !important;
+    border-radius: 30px;
+    padding: 15px 35px !important;
+    font-size: 1.3rem !important;
+    font-weight: bold !important;
+    transition: 0.3s !important;
+}
+
+.btn-success:hover{
+    background-color: #0d0aca !important;
+    color: #F5F1ED;
+    border: none !important;
+}
+
+
+
+@media (max-width: 768px) {
+    #carouselNoticias img {
+        height: 250px;
+    }
+
+    .text-center h1 {
+        font-size: 2rem;
+    }
+
+    .text-center p.lead {
+        font-size: 1.5rem;
+    }
+}
+.card ul {
+    list-style-position: inside; 
+    padding-left: 0; 
+    text-align: center; 
+}
+
+.card ul li {
+    margin-bottom: 0.5rem;
+}
+.containercentrado {
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* si hay más de un elemento, los pone uno abajo del otro */
+    height: 80vh; /* ocupa toda la pantalla */
+    text-align: center;
+}

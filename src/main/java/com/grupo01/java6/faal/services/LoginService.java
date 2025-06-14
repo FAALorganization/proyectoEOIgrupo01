@@ -9,6 +9,7 @@ import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.repositories.LoginRepository;
 import org.springframework.stereotype.Service;
+import org.hibernate.Hibernate;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -115,11 +116,7 @@ public class LoginService {
                 .filter(user -> !user.getId().equals(idActual))
                 .toList();
     }
-
-    public List<Login> obtenerTrabajadoresPorJefe(Integer idJefe) {
-        return loginRepository.findAll().stream()
-                .filter(login -> login.getJefeLogin() != null && login.getJefeLogin().getId().equals(idJefe))
-                .toList();
+    public Login obtenerPorIdConSubordinados(Integer id) {
+        return loginRepository.findByIdWithSubordinados(id).orElse(null);
     }
-
 }
