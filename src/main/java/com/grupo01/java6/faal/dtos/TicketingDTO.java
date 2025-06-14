@@ -24,16 +24,9 @@ public class TicketingDTO {
 
     @Size(max = 1000, message = "La descripción no puede exceder 1000 caracteres")
     private String descripcion;
-/// why tipoTicket dosnt work
-//    public String getTipoTicket() {
-//        return tipoTicket;
-//    }
-//
-//    public void setTipoTicket(String tipoTicket) {
-//        this.tipoTicket = tipoTicket;
-//    }
-    @NotBlank(message = "El tipo de ticket es obligatorio")
+
     private String tipoTicket;
+
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;

@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/layoutNavBar}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -198,11 +196,11 @@
         </form>
     </div>
 
-    <div class="main-block">
+    <div class="main-block" th:if="${tickets != null}">
         <h4>Historial de Tickets</h4>
         <form th:action="@{/ticket/list}" method="get">
             <select name="ticketId" size="5" onchange="this.form.submit()">
-                <option th:each="ticket : ${userTickets}"
+                <option th:each="ticket : ${tickets}"
                         th:value="${ticket.id}"
                         th:text="'Ticket #' + ${ticket.id} + ' - ' + ${ticket.asunto}">
                 </option>

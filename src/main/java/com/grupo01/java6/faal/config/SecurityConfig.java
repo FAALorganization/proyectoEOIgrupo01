@@ -143,7 +143,6 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/ticket/admin").hasRole("ADMIN")
                         .requestMatchers("/ticket").hasAnyRole("USUARIO", "ADMIN", "VISITANTE", "JEFE")
                         .anyRequest().authenticated()  // siempre al final
                 )

@@ -87,12 +87,19 @@ public class DefaultController {
         return "forum"; // View name
     }
 
-    //@GetMapping("/ticket")
-    //public String showticket()
-    //{
-
-     //   return "ticket"; // View name
-    //}
+//    @GetMapping("/ticket")
+//    public String showticket()
+//    {
+//
+//        return "ticket"; // View name
+//    }
+//
+//    @GetMapping("/admin")
+//    public String showadminTickets()
+//    {
+//
+//        return "admin-tickets"; // View name
+//    }
 
 
     @GetMapping("/gestionAusencias")

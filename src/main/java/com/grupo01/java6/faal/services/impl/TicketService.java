@@ -19,6 +19,7 @@ public interface TicketService {
     TicketingDTO createTicket(TicketingDTO ticketDTO, String userEmail);
     void approveTicket(Integer id, String approverEmail);
     void rejectTicket(Integer id, String approverEmail);
+    TicketingDTO closeTicket(Integer id, Integer loginId);
     void delete(Integer id);
     Page<TicketingDTO> findByAprobado(Boolean aprobado, Pageable pageable);
     List<TicketingDTO> findUserTickets(String userEmail);

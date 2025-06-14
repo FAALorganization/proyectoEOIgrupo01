@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/ticket")
+//@RequestMapping("/ticket")
 @Slf4j
 public class TicketController {
 
@@ -28,9 +27,17 @@ public class TicketController {
         this.ticketingService = ticketingService;
     }
     // visitor panel //
+    @GetMapping("/ticket")
+    public String showTicketForm(Model model,Authentication authentication) {
+        model.addAttribute("ticketForm", new TicketingDTO());
+        if (authentication != null) {
+            List<TicketingDTO> tickets = ticketingService.findUserTickets(authentication.getName());
+            model.addAttribute("tickets", tickets);
+        }
+        return "ticket";
+    }
 
-
-    @PostMapping("/submit")
+    @PostMapping("/ticket/submit")
     public String createTicket(
             @Valid @ModelAttribute TicketingDTO ticketingDTO,
             BindingResult bindingResult,
@@ -61,7 +68,7 @@ public class TicketController {
         }
     }
 //Gets all tickets submitted by the current user.
-    @GetMapping("/list")
+    @GetMapping("ticket/list")
     public String listTickets(Model model, Authentication authentication) {
         String userEmail = authentication.getName();
         List<TicketingDTO> tickets = ticketingService.findUserTickets(userEmail);
@@ -77,64 +84,84 @@ public class TicketController {
     ///  admin section ///
     /// mostrar ///
 
-    @GetMapping("/admin")
-    public String showAdminTickets(Model model, Authentication authentication) {
-        log.info("Admin access attempted by: {}", authentication.getName());
-        model.addAttribute("ticketingDTO", new TicketingDTO());
-        model.addAttribute("ticketsList", ticketingService.findAll());
-        return "admin-tickets";
-    }
-
-
-// aprove a Ticket  usuarioAprobador esta en el ux
-    @PostMapping("/approve/{id}")
-    public String approveTicket(
-            @PathVariable Integer id,@RequestParam("usuarioAprobador") String usuarioAprobador,
-            Authentication authentication,
-            RedirectAttributes redirectAttributes) {
-        // just to check
-        log.info("Quien ha Aprobado el Ticket: {}", usuarioAprobador);
-
-        try {
-            String approvedEmail = authentication.getName();
-            ticketingService.approveTicket(id, approvedEmail);
-            redirectAttributes.addFlashAttribute("successMessage", "Ticket aprobado exitosamente");
-        } catch (Exception e) {
-            log.error("Error approving ticket: ", e);
-            redirectAttributes.addFlashAttribute("errorMessage", "Error al aprobar ticket: " + e.getMessage());
-        }
-
-        return "redirect:/ticket/admin";
-
-    }
-
-
-    // guardar el ticket
-
-    @PostMapping("/tickets/save")
-    public String saveTicket(@Valid @ModelAttribute TicketingDTO ticketingDTO,
-                             BindingResult result, @RequestParam("telefono") String telefono,
-                             @RequestParam("correoGerente") String correoGerente, @RequestParam("fechaqueja") LocalDate fechaqueja,
-                             Model model,
-                             Authentication authentication) {
-
-        if (result.hasErrors()) {
-            model.addAttribute("ticketsList", ticketingService.findAll());
-            return "admin-tickets";
-        }
-        // not saved in DTO
-        /// to do : modify later the entities
-        log.info("Teléfono: {}", telefono);
-        log.info("Correo del gerente: {}", correoGerente);
-        log.info("Fecha queja : {}", fechaqueja);
-
-        String userEmail = authentication.getName(); //  current user's email
-        ticketingService.save(ticketingDTO, userEmail);
-
-        return "redirect:/tickets/list";
-    }
-
-    // Update the ticket Admin
+//    @GetMapping("/admin")
+//    public String showAdminTickets(Model model, Authentication authentication) {
+//        log.info("Admin access attempted by: {}", authentication.getName());
+//        model.addAttribute("ticketingDTO", new TicketingDTO());
+//        model.addAttribute("ticketsList", ticketingService.findAll());
+//        return "admin-tickets";
+//    }
+//
+//
+//// aprove a Ticket  usuarioAprobador esta en el ux
+//
+//    @PostMapping("/approve/{id}")
+//    public String approveTicket(
+//            @PathVariable Integer id,@RequestParam("usuarioAprobador") String usuarioAprobador,
+//            Authentication authentication,
+//            RedirectAttributes redirectAttributes) {
+//        // just to check
+//        log.info("Quien ha Aprobado el Ticket: {}", usuarioAprobador);
+//
+//        try {
+//            String approvedEmail = authentication.getName();
+//            ticketingService.approveTicket(id, approvedEmail);
+//            redirectAttributes.addFlashAttribute("successMessage", "Ticket aprobado exitosamente");
+//        } catch (Exception e) {
+//            log.error("Error approving ticket: ", e);
+//            redirectAttributes.addFlashAttribute("errorMessage", "Error al aprobar ticket: " + e.getMessage());
+//        }
+//
+//        return "redirect:/ticket/admin";
+//
+//    }
+//
+//    // update ticket for admin ( nombre asunto descreption tipo ticket )
+//    @PutMapping("/{id}")
+//    public ResponseEntity<TicketingDTO> updateTicket (@PathVariable Integer id,
+//                                                     @Valid @RequestBody TicketingDTO ticketDTO) {
+//        TicketingDTO updatedTicket = ticketingService.updateTicket(id, ticketDTO);
+//        return ResponseEntity.ok(updatedTicket);
+//    }
+//
+//
+//    // Guardar el ticket
+//
+//    @PostMapping("/save")
+//    public String saveTicket(@Valid @ModelAttribute TicketingDTO ticketingDTO,
+//                             BindingResult result, @RequestParam("telefono") String telefono,
+//                             @RequestParam("correoGerente") String correoGerente, @RequestParam("fechaqueja") LocalDate fechaqueja,
+//                             Model model,
+//                             Authentication authentication) {
+//
+//        if (result.hasErrors()) {
+//            model.addAttribute("ticketsList", ticketingService.findAll());
+//            return "admin-tickets";
+//        }
+//        // not saved in DTO
+//        /// to do : modify later the entities
+//        log.info("Teléfono: {}", telefono);
+//        log.info("Correo del gerente: {}", correoGerente);
+//        log.info("Fecha queja : {}", fechaqueja);
+//
+//        String userEmail = authentication.getName(); //  current user's email
+//        ticketingService.save(ticketingDTO, userEmail);
+//
+//        return "redirect:/tickets/list";
+//    }
+//    // restfull pethod
+//// cerrar el ticket
+//// Close a ticket with reason
+//
+//// Methodo cerrar el ticket
+//@PostMapping("/{ticketId}/close")
+//public ResponseEntity<TicketingDTO> closeTicket(
+//        @PathVariable Integer ticketId, // extraer la id del url
+//        @RequestParam Integer loginId) {
+//
+//    TicketingDTO closedTicket = ticketingService.closeTicket(ticketId, loginId);
+//    return ResponseEntity.ok(closedTicket);
+//}
 
 /*
     @GetMapping("/create-form")

@@ -49,4 +49,8 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
 """)
     List<NombreConAusenciasDTO> obtenerCompanerosConAusencias(@Param("email") String email);
 
+    Integer id(Integer id);
+
+    Optional<Login> findById(Integer id);
+
 }
