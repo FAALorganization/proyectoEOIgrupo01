@@ -7,6 +7,7 @@ com\grupo01\java6\faal\entities\GrupoChat.class
 com\grupo01\java6\faal\controllers\GestionController.class
 com\grupo01\java6\faal\services\TiposAusenciasService.class
 com\grupo01\java6\faal\entities\Tarea.class
+com\grupo01\java6\faal\dtos\DocumentoDTO.class
 com\grupo01\java6\faal\repositories\EquipoRepository.class
 com\grupo01\java6\faal\repositories\DetallesDeUsuarioRepository.class
 com\grupo01\java6\faal\entities\Estadoforo.class
@@ -14,7 +15,9 @@ com\grupo01\java6\faal\entities\Post.class
 com\grupo01\java6\faal\controllers\PerfilController.class
 com\grupo01\java6\faal\entities\Chat.class
 com\grupo01\java6\faal\entities\EntidadPadre.class
+com\grupo01\java6\faal\dtos\CheckinDTO.class
 com\grupo01\java6\faal\entities\Prioridades.class
+com\grupo01\java6\faal\repositories\CheckinRepository.class
 com\grupo01\java6\faal\services\LoginService.class
 com\grupo01\java6\faal\dtos\NombreDTO.class
 com\grupo01\java6\faal\entities\DiasAusencias.class
@@ -44,6 +47,7 @@ com\grupo01\java6\faal\dtos\EmpleadoConAusenciasDTO$RangoAusenciaDTO.class
 com\grupo01\java6\faal\entities\Equipo.class
 com\grupo01\java6\faal\entities\Notificacion.class
 com\grupo01\java6\faal\services\mappers\AusenciasMapper.class
+com\grupo01\java6\faal\entities\TipoCheckin.class
 com\grupo01\java6\faal\services\DocumentoService.class
 com\grupo01\java6\faal\entities\Roles.class
 com\grupo01\java6\faal\controllers\RegistroController.class
@@ -53,9 +57,11 @@ com\grupo01\java6\faal\entities\Checkin.class
 com\grupo01\java6\faal\controllers\JustificacionController.class
 com\grupo01\java6\faal\Application.class
 com\grupo01\java6\faal\services\EntidadPadreService.class
+com\grupo01\java6\faal\services\ProyectoService.class
 com\grupo01\java6\faal\controllers\LoginController.class
 com\grupo01\java6\faal\entities\GrupoChatUsuario.class
 com\grupo01\java6\faal\entities\Mensaje.class
+com\grupo01\java6\faal\services\CheckinService.class
 com\grupo01\java6\faal\controllers\TareaController.class
 com\grupo01\java6\faal\services\MensajeService.class
 com\grupo01\java6\faal\dtos\TareaDTO.class
@@ -91,6 +97,7 @@ com\grupo01\java6\faal\config\WebConfig.class
 com\grupo01\java6\faal\loaders\AlejandroDataLoader.class
 com\grupo01\java6\faal\repositories\EntidadHijaRepository.class
 com\grupo01\java6\faal\entities\TiposAusencias.class
+com\grupo01\java6\faal\controllers\CheckinController.class
 com\grupo01\java6\faal\repositories\AusenciasRepository.class
 com\grupo01\java6\faal\dtos\JustificacionDTO.class
 com\grupo01\java6\faal\loaders\LocalDataLoader.class
@@ -98,6 +105,7 @@ com\grupo01\java6\faal\repositories\RolesRepository.class
 com\grupo01\java6\faal\services\RolesService.class
 com\grupo01\java6\faal\controllers\ChatController.class
 com\grupo01\java6\faal\entities\TicketRelUsuario.class
+com\grupo01\java6\faal\dtos\ProyectoDTO.class
 com\grupo01\java6\faal\entities\TipoNotificacion.class
 com\grupo01\java6\faal\services\TareaService.class
 com\grupo01\java6\faal\config\UserDetailsImpl.class

@@ -7,6 +7,7 @@ C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\c
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\CalendarioController.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\ChatController.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\ChatWebSocketController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\CheckinController.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\DefaultController.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\DocumentacionController.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\EquipoController.java
@@ -22,12 +23,15 @@ C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\c
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\UsuarioController.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\VacacionesController.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\AusenciaDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\CheckinDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\CompaneroDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\DocumentoDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\EmpleadoConAusenciasDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\JustificacionDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\MensajeDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\NombreConAusenciasDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\NombreDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\ProyectoDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\TareaDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\UsuarioDTO.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Ausencias.java
@@ -60,6 +64,7 @@ C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\e
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Tarea.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Ticketing.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TicketRelUsuario.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TipoCheckin.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Tipoevento.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TipoNotificacion.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TiposAusencias.java
@@ -70,6 +75,7 @@ C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\l
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\loaders\ProductionlDataLoader.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\AusenciasRepository.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\ChatAbiertoRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\CheckinRepository.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\DetallesDeUsuarioRepository.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\DocumentoRepository.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\EntidadHijaRepository.java
@@ -86,6 +92,7 @@ C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\s
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\AbstractBusinessServiceSoloEnt.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\AusenciasService.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\ChatAbiertoService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\CheckinService.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\CustomUserDetailsService.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\DetallesdeusuarioService.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\DocumentoService.java
@@ -97,6 +104,7 @@ C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\s
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\mappers\AusenciasMapper.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\mappers\DetallesdeusuarioMapper.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\MensajeService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\ProyectoService.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\RolesService.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\TareaService.java
 C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\TiposAusenciasService.java
