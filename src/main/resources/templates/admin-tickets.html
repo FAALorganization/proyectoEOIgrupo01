@@ -1,8 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:th="http://www.thymeleaf.org"
-      >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -586,38 +584,34 @@
     <!-- LEFT SECTION -->
     <div class="left-section">
         <div class="main-block">
-            <form th:action="@{/admin/ticket/save}" th:object="${ticketingDTO}" method="post" enctype="multipart/form-data">
-            <form id="ticketForm">
-                <h1>Sistema de Tickets</h1>
-                <input type="hidden" th:field="*{id}">
+            <form th:action="@{/admin/ticket/save}" th:object="${ticketingDTO}" method="post" enctype="multipart/form-data">                <h1>Sistema de Tickets</h1>
+
                 <fieldset>
-                    <legend><h3>Información del Ticket</h3></legend>
+                    <legend><h3>Información Personal</h3></legend>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="nombre">Nombre Completo</label>
                             <input type="text" th:field="*{nombre}" id="nombre" placeholder="Ingrese su nombre completo" required>
-                            <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="error"></div>
+                            <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="error-message"></div>
                         </div>
 
                         <div class="form-group">
-                            <label for="usuarioCreador">Usuario Creador</label>
-                            <input type="text" th:field="*{usuarioCreador}" id="usuarioCreador" placeholder="Usuario que crea el ticket" readonly>
+                            <label for="mail">Correo Electrónico</label>
+                            <input type="email" id="mail" name="mail" placeholder="Ingrese su correo electrónico" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="telefono">Teléfono</label>
-                            <input type="tel" id="telefono" th:field="*{telefono}" placeholder="Ingrese su número telefónico" required>
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Ingrese su número telefónico" required>
                         </div>
-                    </div>
 
                         <div class="form-group">
-                            <label for="correoGerente">Correo del Gerente*</label>
-                            <input type="email" id="correoGerente" th:field="*{correoGerente}" placeholder="xxxxxxx@dominio.com" required>                        </div>
-               </div>
-    </div>
+                            <label for="manager">Correo del Gerente*</label>
+                            <input type="email" id="manager" name="manager" placeholder="xxxxxxx@dominio.com" required>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="assigned">Asignado A</label>
@@ -632,40 +626,31 @@
 
                 <fieldset>
                     <legend><h3>Detalles del Ticket</h3></legend>
-                    <div class="form-row">
-                    <div class="form-group">
-                        <label for="tipoTicket">Tipo de Ticket</label>
-                        <select th:field="*{tipoTicket}" id="tipoTicket">
-                            <option value="task">Tarea</option>
-                            <option value="complaint">Queja</option>
-                            <option value="other">Otro</option>
-                        </select>
-                        <div th:if="${#fields.hasErrors('tipoTicket')}" th:errors="*{tipoTicket}" class="error-message"></div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="prioridad">Asignar Prioridad</label>
-                        <select th:field="*{prioridad}" id="prioridad" required>
-                            <option value="">Seleccione prioridad</option>
-                            <option th:each="priority : ${priorities}"
-                                    th:value="${priority}"
-                                    th:text="${@priorityService.getDisplayNameForValue(priority)}">
-                            </option>
-                        </select>
-                        <div th:if="${#fields.hasErrors('prioridad')}" class="error-message">
-                            <span th:each="err : ${#fields.errors('prioridad')}" th:text="${err}"></span>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tipoTicket">Tipo de Ticket</label>
+                            <select th:field="*{tipoTicket}" id="tipoTicket">
+                                <option value="task">Tarea</option>
+                                <option value="complaint">Queja</option>
+                                <option value="other">Otro</option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('tipoTicket')}" th:errors="*{tipoTicket}" class="error-message"></div>
                         </div>
-                    </div>
-</div>
-                    <div class="form-group">
-                        <label for="estado">Estado de Aprobación</label>
-                        <select th:field="*{status}" id="estado">
-                            <option value="PENDING_REVIEW">Pendiente</option>
-                            <option value="OPEN">Abierto</option>
-                            <option value="IN_PROGRESS">En Progreso</option>
-                            <option value="RESOLVED">Resuelto</option>
-                            <option value="CLOSED">Cerrado</option>
-                        </select>
+
+                        <div class="form-group">
+                            <label for="prioridad">Asignar Prioridad</label>
+                            <select th:field="*{prioridad}" id="prioridad" required>
+                                <option value="">Seleccione prioridad</option>
+                                <option th:each="priority : ${priorities}"
+                                        th:value="${priority}"
+                                        th:text="${@priorityService.getDisplayNameForValue(priority)}">
+                                </option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('prioridad')}" class="error-message">
+                                <span th:each="err : ${#fields.errors('prioridad')}" th:text="${err}"></span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -719,19 +704,21 @@
                                         th:value="${year}"
                                         th:text="${year}"></option>
                             </select>
+                        </div>
                     </div>
 
-                        <div class="form-group">
-                            <label for="asunto">Asunto*</label>
-                            <input type="text" th:field="*{asunto}" id="asunto" placeholder="Ingrese el asunto del ticket" required>
-                            <div th:if="${#fields.hasErrors('asunto')}" th:errors="*{asunto}" class="error-message"></div>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="descripcion">Información del Ticket</label>
-                            <textarea th:field="*{descripcion}" id="descripcion" rows="8" placeholder="Ingrese los detalles del ticket..."></textarea>
-                            <div th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" class="error-message"></div>
-                        </div>
+                    <div class="form-group">
+                        <label for="asunto">Asunto*</label>
+                        <input type="text" th:field="*{asunto}" id="asunto" placeholder="Ingrese el asunto del ticket" required>
+                        <div th:if="${#fields.hasErrors('asunto')}" th:errors="*{asunto}" class="error-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">Información del Ticket</label>
+                        <textarea th:field="*{descripcion}" id="descripcion" rows="8" placeholder="Ingrese los detalles del ticket..."></textarea>
+                        <div th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" class="error-message"></div>
+                    </div>
 
                     <div class="form-group">
                         <label for="file">Adjuntar Archivo (opcional)</label>
@@ -760,30 +747,29 @@
                 <h3>Controles de Administración</h3>
                 <div class="sla">
                     Tiempo SLA:
-                    <strong id="slaTimer">00:00:00</strong>
+                    <strong id="slaTimer">04:25:13</strong>
                 </div>
                 <div class="btn-group">
-                    <button type="button" id="pauseSlaBtn"  th:disabled="${ticket?.status == 'CLOSED' || ticket?.slaTracking?.isPaused}">
-                        <i class="fas fa-pause me-2"></i>Pausar SLA
-                    </button>
-                    <button type="button" class="btn btn-success flex-grow-1" id="resumeSlaBtn"
-                            th:disabled="${ticket?.status == 'CLOSED' || !ticket?.slaTracking?.isPaused}">
-                        <i class="fas fa-play me-2"></i>Reanudar SLA
+                    <button type="button" id="pauseSlaBtn">
+                        <i class="fa-solid fa-pause"></i>
+                        Pausar SLA
                     </button>
                     <button type="button" id="modifyTicketBtn">
                         <i class="fa-solid fa-pen-to-square"></i>
                         Modificar Ticket
                     </button>
-                    <button type="button" id="reopenTicketBtn"th:disabled="${ticket?.status != 'CLOSED'}">
-                        <i class="fas fa-lock-open me-2"></i>Reabrir Ticket
+                    <button type="button" id="reopenTicketBtn">
+                        <i class="fa-solid fa-lock-open"></i>
+                        Reabrir Ticket
                     </button>
-                    <select id="close-reason"th:disabled="${ticket?.status == 'CLOSED'}">
+                    <select id="close-reason">
                         <option disabled selected>Motivo de Cierre</option>
                         <option>Resuelto</option>
                         <option>Usuario No Responde</option>
                         <option>Duplicado</option>
+                        <option>Irrelevante</option>
                     </select>
-                    <button type="button" id="closeTicketBtn" th:disabled="${ticket?.status == 'CLOSED'}">
+                    <button type="button" id="closeTicketBtn">
                         <i class="fa-solid fa-lock"></i>
                         Cerrar Ticket
                     </button>
@@ -794,15 +780,37 @@
         <div class="open-tickets">
             <h3>Tickets Asignados a mi equipo</h3>
             <select size="8" multiple>
-                <option th:each="ticket : ${tickets}"
-                        th:value="${ticket.id}"
-                        th:attr="data-status=${ticket.status}, data-priority=${ticket.prioridad?.value}">
-                                <span th:classappend="${ticket.prioridad?.value == 'high' ? 'status-high' :
-                                                     (ticket.prioridad?.value == 'medium' ? 'status-medium' : 'status-low')}"
-                                      class="status-indicator"></span>
-                    #<span th:text="${ticket.id}"></span> -
-                    <span th:text="${ticket.asunto}"></span>
-                    <small class="text-muted d-block" th:text="${ticket.status}"></small>
+                <option>
+                    <span class="status-indicator status-high"></span>
+                    #001 - Problema crítico de servidor
+                </option>
+                <option>
+                    <span class="status-indicator status-medium"></span>
+                    #002 - Solicitud de acceso
+                </option>
+                <option>
+                    <span class="status-indicator status-low"></span>
+                    #003 - Consulta general
+                </option>
+                <option>
+                    <span class="status-indicator status-high"></span>
+                    #004 - Error en aplicación
+                </option>
+                <option>
+                    <span class="status-indicator status-medium"></span>
+                    #005 - Actualización de datos
+                </option>
+                <option>
+                    <span class="status-indicator status-low"></span>
+                    #006 - Información adicional
+                </option>
+                <option>
+                    <span class="status-indicator status-medium"></span>
+                    #007 - Soporte técnico
+                </option>
+                <option>
+                    <span class="status-indicator status-high"></span>
+                    #008 - Falla de seguridad
                 </option>
             </select>
         </div>
@@ -831,65 +839,9 @@
     </div>
 </div>
 <script>
-    // SLA Control Functions
-    document.getElementById('pauseSlaBtn').addEventListener('click', () => {
-        const ticketId = document.getElementById('ticketList').value;
-        fetch(`/admin/tickets/${ticketId}/sla/pause`, { method: 'POST' })
-            .then(response => location.reload());
-    });
-
-    document.getElementById('resumeSlaBtn').addEventListener('click', () => {
-        const ticketId = document.getElementById('ticketList').value;
-        fetch(`/admin/tickets/${ticketId}/sla/resume`, { method: 'POST' })
-            .then(response => location.reload());
-    });
-
-    // Ticket Close Function
-    document.getElementById('closeTicketBtn').addEventListener('click', () => {
-        const ticketId = document.getElementById('ticketList').value;
-        const reason = document.getElementById('closeReason').value;
-
-        fetch(`/admin/tickets/${ticketId}/close`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ reason: reason })
-        }).then(response => location.reload());
-    });
-
-    // Ticket Selection Handler
-    document.getElementById('ticketList').addEventListener('change', function() {
-        const ticketId = this.value;
-        window.location.href = `/admin/tickets/${ticketId}`;
-    });
-
-    // Real-time SLA Timer Update
-    function updateSlaTimer() {
-        const timerElement = document.querySelector('.sla-timer');
-        if (timerElement && timerElement.dataset.deadline) {
-            const deadline = new Date(timerElement.dataset.deadline);
-            const now = new Date();
-            const diff = deadline - now;
-
-            if (diff > 0) {
-                const hours = Math.floor(diff / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                timerElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
-            } else {
-                timerElement.textContent = "SLA Breached";
-                timerElement.classList.add('text-danger');
-            }
-        }
-    }
-
-    setInterval(updateSlaTimer, 1000);
-    updateSlaTimer();
-</script>
-
-<script>
     // javascript
 
-       document.getElementById('closeTicketBtn').addEventListener('click', function () {
+    document.getElementById('closeTicketBtn').addEventListener('click', function () {
         const reason = document.getElementById('close-reason').value;
         if (!reason || reason === 'Close Reason') {
             alert("Please select a close reason first.");
