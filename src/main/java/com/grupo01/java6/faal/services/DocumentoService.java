@@ -39,8 +39,8 @@ public class DocumentoService {
         }
     }
 
-    /** 🔹 Subir documento asociado a un proyecto */
-    public boolean guardarDocumento(Proyecto proyecto, MultipartFile archivo) {
+    /** 🔹 Subir documento con nombre de archivo limpio */
+    public boolean guardarDocumento(Proyecto proyecto, MultipartFile archivo, String nombreLimpio) {
         try {
             if (archivo.isEmpty()) {
                 System.out.println("⚠️ Error: El archivo está vacío.");
@@ -53,16 +53,16 @@ public class DocumentoService {
                 Files.createDirectories(carpeta);
             }
 
-            // Limpiar y generar nombre único
+            // Nombre original para mostrar, limpio para guardar
             String nombreOriginal = org.springframework.util.StringUtils.cleanPath(archivo.getOriginalFilename());
-            String nombreArchivo = System.currentTimeMillis() + "_" + nombreOriginal;
+            String nombreArchivoFinal = System.currentTimeMillis() + "_" + nombreLimpio;
 
-            Path rutaDestino = carpeta.resolve(nombreArchivo);
+            Path rutaDestino = carpeta.resolve(nombreArchivoFinal);
             archivo.transferTo(rutaDestino.toFile());
 
             Documento nuevoDocumento = new Documento();
-            nuevoDocumento.setNombre(nombreOriginal);
-            nuevoDocumento.setRutaArchivo(rutaDestino.toString());
+            nuevoDocumento.setNombre(nombreOriginal); // Se guarda el nombre original para mostrar
+            nuevoDocumento.setRutaArchivo(rutaDestino.toString()); // Ruta con nombre limpio real
             nuevoDocumento.setProyecto(proyecto);
 
             documentoRepository.save(nuevoDocumento);
