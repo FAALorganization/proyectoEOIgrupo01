@@ -591,6 +591,7 @@
 
                     <div class="form-row">
                         <div class="form-group">
+                            <label for="nombre">Nombre Completo</label>
                             <input type="text" th:field="*{nombre}" id="nombre" placeholder="Ingrese su nombre completo" required>
                             <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="error-message"></div>
                         </div>
@@ -655,7 +656,7 @@
 
                     <div class="form-group">
                         <label for="ticketCategory">Categoría del Ticket</label>
-                        <select id="ticketCategory" name="ticketCategory">
+                        <select th:field="*{ticketCategory}" id="ticketCategory" required>
                             <option value="rh" selected>Recursos Humanos</option>
                             <option value="soporte">Soporte</option>
                             <option value="ciberseguridad">Ciberseguridad</option>
@@ -750,26 +751,29 @@
                     <strong id="slaTimer">04:25:13</strong>
                 </div>
                 <div class="btn-group">
-                    <button type="button" id="pauseSlaBtn">
+                    <button type="button" id="pauseSlaBtn" th:disabled="${ticket?.status == 'CLOSED' || ticket?.slaTracking?.isPaused}">
                         <i class="fa-solid fa-pause"></i>
                         Pausar SLA
+                    </button>
+                    <button type="button" class="btn btn-success flex-grow-1" id="resumeSlaBtn"
+                            th:disabled="${ticket?.status == 'CLOSED' || !ticket?.slaTracking?.isPaused}">
+                        <i class="fas fa-play me-2"></i>Reanudar SLA
                     </button>
                     <button type="button" id="modifyTicketBtn">
                         <i class="fa-solid fa-pen-to-square"></i>
                         Modificar Ticket
                     </button>
-                    <button type="button" id="reopenTicketBtn">
+                    <button type="button" id="reopenTicketBtn" th:disabled="${ticket?.status != 'CLOSED'}">
                         <i class="fa-solid fa-lock-open"></i>
                         Reabrir Ticket
                     </button>
-                    <select id="close-reason">
-                        <option disabled selected>Motivo de Cierre</option>
+                    <select id="close-reason" th:disabled="${ticket?.status == 'CLOSED'}">                        <option disabled selected>Motivo de Cierre</option>
                         <option>Resuelto</option>
                         <option>Usuario No Responde</option>
                         <option>Duplicado</option>
                         <option>Irrelevante</option>
                     </select>
-                    <button type="button" id="closeTicketBtn">
+                    <button type="button" id="closeTicketBtn" th:disabled="${ticket?.status == 'CLOSED'}">
                         <i class="fa-solid fa-lock"></i>
                         Cerrar Ticket
                     </button>
@@ -780,37 +784,15 @@
         <div class="open-tickets">
             <h3>Tickets Asignados a mi equipo</h3>
             <select size="8" multiple>
-                <option>
-                    <span class="status-indicator status-high"></span>
-                    #001 - Problema crítico de servidor
-                </option>
-                <option>
-                    <span class="status-indicator status-medium"></span>
-                    #002 - Solicitud de acceso
-                </option>
-                <option>
-                    <span class="status-indicator status-low"></span>
-                    #003 - Consulta general
-                </option>
-                <option>
-                    <span class="status-indicator status-high"></span>
-                    #004 - Error en aplicación
-                </option>
-                <option>
-                    <span class="status-indicator status-medium"></span>
-                    #005 - Actualización de datos
-                </option>
-                <option>
-                    <span class="status-indicator status-low"></span>
-                    #006 - Información adicional
-                </option>
-                <option>
-                    <span class="status-indicator status-medium"></span>
-                    #007 - Soporte técnico
-                </option>
-                <option>
-                    <span class="status-indicator status-high"></span>
-                    #008 - Falla de seguridad
+                <option th:each="ticket : ${tickets}"
+                        th:value="${ticket.id}"
+                        th:attr="data-status=${ticket.status}, data-priority=${ticket.prioridad?.value}">
+                    <span th:classappend="${ticket.prioridad?.value == 'high' ? 'status-high' :
+                                         (ticket.prioridad?.value == 'medium' ? 'status-medium' : 'status-low')}"
+                          class="status-indicator"></span>
+                    #<span th:text="${ticket.id}"></span> -
+                    <span th:text="${ticket.asunto}"></span>
+                    <small class="text-muted d-block" th:text="${ticket.status}"></small>
                 </option>
             </select>
         </div>
@@ -840,7 +822,6 @@
 </div>
 <script>
     // javascript
-
     document.getElementById('closeTicketBtn').addEventListener('click', function () {
         const reason = document.getElementById('close-reason').value;
         if (!reason || reason === 'Close Reason') {

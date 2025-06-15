@@ -1,6 +1,6 @@
 package com.grupo01.java6.faal.services;
 import com.grupo01.java6.faal.entities.TicketRelUsuario;
-import com.grupo01.java6.faal.repositories.TicketRelUsuarioRepository;
+//import com.grupo01.java6.faal.repositories.TicketRelUsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class TicketingService implements TicketService {
     private final LoginRepository loginRepository;
     private final TicketingRepository ticketingRepository;
     private final PrioridadesRepository prioridadesRepository;
-    private final TicketRelUsuarioRepository ticketRelUsuarioRepository;
+    //private final TicketRelUsuarioRepository ticketRelUsuarioRepository;
     private final ModelMapper modelMapper;
 // crear el ticket and save it to dto  checking la prioridad
 
@@ -156,7 +156,7 @@ public class TicketingService implements TicketService {
         }
         return update(ticketDTO);
     }
- // aprove solo di es un Admin  tal que el aprovemeail en la entity es emaiprimario
+ // aprove solo si es un Admin  tal que el aprovemeail en la entity es emaiprimario
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public void approveTicket(Integer id, String approveEmail) {
@@ -207,14 +207,14 @@ public class TicketingService implements TicketService {
         Login login = loginRepository.findById(loginId)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
-        // 3. Find relation between ticket and user
-        TicketRelUsuario rel = ticketRelUsuarioRepository
-                .findByIdTicketingAndLoginIdlogin(ticket, login)
-                .orElseThrow(() -> new EntityNotFoundException("Relación Ticket-Usuario no encontrada"));
+//        // 3. Find relation between ticket and user
+//        TicketRelUsuario rel = ticketRelUsuarioRepository
+//                .findByIdTicketingAndLoginIdlogin(ticket, login)
+//                .orElseThrow(() -> new EntityNotFoundException("Relación Ticket-Usuario no encontrada"));
 
-        // 4. Mark the relation as inactive
-        rel.setEstado(false);
-        ticketRelUsuarioRepository.save(rel);
+//        // 4. Mark the relation as inactive
+//        rel.setEstado(false);
+//        ticketRelUsuarioRepository.save(rel);
 
         // 5. Close the ticket
         ticket.setFechaFin(LocalDate.now()); // Or create a separate 'fechaCierre'
@@ -262,9 +262,9 @@ public class TicketingService implements TicketService {
         return dto;
     }
 
-    public TicketRelUsuarioRepository getTicketRelUsuarioRepository() {
-        return ticketRelUsuarioRepository;
-    }
+//    public TicketRelUsuarioRepository getTicketRelUsuarioRepository() {
+//        return ticketRelUsuarioRepository;
+//    }
 
     // Custom exception class
     public static class ResourceNotFoundException extends RuntimeException {

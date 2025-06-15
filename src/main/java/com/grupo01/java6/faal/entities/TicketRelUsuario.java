@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
         @Index(name = "id_ticketing", columnList = "id_ticketing"),
         @Index(name = "fk_ticket_rel_usuario_login1_idx", columnList = "login_idLogin")
 })
-public class TicketRelUsuario implements Serializable{
+public class TicketRelUsuario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +28,12 @@ public class TicketRelUsuario implements Serializable{
     @Column(name = "estado")
     private Boolean estado;
 
-
     private LocalDateTime assignedDate;
     private boolean isActive = true;
 
-    // Rol de la asignación (PRIMARY, SECONDARY, REVIEWER)
     @Enumerated(EnumType.STRING)
     private AssignmentRole role;
 
-    // Enumeración de los posibles roles de asignación
     public enum AssignmentRole {
         PRIMARY,     // Principal
         SECONDARY,   // Secundario
@@ -46,10 +43,9 @@ public class TicketRelUsuario implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ticketing")
-    private Ticketing idTicketing;
+    private Ticketing ticket;  // Changed from idTicketing to ticket to match the mappedBy reference
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "login_idLogin", nullable = false)
     private Login loginIdlogin;
-
 }

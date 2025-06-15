@@ -34,7 +34,7 @@ public class TicketingDTO {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaFin;
-
+    private  String ticketCategory; //finanzas desarrollo infraestructura
     private Boolean aprobado;
 
     //@NotBlank(message = "La prioridad es obligatoria")

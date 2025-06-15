@@ -63,7 +63,7 @@ public class Ticketing implements Serializable {
     private Prioridades idPrior;
 
     @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL)
-    private SLATracking slaTracking;
+    private Sla slaTracking;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<TicketRelUsuario> assignedUsers = new ArrayList<>();
@@ -187,16 +187,17 @@ public class Ticketing implements Serializable {
     // Indica si la asignación está activa (por defecto es verdadero)
     private boolean isActive = true;
 
-    // Rol de la asignación (PRIMARY, SECONDARY, REVIEWER)
-    @Enumerated(EnumType.STRING)
-    private AssignmentRole role;
+//    // Rol de la asignación (PRIMARY, SECONDARY, REVIEWER)
+//    @Enumerated(EnumType.STRING)
+//    private AssignmentRole role;
+//
+//    // Enumeración de los posibles roles de asignación
+//    public enum AssignmentRole {
+//        PRIMARY,     // Principal
+//        SECONDARY,   // Secundario
+//        REVIEWER,    // Revisor
+//        APPROVER     // Aprobador
+//    }
 
-    // Enumeración de los posibles roles de asignación
-    public enum AssignmentRole {
-        PRIMARY,     // Principal
-        SECONDARY,   // Secundario
-        REVIEWER,    // Revisor
-        APPROVER     // Aprobador
-    }
-
+    private  String ticketCategory;
 }

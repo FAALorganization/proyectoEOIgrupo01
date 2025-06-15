@@ -4,6 +4,7 @@ import com.grupo01.java6.faal.dtos.TicketingDTO;
 import com.grupo01.java6.faal.services.PriorityService;
 import com.grupo01.java6.faal.services.impl.TicketService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,11 @@ public class AdminController {
     ///  admin section ///
     /// mostrar ///
 
-    @GetMapping("/admin")
+    @GetMapping
     public String showAdminTickets(Model model, Authentication authentication) {
         log.info("Admin access attempted by: {}", authentication.getName());
         model.addAttribute("ticketingDTO", new TicketingDTO());
+        model.addAttribute("priorities", priorityService.findAllPriorityValues());
         model.addAttribute("ticketsList", ticketingService.findAll());
         return "admin-tickets";
     }
@@ -61,21 +63,12 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("errorMessage", "Error al aprobar ticket: " + e.getMessage());
         }
 
-        return "redirect:/ticket/admin";
-
+        return "redirect:/admin/tickets";
     }
-    //
-//    // update ticket for admin ( nombre asunto descreption tipo ticket )
-//    @PutMapping("/{id}")
-//    public ResponseEntity<TicketingDTO> updateTicket (@PathVariable Integer id,
-//                                                     @Valid @RequestBody TicketingDTO ticketDTO) {
-//        TicketingDTO updatedTicket = ticketingService.updateTicket(id, ticketDTO);
-//        return ResponseEntity.ok(updatedTicket);
-//    }
-//
-//
+
+
 //    // Guardar el ticket
-//
+
     @PostMapping("/save")
     public String saveTicket(@Valid @ModelAttribute TicketingDTO ticketingDTO,
                              BindingResult result, @RequestParam("telefono") String telefono,
@@ -87,7 +80,7 @@ public class AdminController {
             model.addAttribute("ticketsList", ticketingService.findAll());
             return "admin-tickets";
         }
-        // not saved in DTO
+
         /// to do : modify later the entities
         log.info("Teléfono: {}", telefono);
         log.info("Correo del gerente: {}", correoGerente);
@@ -98,25 +91,23 @@ public class AdminController {
 
         return "redirect:/tickets/list";
     }
-//    // restfull pethod
+//    // later implement restfull method apart
 //// cerrar el ticket
-
 
 //// Close a ticket with reason
 
-
 //// Methodo cerrar el ticket
-//@PostMapping("/{ticketId}/close")
-//public ResponseEntity<TicketingDTO> closeTicket(
-//        @PathVariable Integer ticketId, // extraer la id del url
-//        @RequestParam Integer loginId) {
-//
-//    TicketingDTO closedTicket = ticketingService.closeTicket(ticketId, loginId);
-//    return ResponseEntity.ok(closedTicket);
-//}
+@PostMapping("/{ticketId}/close")
+public ResponseEntity<TicketingDTO> closeTicket(
+        @PathVariable Integer ticketId, // extraer la id del url
+        @RequestParam Integer loginId) {
+
+    TicketingDTO closedTicket = ticketingService.closeTicket(ticketId, loginId);
+    return ResponseEntity.ok(closedTicket);
+}
 
 
-    //// my other implimentation if i unify the html ////
+    //// my other implimentation if i decide to unify the html ////
 
 /*
     @GetMapping("/create-form")
@@ -129,7 +120,17 @@ public class AdminController {
 
 }*/
 
-// ask if i can do a @Restcontolor to get json
+// ask if i can do a @Restcontolor apart
+
+//    // update ticket for admin ( nombre asunto descreption tipo ticket )
+//    @PutMapping("/{id}")
+//    public ResponseEntity<TicketingDTO> updateTicket (@PathVariable Integer id,
+//                                                     @Valid @RequestBody TicketingDTO ticketDTO) {
+//        TicketingDTO updatedTicket = ticketingService.updateTicket(id, ticketDTO);
+//        return ResponseEntity.ok(updatedTicket);
+//    }
+//
+//
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity<TicketingDTO> getById(@PathVariable Integer id) {

@@ -53,7 +53,7 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
 
     Optional<Login> findById(Integer id);
 
-    List<Login> findByRolesContaining(String roleAdmin);
+    //List<Login> findByRolesContaining(String roleAdmin);
 
-    Optional<Object> findByEmailPrimario(String email);
+    //Optional<Object> findByEmailPrimario(String email);
 }

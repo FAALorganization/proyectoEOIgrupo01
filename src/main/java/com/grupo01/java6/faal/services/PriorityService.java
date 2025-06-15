@@ -17,6 +17,11 @@ public class PriorityService {
         return prioridadesRepository.findAllPriorityValues();
     }
 
+    public Object findAllPriorityValues() {
+        return prioridadesRepository.findAll();
+
+    }
+
     public String getDisplayNameForValue(String value) {
         return prioridadesRepository.findDisplayNameByValue(value.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid priority value"));
@@ -27,4 +32,7 @@ public class PriorityService {
             throw new IllegalArgumentException("Priority not found: " + value);
         }
     }
+
+
+
 }

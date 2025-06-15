@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -15,7 +14,6 @@ import java.util.Set;
 @Table(name = "login", indexes = {
         @Index(name = "fk_login_detallesdeusuario1_idx", columnList = "idUsuario")
 })
-
 public class Login implements Serializable {
 
     @Id
@@ -25,9 +23,13 @@ public class Login implements Serializable {
 
     @Column(name = "email_primario", length = 250)
     private String emailPrimario;
-    @ElementCollection
-    @Column(name = "password")
+
+    @Column(name = "password")  // Removed @ElementCollection
     private String password;
+
+    public String getContrasena() {
+        return password;
+    }
 
     @Column(name = "token", length = 50)
     private String token;
@@ -42,7 +44,6 @@ public class Login implements Serializable {
     @JoinColumn(name = "id_usuario_jefe")
     private Login jefeLogin;
 
-    //He puesto esto para que podamos acceder directamente a los subordinados de un jefe.
     @OneToMany(mappedBy = "jefeLogin")
     private Set<Login> subordinados;
 
@@ -50,17 +51,13 @@ public class Login implements Serializable {
     @JoinColumn(name = "idUsuario", nullable = false, unique = true)
     private Detallesdeusuario idDetallesDeUsuario;
 
-    @ManyToMany( mappedBy = "listaLogin")
+    @ManyToMany(mappedBy = "listaLogin")
     private Set<Equipo> listaEquipos;
 
     @OneToMany(mappedBy = "loginRol", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Roles> roles;
 
-    public String getContrasena() {
-        return password;
-    }
     public Set<Roles> getRoles() {
         return roles;
     }
 }
-
