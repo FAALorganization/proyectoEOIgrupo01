@@ -28,10 +28,11 @@
 
         <div class="mb-3">
             <label for="miembrosSelect" class="form-label">Seleccionar miembros</label>
-            <select multiple class="form-select" id="miembrosSelect" name="listaLoginIds">
-                <option value="1">Usuario 1</option>
-                <option value="2">Usuario 2</option>
-                <option value="3">Usuario 3</option>
+            <select multiple class="form-select" id="miembrosSelect" name="loginIds">
+                <option th:each="compa : ${subordinados}"
+                        th:value="${compa.id}"
+                        th:text="${compa.nombre} + ' ' + ${compa.apellidos}">
+                </option>
             </select>
         </div>
 
@@ -68,16 +69,20 @@
 
                 <td>
                     <!-- Botón que abre el modal (uno por equipo) -->
-                    <a data-bs-toggle="modal" data-bs-target="#editarEquipoModal_1" class="btn btn-sm btn-warning">
+                    <a data-bs-toggle="modal" th:data-bs-target="'#editarEquipoModal_' + ${equipo.id}" class="btn btn-sm btn-warning">
                         Editar
                     </a>
+
 
                     <!-- Modal de edición -->
                     <div th:id="'editarEquipoModal_' + ${equipo.id}" class="modal fade" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
 
-                                <form th:action="@{'/gestionEquipos/editar/' + ${equipo.id}}" method="post">
+                                <!-- Formulario para editar equipo -->
+                                <form th:action="@{'/gestionEquipos/editar'}" method="post">
+                                    <input type="hidden" name="equipoId" th:value="${equipo.id}" />
+
                                     <div class="modal-header">
                                         <h5 class="modal-title">Editar equipo</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -87,57 +92,62 @@
                                         <!-- Nombre del equipo -->
                                         <div class="mb-3">
                                             <label for="nombreEditado" class="form-label">Nombre del equipo</label>
-                                            <input type="text" class="form-control" id="nombreEditado" name="nombre"
-                                                   th:value="${equipo.nombre}" required>
+                                            <input type="text" class="form-control" id="nombreEditado" name="nombre" th:value="${equipo.nombre}" required>
                                         </div>
 
                                         <!-- Descripción -->
                                         <div class="mb-3">
                                             <label for="descripcionEditada" class="form-label">Descripción</label>
-                                            <textarea class="form-control" id="descripcionEditada" name="descripcion" rows="3"
-                                                      th:text="${equipo.descripcion}"></textarea>
-                                        </div>
-                                        <!-- Miembros actuales -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Miembros actuales</label>
-                                            <ul class="list-group">
-                                                <li class="list-group-item d-flex justify-content-between align-items-center"
-                                                    th:each="companeroDTO : ${nombresPorEquipo[equipo.id]}">
-                                                        <span>
-                                                            <span th:text="${companeroDTO.nombre}">Nombre</span>
-                                                            <span th:text="${companeroDTO.apellidos}">Apellidos</span>
-                                                        </span>
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                            th:name="quitarMiembroIds"
-                                                            th:value="${companeroDTO.id}">
-                                                        Quitar
-                                                    </button>
-                                                </li>
-                                            </ul>
+                                            <textarea class="form-control" id="descripcionEditada" name="descripcion" rows="3" th:text="${equipo.descripcion}"></textarea>
                                         </div>
 
-
-                                        <!-- Añadir nuevos miembros -->
-                                        <div class="mb-3">
-                                            <label for="nuevosMiembrosSelect" class="form-label">Añadir nuevos miembros</label>
-                                            <select class="form-select" id="nuevosMiembrosSelect" name="nuevosLoginIds">
-                                                <option value="4">Luis Torres</option>
-                                                <option value="5">Carmen Ruiz</option>
-                                                <option value="6">Elena Martínez</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Añadir al equipo</button>
+                                        <!-- Botón para guardar cambios de equipo -->
+                                        <button type="submit" class="btn btn-primary mb-4">Guardar cambios</button>
                                     </div>
+                                </form>
 
+                                <!-- Miembros actuales -->
+                                <div class="modal-body">
+                                    <label class="form-label">Miembros actuales</label>
+                                    <ul class="list-group mb-3">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                                            th:each="companeroDTO : ${nombresPorEquipo[equipo.id]}">
+            <span>
+              <span th:text="${companeroDTO.nombre}">Nombre</span>
+              <span th:text="${companeroDTO.apellidos}">Apellidos</span>
+            </span>
+
+                                            <form th:action="@{/gestionEquipos/quitarMiembro}" method="post" class="mb-0">
+                                                <input type="hidden" name="equipoId" th:value="${equipo.id}" />
+                                                <input type="hidden" name="loginId" th:value="${companeroDTO.id}" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Quitar</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Formulario para añadir nuevos miembros -->
+                                <form th:action="@{/gestionEquipos/anadirMiembro}" method="post">
+                                    <input type="hidden" name="equipoId" th:value="${equipo.id}" />
+                                    <div class="modal-body">
+                                        <label for="nuevosMiembrosSelect" class="form-label">Añadir nuevos miembros</label>
+                                        <select class="form-select" id="nuevosMiembrosSelect" name="nuevosLoginIds" multiple>
+                                            <option th:each="compa : ${subordinados}"
+                                                    th:value="${compa.id}"
+                                                    th:text="${compa.nombre} + ' ' + ${compa.apellidos}">
+                                            </option>
+                                        </select>
+                                    </div>
                                     <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Añadir al equipo</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                     </div>
                                 </form>
 
                             </div>
                         </div>
                     </div>
+
 
                     <a href="/gestionEquipos/eliminar/2" class="btn btn-sm btn-danger">Eliminar</a>
                 </td>
