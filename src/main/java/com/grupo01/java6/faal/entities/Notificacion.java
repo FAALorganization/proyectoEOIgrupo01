@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +33,23 @@ public class Notificacion implements Serializable {
 
     @Column(name = "urlAccionSent")
     private String urlAccionSent;
+
+    // Fecha y hora de asignación
+    private LocalDateTime assignedDate;
+
+    // Indica si la asignación está activa (por defecto es verdadero)
+    private boolean isActive = true;
+
+    // quien lo recibe
+    @ManyToOne
+    @JoinColumn(name = "recipient_id")
+    private Login recipient;
+
+
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticketing ticket;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)

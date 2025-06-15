@@ -2,8 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/layoutNavBar}">
+      >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -587,7 +586,7 @@
     <!-- LEFT SECTION -->
     <div class="left-section">
         <div class="main-block">
-            <form th:action="@{/ticket/save}" th:object="${ticketingDTO}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/admin/ticket/save}" th:object="${ticketingDTO}" method="post" enctype="multipart/form-data">
             <form id="ticketForm">
                 <h1>Sistema de Tickets</h1>
                 <input type="hidden" th:field="*{id}">
@@ -633,33 +632,39 @@
 
                 <fieldset>
                     <legend><h3>Detalles del Ticket</h3></legend>
-
                     <div class="form-row">
-                        <div class="form-group">
-                            <label for="tipoTicket">Tipo de Ticket</label>
-                            <select th:field="*{tipoTicket}" id="tipoTicket">
-                                <option value="task" selected>Tarea</option>
-                                <option value="complaint">Queja</option>
-                                <option value="other">Otro</option>
-                            </select>
-                            <div th:if="${#fields.hasErrors('tipoTicket')}" th:errors="*{tipoTicket}" class="error-message"></div>
-                        </div>
+                    <div class="form-group">
+                        <label for="tipoTicket">Tipo de Ticket</label>
+                        <select th:field="*{tipoTicket}" id="tipoTicket">
+                            <option value="task">Tarea</option>
+                            <option value="complaint">Queja</option>
+                            <option value="other">Otro</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('tipoTicket')}" th:errors="*{tipoTicket}" class="error-message"></div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="priority">Asignar Prioridad</label>
-                            <select id="priority" name="priority">
-                                <option value="high">Alta</option>
-                                <option value="low">Baja</option>
-                                <option value="medium" selected>Media</option>
-                            </select>
+                    <div class="form-group">
+                        <label for="prioridad">Asignar Prioridad</label>
+                        <select th:field="*{prioridad}" id="prioridad" required>
+                            <option value="">Seleccione prioridad</option>
+                            <option th:each="priority : ${priorities}"
+                                    th:value="${priority}"
+                                    th:text="${@priorityService.getDisplayNameForValue(priority)}">
+                            </option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('prioridad')}" class="error-message">
+                            <span th:each="err : ${#fields.errors('prioridad')}" th:text="${err}"></span>
                         </div>
                     </div>
+</div>
                     <div class="form-group">
-                        <label for="aprobado">Estado de Aprobación</label>
-                        <select th:field="*{aprobado}" id="aprobado">
-                            <option value="">Pendiente</option>
-                            <option th:value="true">Aprobado</option>
-                            <option th:value="false">Rechazado</option>
+                        <label for="estado">Estado de Aprobación</label>
+                        <select th:field="*{status}" id="estado">
+                            <option value="PENDING_REVIEW">Pendiente</option>
+                            <option value="OPEN">Abierto</option>
+                            <option value="IN_PROGRESS">En Progreso</option>
+                            <option value="RESOLVED">Resuelto</option>
+                            <option value="CLOSED">Cerrado</option>
                         </select>
                     </div>
 
@@ -680,76 +685,53 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="fechaQueja">Fecha de la Queja*</label>
-                        <input type="date" th:field="*{fechaQueja}" id="fechaQueja">
-                        <div class="date-block">
-                            <select name="day" required>
+                        <label>Fecha de la Queja*</label>
+                        <div class="cdate-block">
+                            <select th:field="*{fechaQuejaDay}" required>
                                 <option value="">Día</option>
-                                <option value="01">01</option>
-                                <option value="02">02</option>
-                                <option value="03">03</option>
-                                <option value="04">04</option>
-                                <option value="05">05</option>
-                                <option value="06">06</option>
-                                <option value="07">07</option>
-                                <option value="08">08</option>
-                                <option value="09">09</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                                <option value="13">13</option>
-                                <option value="14">14</option>
-                                <option value="15">15</option>
-                                <option value="16">16</option>
-                                <option value="17">17</option>
-                                <option value="18">18</option>
-                                <option value="19">19</option>
-                                <option value="20">20</option>
-                                <option value="21">21</option>
-                                <option value="22">22</option>
-                                <option value="23">23</option>
-                                <option value="24">24</option>
-                                <option value="25">25</option>
-                                <option value="26">26</option>
-                                <option value="27">27</option>
-                                <option value="28">28</option>
-                                <option value="29">29</option>
-                                <option value="30">30</option>
-                                <option value="31">31</option>
+                                <option th:each="d : ${#numbers.sequence(1, 31)}"
+                                        th:value="${d < 10 ? '0' + d : d}"
+                                        th:text="${d < 10 ? '0' + d : d}">
+                                </option>
                             </select>
-                            <select name="month" required>
-                                <option value="">Month</option>
-                                <option value="January">January</option>
-                                <option value="February">February</option>
-                                <option value="March">March</option>
-                                <option value="April">April</option>
-                                <option value="May">May</option>
-                                <option value="June">June</option>
-                                <option value="July">July</option>
-                                <option value="August">August</option>
-                                <option value="September">September</option>
-                                <option value="October">October</option>
-                                <option value="November">November</option>
-                                <option value="December">December</option>
+
+                            <!-- Month -->
+                            <select th:field="*{fechaQuejaMonth}" required>
+                                <option value="">Mes</option>
+                                <option value="January">Enero</option>
+                                <option value="February">Febrero</option>
+                                <option value="March">Marzo</option>
+                                <option value="April">Abril</option>
+                                <option value="May">Mayo</option>
+                                <option value="June">Junio</option>
+                                <option value="July">Julio</option>
+                                <option value="August">Agosto</option>
+                                <option value="September">Septiembre</option>
+                                <option value="October">Octubre</option>
+                                <option value="November">Noviembre</option>
+                                <option value="December">Diciembre</option>
                             </select>
-                            <select name="year" required>
+
+                            <!-- Year -->
+                            <select th:field="*{fechaQuejaYear}" required>
                                 <option value="">Año</option>
-                                <option value="2025">2025</option>
-                                <option value="2026">2026</option>
-                                <option value="2027">2027</option>
+                                <option th:each="year : ${#numbers.sequence(T(java.time.LocalDate).now().year - 1, T(java.time.LocalDate).now().year + 1)}"
+                                        th:value="${year}"
+                                        th:text="${year}"></option>
                             </select>
+                    </div>
+
+                        <div class="form-group">
+                            <label for="asunto">Asunto*</label>
+                            <input type="text" th:field="*{asunto}" id="asunto" placeholder="Ingrese el asunto del ticket" required>
+                            <div th:if="${#fields.hasErrors('asunto')}" th:errors="*{asunto}" class="error-message"></div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="subject">Asunto*</label>
-                        <input type="text" id="subject" name="subject" placeholder="Ingrese el asunto del ticket" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="ticket">Información del Ticket</label>
-                        <textarea id="ticket" name="ticket" rows="8" placeholder="Ingrese los detalles del ticket..."></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label for="descripcion">Información del Ticket</label>
+                            <textarea th:field="*{descripcion}" id="descripcion" rows="8" placeholder="Ingrese los detalles del ticket..."></textarea>
+                            <div th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" class="error-message"></div>
+                        </div>
 
                     <div class="form-group">
                         <label for="file">Adjuntar Archivo (opcional)</label>
@@ -781,26 +763,27 @@
                     <strong id="slaTimer">00:00:00</strong>
                 </div>
                 <div class="btn-group">
-                    <button type="button" id="pauseSlaBtn">
-                        <i class="fa-solid fa-pause"></i>
-                        Pausar SLA
+                    <button type="button" id="pauseSlaBtn"  th:disabled="${ticket?.status == 'CLOSED' || ticket?.slaTracking?.isPaused}">
+                        <i class="fas fa-pause me-2"></i>Pausar SLA
+                    </button>
+                    <button type="button" class="btn btn-success flex-grow-1" id="resumeSlaBtn"
+                            th:disabled="${ticket?.status == 'CLOSED' || !ticket?.slaTracking?.isPaused}">
+                        <i class="fas fa-play me-2"></i>Reanudar SLA
                     </button>
                     <button type="button" id="modifyTicketBtn">
                         <i class="fa-solid fa-pen-to-square"></i>
                         Modificar Ticket
                     </button>
-                    <button type="button" id="reopenTicketBtn">
-                        <i class="fa-solid fa-lock-open"></i>
-                        Reabrir Ticket
+                    <button type="button" id="reopenTicketBtn"th:disabled="${ticket?.status != 'CLOSED'}">
+                        <i class="fas fa-lock-open me-2"></i>Reabrir Ticket
                     </button>
-                    <select id="close-reason">
+                    <select id="close-reason"th:disabled="${ticket?.status == 'CLOSED'}">
                         <option disabled selected>Motivo de Cierre</option>
                         <option>Resuelto</option>
                         <option>Usuario No Responde</option>
                         <option>Duplicado</option>
-                        <option>Irrelevante</option>
                     </select>
-                    <button type="button" id="closeTicketBtn">
+                    <button type="button" id="closeTicketBtn" th:disabled="${ticket?.status == 'CLOSED'}">
                         <i class="fa-solid fa-lock"></i>
                         Cerrar Ticket
                     </button>
@@ -811,37 +794,15 @@
         <div class="open-tickets">
             <h3>Tickets Asignados a mi equipo</h3>
             <select size="8" multiple>
-                <option>
-                    <span class="status-indicator status-high"></span>
-                    #001 - Problema crítico de servidor
-                </option>
-                <option>
-                    <span class="status-indicator status-medium"></span>
-                    #002 - Solicitud de acceso
-                </option>
-                <option>
-                    <span class="status-indicator status-low"></span>
-                    #003 - Consulta general
-                </option>
-                <option>
-                    <span class="status-indicator status-high"></span>
-                    #004 - Error en aplicación
-                </option>
-                <option>
-                    <span class="status-indicator status-medium"></span>
-                    #005 - Actualización de datos
-                </option>
-                <option>
-                    <span class="status-indicator status-low"></span>
-                    #006 - Información adicional
-                </option>
-                <option>
-                    <span class="status-indicator status-medium"></span>
-                    #007 - Soporte técnico
-                </option>
-                <option>
-                    <span class="status-indicator status-high"></span>
-                    #008 - Falla de seguridad
+                <option th:each="ticket : ${tickets}"
+                        th:value="${ticket.id}"
+                        th:attr="data-status=${ticket.status}, data-priority=${ticket.prioridad?.value}">
+                                <span th:classappend="${ticket.prioridad?.value == 'high' ? 'status-high' :
+                                                     (ticket.prioridad?.value == 'medium' ? 'status-medium' : 'status-low')}"
+                                      class="status-indicator"></span>
+                    #<span th:text="${ticket.id}"></span> -
+                    <span th:text="${ticket.asunto}"></span>
+                    <small class="text-muted d-block" th:text="${ticket.status}"></small>
                 </option>
             </select>
         </div>
@@ -870,83 +831,59 @@
     </div>
 </div>
 <script>
-    let slaTimerInterval = null;
-    let currentTicketId = null;
-
-    // Initialize SLA timer with priority from database
-    function initSlaTimer(ticketId, priorityId) {
-        if (slaTimerInterval) {
-            clearInterval(slaTimerInterval);
-        }
-
-        currentTicketId = ticketId; // save
-
-        fetch(`/api/sla/${ticketId}/start?priorityId=${priorityId}`, {
-            method: 'POST'
-        }).then(response => {
-            if (response.ok) {
-                startSlaTimerUpdates(ticketId);
-            } else {
-                console.error("Error al iniciar el temporizador SLA.");
-            }
-        }).catch(error => {
-            console.error("Error en la petición fetch:", error);
-        });
-    }
-
-    // Function to periodically update SLA timer display
-    function startSlaTimerUpdates(ticketId) {
-        slaTimerInterval = setInterval(() => {
-            fetch(`/api/sla/${ticketId}/time`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('sla-timer-display').textContent = data.elapsedTime;
-                })
-                .catch(error => {
-                    console.error("Error al obtener el tiempo SLA:", error);
-                });
-        }, 1000); // Update every second
-    }
-
-    // Handle ticket selection from dropdown
-    document.querySelector('.open-tickets select').addEventListener('change', function () {
-        const selectedOption = this.options[this.selectedIndex];
-        if (selectedOption) {
-            const ticketId = selectedOption.dataset.ticketId;
-            const priorityId = selectedOption.dataset.priorityId;
-
-            if (ticketId && priorityId) {
-                initSlaTimer(ticketId, priorityId);
-            } else {
-                console.warn("ticketId o priorityId no definidos en el option seleccionado.");
-            }
-        }
+    // SLA Control Functions
+    document.getElementById('pauseSlaBtn').addEventListener('click', () => {
+        const ticketId = document.getElementById('ticketList').value;
+        fetch(`/admin/tickets/${ticketId}/sla/pause`, { method: 'POST' })
+            .then(response => location.reload());
     });
 
-    // Handle ticket closure and SLA completion
-    document.getElementById('closeTicketBtn').addEventListener('click', function () {
-        const reason = document.getElementById('close-reason').value;
-
-        if (!reason || reason === 'Motivo de Cierre') {
-            alert("Por favor seleccione un motivo de cierre primero.");
-            return;
-        }
-
-        if (currentTicketId) {
-            fetch(`/api/sla/${currentTicketId}/complete`, {
-                method: 'POST'
-            }).then(response => {
-                if (response.ok) {
-                    document.getElementById('contact-subject').value = `Ticket Cerrado: ${reason}`;
-                    document.getElementById('contactModal').style.display = 'flex';
-                } else {
-                    console.error("Error al completar el SLA.");
-                }
-            }).catch(error => {
-                console.error("Error en la petición fetch:", error);
-            });
-        }
+    document.getElementById('resumeSlaBtn').addEventListener('click', () => {
+        const ticketId = document.getElementById('ticketList').value;
+        fetch(`/admin/tickets/${ticketId}/sla/resume`, { method: 'POST' })
+            .then(response => location.reload());
     });
+
+    // Ticket Close Function
+    document.getElementById('closeTicketBtn').addEventListener('click', () => {
+        const ticketId = document.getElementById('ticketList').value;
+        const reason = document.getElementById('closeReason').value;
+
+        fetch(`/admin/tickets/${ticketId}/close`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reason: reason })
+        }).then(response => location.reload());
+    });
+
+    // Ticket Selection Handler
+    document.getElementById('ticketList').addEventListener('change', function() {
+        const ticketId = this.value;
+        window.location.href = `/admin/tickets/${ticketId}`;
+    });
+
+    // Real-time SLA Timer Update
+    function updateSlaTimer() {
+        const timerElement = document.querySelector('.sla-timer');
+        if (timerElement && timerElement.dataset.deadline) {
+            const deadline = new Date(timerElement.dataset.deadline);
+            const now = new Date();
+            const diff = deadline - now;
+
+            if (diff > 0) {
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                timerElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                timerElement.textContent = "SLA Breached";
+                timerElement.classList.add('text-danger');
+            }
+        }
+    }
+
+    setInterval(updateSlaTimer, 1000);
+    updateSlaTimer();
 </script>
 
 <script>

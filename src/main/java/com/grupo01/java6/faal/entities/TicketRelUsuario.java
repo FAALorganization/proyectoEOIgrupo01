@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +27,22 @@ public class TicketRelUsuario implements Serializable{
 
     @Column(name = "estado")
     private Boolean estado;
+
+
+    private LocalDateTime assignedDate;
+    private boolean isActive = true;
+
+    // Rol de la asignación (PRIMARY, SECONDARY, REVIEWER)
+    @Enumerated(EnumType.STRING)
+    private AssignmentRole role;
+
+    // Enumeración de los posibles roles de asignación
+    public enum AssignmentRole {
+        PRIMARY,     // Principal
+        SECONDARY,   // Secundario
+        REVIEWER,    // Revisor
+        APPROVER     // Aprobador
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ticketing")

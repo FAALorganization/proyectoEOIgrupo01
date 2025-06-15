@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,19 +36,52 @@ public class Sla implements Serializable{
     private LocalDate fechaIni;
 
     @Column(name = "fecha_fin")
-
     private LocalDate fechaFin;
+/// to do : add unpause time and paude time for later
+    private LocalDateTime startTime;
+    private LocalDateTime deadline;
+    private boolean isPaused;
+    private LocalDateTime pauseTime;
+    private Duration pausedDuration = Duration.ZERO;
+    private Duration frozenRemainingTime = null; // duración congelada al pausar
 
-    private Instant slaStartTime;
-    // When SLA timer started or resumed
-    private Duration slaElapsed = Duration.ZERO; // Total elapsed time before pause
-    private boolean slaPaused = true;
-    /*
+    @Transient
+    public Duration getRemainingTime() {
+        if (isPaused) {
+            // Devuelve la duración que fue congelada al momento de pausar
+            return frozenRemainingTime != null ? frozenRemainingTime : Duration.ZERO;
+        } else {
+            // Calcula tiempo restante tomando en cuenta tiempo pausado acumulado
+            return Duration.between(LocalDateTime.now(), deadline.minus(pausedDuration));
+        }
+    }
+
+    // Método para pausar
+    public void pause() {
+        if (!isPaused) {
+            isPaused = true;
+            pauseTime = LocalDateTime.now();
+            // Congela el tiempo restante
+            frozenRemainingTime = getRemainingTime();
+        }
+    }
+
+    // Método para reanudar
+    public void resume() {
+        if (isPaused) {
+            isPaused = false;
+            Duration timePaused = Duration.between(pauseTime, LocalDateTime.now());
+            pausedDuration = pausedDuration.plus(timePaused);
+            pauseTime = null;
+            frozenRemainingTime = null; // Se borra al reanudar
+        }
+    }
+
     @OneToOne
     @JoinColumn(name = "ticket_id")
     private Ticketing ticket;
 
-     */
+
 
 
 }

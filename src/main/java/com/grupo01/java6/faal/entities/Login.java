@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class Login implements Serializable {
 
     @Column(name = "email_primario", length = 250)
     private String emailPrimario;
-
+    @ElementCollection
     @Column(name = "password")
     private String password;
 
@@ -58,4 +59,8 @@ public class Login implements Serializable {
     public String getContrasena() {
         return password;
     }
+    public Set<Roles> getRoles() {
+        return roles;
+    }
 }
+

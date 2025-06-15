@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -45,7 +46,8 @@ public class TicketingDTO {
     private String estado;
     @Transient
     private String telefono;
-
+    private String closeReason;
+    private LocalDateTime closeDate;
     /// futre implimentation todo
 
     @Transient // not stored in bd
@@ -61,6 +63,7 @@ public class TicketingDTO {
     private LocalDate fechaQueja ;
     @Transient      // transient bc m to lazy to modify the entiy so i will do it later  : )
     private String correoGerente;
+
     public String getEstado() {
         if (aprobado == null) return "PENDIENTE";
         return aprobado ? "APROBADO" : "RECHAZADO";

@@ -2,11 +2,15 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import javax.management.Notification;
 import java.io.Serializable;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -43,8 +47,11 @@ public class Ticketing implements Serializable {
     @Column(name = "eliminacion")
     private LocalDate eliminacion;
 
-    @Column(name = "aprobado")
     private Boolean aprobado;
+
+    private LocalDateTime fechaAprobacion;
+
+    private String comentariosAprobacion;
 
     @Column(name = "tipo_ticket", length = 45)
     private String tipoTicket;
@@ -55,17 +62,30 @@ public class Ticketing implements Serializable {
     @JoinColumn(name = "id_prior")
     private Prioridades idPrior;
 
+    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL)
+    private SLATracking slaTracking;
 
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    private List<TicketRelUsuario> assignedUsers = new ArrayList<>();
+
+    /*@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    private List<Notification> notifications = new ArrayList<>();
+*/
+    @Enumerated(EnumType.STRING)
+    private TicketStatus status = TicketStatus.OPEN;
+
+    public enum TicketStatus {
+        OPEN, IN_PROGRESS, PENDING_REVIEW, RESOLVED, CLOSED, REOPENED
+    }
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_aprobador")
     private Login usuarioAprobador;
 
-    // NEW: Add creator field
+    // creado por
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_creador")
     private Login usuarioCreador;
 
-    // Audit fields
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -159,4 +179,24 @@ public class Ticketing implements Serializable {
 
     public void setPrioridad(Prioridades prioridad) {
     }
+
+
+    // Fecha y hora de asignación
+    private LocalDateTime assignedDate;
+
+    // Indica si la asignación está activa (por defecto es verdadero)
+    private boolean isActive = true;
+
+    // Rol de la asignación (PRIMARY, SECONDARY, REVIEWER)
+    @Enumerated(EnumType.STRING)
+    private AssignmentRole role;
+
+    // Enumeración de los posibles roles de asignación
+    public enum AssignmentRole {
+        PRIMARY,     // Principal
+        SECONDARY,   // Secundario
+        REVIEWER,    // Revisor
+        APPROVER     // Aprobador
+    }
+
 }
