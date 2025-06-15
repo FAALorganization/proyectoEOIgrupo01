@@ -14,11 +14,6 @@ public class TicketMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public TicketingDTO toDto(Ticketing entity) {
-        TicketingDTO dto = modelMapper.map(entity, TicketingDTO.class);
-        dto.setPrioridad(entity.getIdPrior().getPrioridadesEnum());
-        return dto;
-    }
 
     public Ticketing toEntity(TicketingDTO dto, Prioridades prioridad) {
         Ticketing entity = modelMapper.map(dto, Ticketing.class);

@@ -1,6 +1,7 @@
 package com.grupo01.java6.faal.controllers;
 
 import com.grupo01.java6.faal.dtos.TicketingDTO;
+import com.grupo01.java6.faal.services.PriorityService;
 import com.grupo01.java6.faal.services.impl.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -21,15 +22,20 @@ import java.util.List;
 @Slf4j
 public class TicketController {
 
+    private final PriorityService priorityService;
+
     private final TicketService ticketingService;
 
-    public TicketController(TicketService ticketingService) {
+    public TicketController(PriorityService priorityService, TicketService ticketingService) {
+        this.priorityService = priorityService;
         this.ticketingService = ticketingService;
     }
     // visitor panel //
     @GetMapping("/ticket")
     public String showTicketForm(Model model,Authentication authentication) {
         model.addAttribute("ticketForm", new TicketingDTO());
+        model.addAttribute("priorities", priorityService.getAllPriorityValues());
+
         if (authentication != null) {
             List<TicketingDTO> tickets = ticketingService.findUserTickets(authentication.getName());
             model.addAttribute("tickets", tickets);
@@ -44,16 +50,22 @@ public class TicketController {
             Authentication authentication,
             RedirectAttributes redirectAttributes,
             Model model) {
+        // Validate priority
+        try {
+            priorityService.validatePriority(ticketingDTO.getPrioridad());
+        } catch (IllegalArgumentException e) {
+            bindingResult.rejectValue("prioridad", "invalid.priority", e.getMessage());
+        }
 
         if (bindingResult.hasErrors()) {
             log.warn("Validation errors in ticket creation: {}", bindingResult.getAllErrors());
-            model.addAttribute("ticketingDTO", ticketingDTO);
+            model.addAttribute("priorities", priorityService.getAllPriorityValues());
             return "ticket";
         }
 
         try {
             String userEmail = authentication.getName();
-            TicketingDTO created = ticketingService.createTicket( ticketingDTO, userEmail);
+            TicketingDTO created = ticketingService.createTicket(ticketingDTO, userEmail);
 
             redirectAttributes.addFlashAttribute("successMessage",
                     "Ticket creado exitosamente con ID: " + created.getId());
@@ -63,10 +75,34 @@ public class TicketController {
         } catch (Exception e) {
             log.error("Error creating ticket: ", e);
             model.addAttribute("errorMessage", "Error al crear el ticket: " + e.getMessage());
-            model.addAttribute("ticketingDTO", ticketingDTO);
+            model.addAttribute("priorities", priorityService.getAllPriorityValues());
+            model.addAttribute("ticketForm", ticketingDTO);
             return "ticket";
-        }
-    }
+        }}
+// general
+//        if (bindingResult.hasErrors()) {
+//            log.warn("Validation errors in ticket creation: {}", bindingResult.getAllErrors());
+//            model.addAttribute("ticketForm", ticketingDTO);
+//            return "ticket";
+//        }
+//
+//        try {
+//            String userEmail = authentication.getName();
+//            TicketingDTO created = ticketingService.createTicket( ticketingDTO, userEmail);
+//
+//            redirectAttributes.addFlashAttribute("successMessage",
+//                    "Ticket creado exitosamente con ID: " + created.getId());
+//
+//            return "redirect:/ticket/list";
+//
+//        } catch (Exception e) {
+//            log.error("Error creating ticket: ", e);
+//            model.addAttribute("errorMessage", "Error al crear el ticket: " + e.getMessage());
+//            model.addAttribute("ticketForm", ticketingDTO);
+//            return "ticket";
+//        }
+  //  }
+
 //Gets all tickets submitted by the current user.
     @GetMapping("ticket/list")
     public String listTickets(Model model, Authentication authentication) {

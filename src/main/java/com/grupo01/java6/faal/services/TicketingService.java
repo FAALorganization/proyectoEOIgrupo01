@@ -35,7 +35,6 @@ public class TicketingService implements TicketService {
     private final TicketingRepository ticketingRepository;
     private final PrioridadesRepository prioridadesRepository;
     private final TicketRelUsuarioRepository ticketRelUsuarioRepository;
-
     private final ModelMapper modelMapper;
 // crear el ticket and save it to dto  checking la prioridad
 
@@ -46,19 +45,24 @@ public class TicketingService implements TicketService {
         Login usuario = loginRepository.getLoginByEmailPrimario(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + userEmail));
 
-        Prioridades prioridad = (Prioridades) prioridadesRepository.findByPrioridadesEnum(dto.getPrioridad())
-                .orElseThrow(() -> new ResourceNotFoundException("Prioridad no encontrada: " + dto.getPrioridad()));
+        // 2. Find priority - corrected lookup
+
+        Prioridades prioridad = prioridadesRepository.findByValue(dto.getPrioridad().toLowerCase())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Prioridad no encontrada: " + dto.getPrioridad() +
+                                ". Valores válidos: " + prioridadesRepository.findAllPriorityValues()));
+
+        // 3. Create and save ticket
 
         Ticketing ticket = modelMapper.map(dto, Ticketing.class);
-        ticket.setIdPrior(prioridad);
+        ticket.setPrioridad(prioridad);
         ticket.setCreatedBy(usuario);
         ticket.setFechaInicio(LocalDate.now());
         ticket.setAprobado(false);
-
         Ticketing saved = ticketingRepository.save(ticket);
         log.info("Ticket created successfully for user {} with ID: {}", userEmail, saved.getId());
-
         return convertToDto(saved);
+
     }
 
 
@@ -92,9 +96,12 @@ public class TicketingService implements TicketService {
 
         Login usuario = loginRepository.getLoginByEmailPrimario(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + userEmail));
-        Prioridades prioridades = (Prioridades) prioridadesRepository.findByPrioridadesEnum(ticketingDTO.getPrioridad())
-                .orElseThrow(()->new ResourceNotFoundException("prorodades no encontrada:"+ticketingDTO.getPrioridad()));
-        // instnce
+
+        // validar la prioridad
+        String priorityValue = ticketingDTO.getPrioridad().toLowerCase();
+        Prioridades prioridad = prioridadesRepository.findByValue(priorityValue)
+                .orElseThrow(() -> new ResourceNotFoundException("Prioridad no encontrada: " + ticketingDTO.getPrioridad()));
+
         Ticketing ticket;
 
         if (ticketingDTO.getId()!=null) {
@@ -109,7 +116,7 @@ public class TicketingService implements TicketService {
             // 4. New ticket (create)
             ticket = modelMapper.map(ticketingDTO,
                     Ticketing.class);
-            ticket.setIdPrior(prioridades);
+            ticket.setIdPrior(prioridad);
             ticket.setFechaInicio(LocalDate.now());
             ticket.setModificacion(LocalDate.now());
             ticket.setCreatedBy(usuario) ;
@@ -128,12 +135,6 @@ public class TicketingService implements TicketService {
     public TicketingDTO update(TicketingDTO dto) {
         Ticketing existing = ticketingRepository.findActiveById(dto.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado"));
-
-        if (dto.getPrioridad() != null) {
-            Prioridades prioridad = (Prioridades) prioridadesRepository.findByPrioridadesEnum(dto.getPrioridad())
-                    .orElseThrow(() -> new ResourceNotFoundException("Prioridad no encontrada"));
-            existing.setIdPrior(prioridad);
-        }
 
         // Update fields selectively
         if (dto.getNombre() != null) existing.setNombre(dto.getNombre());
@@ -248,9 +249,7 @@ public class TicketingService implements TicketService {
     private TicketingDTO convertToDto(Ticketing ticket) {
         TicketingDTO dto = modelMapper.map(ticket, TicketingDTO.class);
 
-        if (ticket.getIdPrior() != null) {
-            dto.setPrioridad(ticket.getIdPrior().getPrioridadesEnum());
-        }
+
 
         if (ticket.getUsuarioCreador() != null) {
             dto.setUsuarioCreador(ticket.getUsuarioCreador().getEmailPrimario());

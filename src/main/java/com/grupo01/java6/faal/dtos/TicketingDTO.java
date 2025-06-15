@@ -14,15 +14,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TicketingDTO {
     private Integer id;
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 45, message = "El nombre no puede exceder 45 caracteres")
+    //@NotBlank(message = "El nombre es obligatorio")
+    //@Size(max = 45, message = "El nombre no puede exceder 45 caracteres")
     private String nombre;
 
-    @NotBlank(message = "El asunto es obligatorio")
-    @Size(max = 50, message = "El asunto no puede exceder 50 caracteres")
+    //@NotBlank(message = "El asunto es obligatorio")
+   // @Size(max = 50, message = "El asunto no puede exceder 50 caracteres")
     private String asunto;
 
-    @Size(max = 1000, message = "La descripción no puede exceder 1000 caracteres")
+    //@Size(max = 1000, message = "La descripción no puede exceder 1000 caracteres")
     private String descripcion;
 
     private String tipoTicket;
@@ -36,7 +36,7 @@ public class TicketingDTO {
 
     private Boolean aprobado;
 
-    @NotBlank(message = "La prioridad es obligatoria")
+    //@NotBlank(message = "La prioridad es obligatoria")
     private String prioridad;
 
     // Additional fields for display
@@ -45,11 +45,14 @@ public class TicketingDTO {
     private String estado;
     @Transient
     private String telefono;
+
+    /// futre implimentation todo
+
     @Transient // not stored in bd
     private Integer fechaQuejaDay;
 
     @Transient
-    private Integer fechaQuejaMonth;
+    private String fechaQuejaMonth;
 
     @Transient
     private Integer fechaQuejaYear;
