@@ -117,6 +117,20 @@ public class LoginService {
                 .toList();
     }
     @Transactional
+    public Login obtenerPorIdConSubordinados(Integer id) {
+        Login login = loginRepository.findById(id).orElse(null);
+
+        if (login != null) {
+            Hibernate.initialize(login.getSubordinados());
+            for (Login subordinado : login.getSubordinados()) {
+                if (subordinado.getIdDetallesDeUsuario() != null) {
+                    Hibernate.initialize(subordinado.getIdDetallesDeUsuario());
+                }
+            }
+        }
+
+        return login;  // Devolver el Login con sus subordinados inicializados
+
     public void actualizarLogin(Login login) {
         loginRepository.save(login); // O el método que uses para guardar
     }
