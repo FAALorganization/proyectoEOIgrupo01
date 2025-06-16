@@ -20,4 +20,11 @@ public class NombreConAusenciasDTO {
     private boolean aprobado;
     private TiposAusencias idAusencia;
     private String justificacion;
+
+    public NombreConAusenciasDTO(String nombre, String apellidos, LocalDate fechaInicio, LocalDate fechaFin) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+    }
 }

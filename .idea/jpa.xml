@@ -3,7 +3,7 @@
   <component name="JpaBuddyIdeaProjectConfig" migrateIndexesAndConstraints="true" reUseTableSchema="true">
     <option name="migrateIndexesAndConstraints" value="true" />
     <option name="reLastEntityCreationPackage" value="src/main/java/com/grupo01/java6/faal/entities" />
-    <option name="reverseEngineeringLastDbConnectionId" value="d7f3a8b7-719b-4757-8373-a95d5cf808bb" />
+    <option name="reverseEngineeringLastDbConnectionId" value="248bba73-76db-4c8b-aa94-1ae0b5af2db3" />
   </component>
   <component name="JpaPluginProjectSettings">
     <option name="entityNameTemplate" value="${className.underscore()}" />

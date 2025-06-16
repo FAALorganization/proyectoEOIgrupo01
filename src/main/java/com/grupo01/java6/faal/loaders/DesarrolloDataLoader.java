@@ -26,8 +26,9 @@ public class DesarrolloDataLoader {
     private final AusenciasRepository ausenciaRepository;
     private final ChatAbiertoRepository chatAbiertoRepository;
     private final MensajeRepository mensajeRepository;
+    private final PrioridadesRepository prioridadesRepository;
 
-public DesarrolloDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
+    public DesarrolloDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository, PrioridadesRepository prioridadesRepository) {
     this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
     this.loginRepository = loginRepository;
     this.rolesRepository = rolesRepository;
@@ -35,7 +36,8 @@ public DesarrolloDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioReposit
     this.ausenciaRepository = ausenciaRepository;
     this.chatAbiertoRepository = chatAbiertoRepository;
     this.mensajeRepository = mensajeRepository;
-}
+        this.prioridadesRepository = prioridadesRepository;
+    }
 
     @PostConstruct
     public void loadDataDesarrollo() {
@@ -233,6 +235,14 @@ public DesarrolloDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioReposit
         mensajes[4].setEsLeido(true);
 
         mensajeRepository.saveAll(Arrays.asList(mensajes));
+        // === PRIORIDADES ===
+        String[][] prioridades = {{"high", "Alta"}, {"medium", "Media"}, {"low", "Baja"}};
+        for (String[] p : prioridades) {
+            Prioridades pr = new Prioridades();
+            pr.setValue(p[0]);
+            pr.setDisplayName(p[1]);
+            prioridadesRepository.save(pr);
+        }
 
     }
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,10 +22,13 @@ public class Checkin implements Serializable {
     private Integer id;
 
     @Column(name = "horaEntrada")
-    private LocalDate horaEntrada;
+    private LocalTime horaEntrada;
 
     @Column(name = "horaSalida")
-    private LocalDate horaSalida;
+    private LocalTime horaSalida;
+
+    @Column(name = "fecha")
+    private LocalDate fecha;
 
     @Column(name = "ip", length = 250)
     private String ip;
@@ -35,5 +39,22 @@ public class Checkin implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
     private Login idLoginCheckin;
+
+    // Este es el nuevo campo enum
+    @Enumerated(EnumType.STRING) // Guardamos el enum como texto en la BD
+    @Column(name = "tipo", nullable = false)
+    private TipoCheckin tipo;
+
+    @Transient
+    private String fechaFormatted;
+
+    public String getFechaFormatted() {
+        return fechaFormatted;
+    }
+
+    public void setFechaFormatted(String fechaFormatted) {
+        this.fechaFormatted = fechaFormatted;
+    }
+
 
 }

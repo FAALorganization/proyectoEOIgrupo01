@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,15 +25,20 @@ public class LocalDataLoader {
     private final AusenciasRepository ausenciaRepository;
     private final ChatAbiertoRepository chatAbiertoRepository;
     private final MensajeRepository mensajeRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final PrioridadesRepository prioridadesRepository;
 
-    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
+
+    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository, PrioridadesRepository prioridadesRepository) {
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
         this.loginRepository = loginRepository;
         this.rolesRepository = rolesRepository;
         this.tiposAusenciasRepository = tiposAusenciasRepository;
         this.ausenciaRepository = ausenciaRepository;
+        this.passwordEncoder = passwordEncoder;
         this.chatAbiertoRepository = chatAbiertoRepository;
         this.mensajeRepository = mensajeRepository;
+        this.prioridadesRepository = prioridadesRepository;
     }
 
     @PostConstruct
@@ -50,18 +56,18 @@ public class LocalDataLoader {
         String[] paises = {"España", null, "España", "España", "España", "España", "España", "España", "España", "España"};
 
         for (int i = 0; i < nombres.length; i++) {
-           Detallesdeusuario detalles = new Detallesdeusuario();
-           detalles.setNombre(nombres[i]);
-           detalles.setApellidos(apellidos[i]);
-           detalles.setPais(paises[i]);
-           detalles.setDireccion(direcciones[i]);
-           detalles.setTlf(tlf1[i]);
-           detalles.setTlf2(null);
-           detalles.setCodigoPostal(codigosPostales[i]);
-           detalles.setContactoEmergencia(contactoEmergencia[i]);
-           detalles.setEmailPersonal(emails[i]);
-           detalles.setPoblacion(ciudades[i]);
-           detallesDeUsuarioRepository.save(detalles);
+            Detallesdeusuario detalles = new Detallesdeusuario();
+            detalles.setNombre(nombres[i]);
+            detalles.setApellidos(apellidos[i]);
+            detalles.setPais(paises[i]);
+            detalles.setDireccion(direcciones[i]);
+            detalles.setTlf(tlf1[i]);
+            detalles.setTlf2(null);
+            detalles.setCodigoPostal(codigosPostales[i]);
+            detalles.setContactoEmergencia(contactoEmergencia[i]);
+            detalles.setEmailPersonal(emails[i]);
+            detalles.setPoblacion(ciudades[i]);
+            detallesDeUsuarioRepository.save(detalles);
         }
 
         int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -80,7 +86,15 @@ public class LocalDataLoader {
         for (int i = 0; i < emailsTrabajo.length; i++) {
             Login login = new Login();
             login.setEmailPrimario(emailsTrabajo[i]);
-            login.setPassword(passwords[i]);
+
+            if (passwords[i] == null || passwords[i].isBlank()) {
+                // Si la contraseña es nula o vacía, dejamos el password en null (o podrías poner una cadena vacía)
+                login.setPassword(null);
+                System.out.println("Contraseña en posición " + i + " es nula o vacía, no se encripta");
+            } else {
+                login.setPassword(passwordEncoder.encode(passwords[i]));
+            }
+
             login.setToken(tokens[i]);
 
             if (fechasRegistro[i] == null || fechasRegistro[i].isBlank()) {
@@ -92,9 +106,11 @@ public class LocalDataLoader {
             Optional<Detallesdeusuario> detalles = detallesDeUsuarioRepository.findById(personaIds[i]);
             login.setIdDetallesDeUsuario(detalles.orElse(null));
 
-            login = loginRepository.save(login); // persistimos primero
-            loginMap.put(ids[i], login); // guardamos el login por ID
+            login = loginRepository.save(login);
+            loginMap.put(ids[i], login);
         }
+
+
 
 // Segunda fase: asignar jefes
         for (int i = 0; i < emailsTrabajo.length; i++) {
@@ -231,7 +247,15 @@ public class LocalDataLoader {
         mensajes[4].setEsLeido(true);
 
         mensajeRepository.saveAll(Arrays.asList(mensajes));
+        String[][] prioridades = {{"high", "Alta"}, {"medium", "Media"}, {"low", "Baja"}};
+        for (String[] p : prioridades) {
+            Prioridades pr = new Prioridades();
+            pr.setValue(p[0]);
+            pr.setDisplayName(p[1]);
+            prioridadesRepository.save(pr);
+        }
     }
+
 
 
 

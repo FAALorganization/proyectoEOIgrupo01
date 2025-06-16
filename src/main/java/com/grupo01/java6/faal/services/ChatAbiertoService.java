@@ -37,7 +37,7 @@ public class ChatAbiertoService {
         for (ChatAbierto chatAbierto : chats) {
             CompaneroDTO companeroDTO = new CompaneroDTO();
             Login loginB = chatAbierto.getUsuarioB();
-            Detallesdeusuario detallesB = detallesdeusuarioService.buscarEntity(loginB.getId()).get();
+            Detallesdeusuario detallesB = detallesdeusuarioService.buscar(loginB.getId()).get();
 
             companeroDTO.setId(loginB.getId());
             companeroDTO.setNombre(detallesB.getNombre());

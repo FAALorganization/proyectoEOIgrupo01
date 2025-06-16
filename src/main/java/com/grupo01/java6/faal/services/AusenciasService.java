@@ -1,5 +1,6 @@
 package com.grupo01.java6.faal.services;
 
+import com.grupo01.java6.faal.dtos.AusenciaDTO;
 import com.grupo01.java6.faal.dtos.JustificacionDTO;
 import com.grupo01.java6.faal.entities.Ausencias;
 import com.grupo01.java6.faal.entities.Detallesdeusuario;
@@ -33,7 +34,7 @@ public class AusenciasService extends AbstractBusinessService<Ausencias,Integer,
     }
 
     public void guardarVacacion(Ausencias ausencia) throws Exception {
-        guardarEntityEntity(ausencia);
+        guardarEntidadEntidad(ausencia);
     }
 
     public Optional<Ausencias> obtainHolidayByStartDate(LocalDate date, Integer idUsuario) {

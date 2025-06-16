@@ -115,8 +115,8 @@ public class MensajeService {
 
         if (!mensaje.getEsGrupal() && mensaje.getReceptor() != null) {
             // Chat privado
-            Detallesdeusuario detallesEmisor = detallesdeusuarioService.buscarEntity(mensaje.getEmisor().getId()).orElse(null);
-            Detallesdeusuario detallesReceptor = detallesdeusuarioService.buscarEntity(mensaje.getReceptor().getId()).orElse(null);
+            Detallesdeusuario detallesEmisor = detallesdeusuarioService.buscar(mensaje.getEmisor().getId()).orElse(null);
+            Detallesdeusuario detallesReceptor = detallesdeusuarioService.buscar(mensaje.getReceptor().getId()).orElse(null);
 
             Map<String, Object> payload = new HashMap<>();
             payload.put("id", mensaje.getId());

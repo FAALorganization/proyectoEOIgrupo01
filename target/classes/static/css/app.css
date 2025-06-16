@@ -10,14 +10,14 @@
     --body-font: 'Montserrat', sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100;
-    --primary: #A26769;
-    --secondary: #DDB967;
-    --bg: #F4ECE6;
+    --primary: rgb(37, 35, 35);
+    --secondary: #A3D5FF;
+    --bg: #70b2e1;
     --text: #333;
-    --accent: #F1C27B;
+    --accent: #70b2e1;
     --modal-bg: rgba(0, 0, 0, 0.6);
-    --hover: #FFE5B4;
-    --today-border: #EF6C57;
+    --hover: #70b2e1;
+    --today-border: #0c32c8;
 }
 
 *,::before,::after{
@@ -36,7 +36,7 @@ body{
     font-size: var(--normal-font-size);
     transition: .5s;
     height: auto;
-    background-color: var(--white-color);
+    background-color: #F5F1ED;
 
 }
 
@@ -55,7 +55,7 @@ a{
     align-items: center;
     justify-content: space-between;
     padding: 0 1rem;
-    background-color: var(--white-color);
+    background-color: #F5F1ED;
     transition: .5s;
 }
 .header_toggle{
@@ -79,7 +79,7 @@ a{
 
 
 .nav_link:hover {
-    background-color: white;
+    background-color:#F5F1ED;
     border-radius: 30px 0 0 30px;
     margin-left: 10px;
     color: black !important;
@@ -201,7 +201,7 @@ a{
     max-height: auto;
     display: grid;
     max-width: 2000px;
-    background: white;
+    background: #F5F1ED;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     padding: 20px;
@@ -259,7 +259,7 @@ a{
 
 .btn-gestion:hover {
     transform: scale(1.05);
-    background-color: #ae8586;
+    background-color: #1B17FF ;
 }
 
 .btn-gestion:active {
@@ -321,7 +321,7 @@ a{
 }
 
 .day {
-    background-color: #fff5ec;
+    background-color: #F5F1ED;
     border-radius: 8px;
     padding: 5px 10px 0 5px;
     text-align: right;
@@ -378,11 +378,11 @@ a{
 }
 
 .dayVacPen {
-    background-color: rgba(127, 127, 230, 0.83);
+    background-color: rgba(16, 16, 205, 0.83);
 }
 
 .dayAus {
-    background-color: rgba(170, 60, 60, 0.83);
+    background-color: rgba(60, 69, 170, 0.83);
 }
 
 .dayNorm {
@@ -1131,7 +1131,7 @@ a{
 }
 
 .calendar-day-modal-gest.selected-modal-gest {
-    background-color: #EF6C57;
+    background-color: #0c32c8;
     color: white;
     transform: scale(0.95);
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -1164,7 +1164,7 @@ a{
 
 .modal-content-style {
     background-color: #FFE5B4;
-    border: 2px solid #A26769;
+    border: 2px solid #577aef;
 }
 
 .modal-header-style, .modal-footer-style {
@@ -1172,7 +1172,7 @@ a{
 }
 
 .modal-title-style {
-    color: #A26769;
+    color: #6790a2;
 }
 
 .fixed-send-btn-modal-gest {
@@ -1180,13 +1180,13 @@ a{
     bottom: 20px;
     right: 20px;
     z-index: 2000;
-    background-color: #A26769;
+    background-color: #6781a2;
     color: white;
     border: none;
 }
 
 .fixed-send-btn-modal-gest:hover {
-    background-color: #EF6C57;
+    background-color: #579eef;
 }
 
 .calendar-grid-modal-gest {
@@ -1206,3 +1206,8 @@ a{
     padding: 6px;
     font-size: 0.85rem;
 }
+
+/********************************** Ticket **********************************/
+
+/*************************************** list-html. style****************************/
+
