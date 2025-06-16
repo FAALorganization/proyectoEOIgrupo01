@@ -6,13 +6,11 @@ import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.repositories.ChatAbiertoRepository;
 import com.grupo01.java6.faal.repositories.LoginRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class ChatAbiertoService {
@@ -29,7 +27,7 @@ public class ChatAbiertoService {
 
 
     public List<List<CompaneroDTO>> obtenerListaCompanerosDTOChatsCerradosYAbiertos(Login login) {
-        List<ChatAbierto> chats = chatAbiertoRepository.findChatsActivosByUsuario(login);
+        List<ChatAbierto> chats = chatAbiertoRepository.findChatsByUsuarioA(login);
         List<CompaneroDTO> chatsAbiertos = new ArrayList<>();
         List<CompaneroDTO> chatsCerrados = new ArrayList<>();
 
@@ -55,6 +53,32 @@ public class ChatAbiertoService {
         resultado.add(chatsCerrados);
 
         return resultado;
+    }
+
+    public boolean activarChat(Integer usuarioAId, Integer usuarioBId) {
+        Optional<ChatAbierto> chatOpt = chatAbiertoRepository.findByUsuarioAIdAndUsuarioBId(usuarioAId, usuarioBId);
+        if (chatOpt.isPresent()) {
+            ChatAbierto chat = chatOpt.get();
+            chat.setActivo(true);
+            chatAbiertoRepository.save(chat);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean desactivarChat(Integer usuarioAId, Integer usuarioBId) {
+        Optional<ChatAbierto> chatOpt = chatAbiertoRepository.findByUsuarioAIdAndUsuarioBId(usuarioAId, usuarioBId);
+        if (chatOpt.isPresent()) {
+            ChatAbierto chat = chatOpt.get();
+            chat.setActivo(false);
+            chatAbiertoRepository.save(chat);
+            return true;
+        }
+        return false;
+    }
+
+    public List<ChatAbierto> obtenerChatActivosOfUser(Login login) {
+        return chatAbiertoRepository.findByActivoAndUsuarioA(true, login);
     }
 }
 

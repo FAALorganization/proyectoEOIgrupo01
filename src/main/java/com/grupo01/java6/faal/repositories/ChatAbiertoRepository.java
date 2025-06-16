@@ -8,11 +8,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ChatAbiertoRepository extends JpaRepository<ChatAbierto, Long> {
 
-    @Query("SELECT c FROM ChatAbierto c WHERE (c.usuarioA = :login OR c.usuarioB = :login) AND c.activo = true")
-    List<ChatAbierto> findChatsActivosByUsuario(@Param("login") Login login);
+    @Query("SELECT c FROM ChatAbierto c WHERE c.usuarioA = :login")
+    List<ChatAbierto> findChatsByUsuarioA(@Param("login") Login login);
+
+    Optional<ChatAbierto> findByUsuarioAIdAndUsuarioBId(Integer usuarioAId, Integer usuarioBId);
+
+    List<ChatAbierto> findByActivoAndUsuarioA(boolean activo, Login usuarioA);
 }
 
