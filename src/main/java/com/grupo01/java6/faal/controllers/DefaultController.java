@@ -123,66 +123,23 @@ public class DefaultController {
         return "creacionTicket"; // View name
     }
 
-    @GetMapping("/tareas")
-    public String showtareas()
-    {
-
-        return "tareas"; // View name
-    }
-
-    @GetMapping("/tareasJefe")
-    public String showtareasJefe()
-    {
-
-        return "tareasJefe"; // View name
-    }
-
-
     @GetMapping("/checkin")
     public String showCheckin()
     {
-         return "checkin"; // View name
+        return "checkin"; // View name
     }
     @GetMapping("/checkinjefe")
     public String showCheckinjefe()
     {
         return "checkinjefe";}
-  
-    @GetMapping("/documentacion")
-    public String showDocumentation()
-    {
 
-        return "documentacion"; // View name
-    }
 
-    @GetMapping("/perfiljefe")
-    public String showPerfiljefe()
-    {
-
-        return "perfiljefe"; // View name
-    }
-
-    @GetMapping("/perfiladmin")
-    public String showPerfiladmin()
-    {
-
-        return "perfiladmin"; // View name
-    }
-
-    @GetMapping("/perfil")
-    public String showPerfil()
-    {
-
-        return "perfil"; // View name
-    }
-
-    @GetMapping("/chat")
-    public String showChat()
-    {
-
-        return "chat"; // View name
-    }
-
+//    @GetMapping("/chat")
+//    public String showChat()
+//    {
+//
+//        return "chat"; // View name
+//    }
 
     @GetMapping("/home")
     public String showHome()

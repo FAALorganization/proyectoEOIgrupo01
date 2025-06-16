@@ -11,9 +11,18 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
         <module name="faal" />
-        <module name="ProyectoFAAL" />
         <module name="proyectoEOIgrupo02" />
         <module name="proyectoEOIgrupo01" />
+      </profile>
+      <profile name="Annotation profile for ProyectoFAAL" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="ProyectoFAAL" />
       </profile>
     </annotationProcessing>
   </component>

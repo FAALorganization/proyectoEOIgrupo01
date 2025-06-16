@@ -13,13 +13,14 @@ import java.io.Serializable;
 public class Detallesdeusuario implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idUsuario", nullable = false)
     private Integer id;
 
     @Column(name = "nombre", nullable = false, length = 20)
     private String nombre;
 
-    @Column(name = "apellidos", length = 35)
+    @Column(name = "apellidos", nullable = false, length = 35)
     private String apellidos;
 
     @Column(name = "poblacion", length = 25)
@@ -34,7 +35,7 @@ public class Detallesdeusuario implements Serializable {
     @Column(name = "tlf2", length = 25)
     private String tlf2;
 
-    @Column(name = "codigoPostal", nullable = false)
+    @Column(name = "codigoPostal")
     private Integer codigoPostal;
 
     @Column(name = "direccion", length = 150)
@@ -45,9 +46,6 @@ public class Detallesdeusuario implements Serializable {
 
     @Column(name = "pais", length = 30)
     private String pais;
-
-    @Column(name = "token_img", length = 50)
-    private String tokenImg;
 
     //He cambiado tambien esta parte para que mapee directamente con Login y no haya confusiones con jefe.
     @OneToOne(mappedBy = "idDetallesDeUsuario", fetch = FetchType.LAZY)

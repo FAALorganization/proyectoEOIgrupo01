@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CompaneroDTO {
+    private Integer id;
     private String nombre;
     private String apellidos;
 

@@ -18,7 +18,7 @@
     <nav class="nav navbar-style">
         <div class="nav_list">
             <a th:href="@{/home}" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
-            <a th:href="@{/perfiljefe}" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
+            <a th:href="@{/perfil}" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
             <a th:href="@{/checkin}" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
             <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
             <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -28,10 +28,7 @@
 
             <!-- Menú Dropdown -->
             <ul class="dropdown-menu" aria-labelledby="gestionDropdown">
-                <form th:action="@{/tareas}" method="get">
-                    <li><a class="dropdown-item">Gestión de Tareas</a></li>
-                </form>
-
+                <li><a class="dropdown-item" th:href="@{/tareas}">Gestión de Tareas</a></li>
                 <li><a class="dropdown-item" th:href="@{/gestion}">Gestión Ausencias</a></li>
 
             </ul>

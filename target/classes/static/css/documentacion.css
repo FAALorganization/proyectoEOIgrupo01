@@ -1,196 +1,257 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:wght@100..900&family=New+Tegomin&family=Russo+One&display=swap');
-
-:root{
-    --header-height: 3rem;
-    --nav-width: 68px;
-    --first-color: #252323;
-    --first-color-light: #e6e6e6;
-    --white-color: #F7F6FB;
-    --body-font: 'Montserrat', sans-serif;
-    --normal-font-size: 1rem;
-    --z-fixed: 100;
+/* === 1. Layout general === */
+body {
+    max-width: 900px;
+    margin: auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.1rem;
+    color: #222;
 }
 
-*,::before,::after{
-    box-sizing: border-box;
-
+/* === 2. Contenedores === */
+.doc-container {
+    max-width: 800px;
+    margin: 1.5rem auto;
+    padding: 1.5rem 1.5rem 2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-
-
-body{
-    position: relative;
-    margin: var(--header-height) 0 0 0;
-    padding: 0 1rem;
-    font-family: var(--body-font);
-    font-size: var(--normal-font-size);
-    transition: .5s;
-    height: auto;
-    background-color: var(--white-color);
-
+/* === 3. Títulos y textos === */
+.doc-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #333;
 }
 
-a{
-    text-decoration: none
+.doc-details strong {
+    font-size: 1.2rem;
+    color: #222;
 }
 
-.header{
-    width: 100%;
-    height: var(--header-height);
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
-    background-color: var(--white-color);
-    z-index: var(--z-fixed);
-    transition: .5s;
-}
-.header_toggle{
-    color: var(--first-color);
-    font-size: 1.5rem;
-    cursor: pointer;
+.doc-details span {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.4;
+    display: block;
+    margin-top: 0.2rem;
 }
 
-/****************************************************NAVBAR********************************************************/
-.l-navbar{
-    position: fixed;
-    top: 0;
-    left: -30%;
-    width: var(--nav-width);
-    height: 100vh;
-    background-color: var(--first-color);
-    transition: .5s;
-    z-index: var(--z-fixed);
-}
-
-
-.nav_link:hover {
-    background-color: white;
-    border-radius: 30px 0 0 30px;
-    margin-left: 10px;
-    color: black !important;
-    transition: 0.5s;
-}
-
-.nav{
-    height: 100%;
+/* === 4. Lista de documentos === */
+.doc-list-item {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
+    align-items: flex-start;
 }
 
-
-.nav_link:hover > span.textenter {
-    color: var(--first-color) !important;
+.descripcion-doc {
+    white-space: normal;
+    overflow-wrap: break-word;
+    width: 100%;
 }
 
-.nav_link > span {
-    color: var(--first-color);
-    margin-left: 10px;
-}
-
-.nav_logo, .nav_link{
-    display: grid;
-    grid-template-columns: max-content max-content;
-    align-items: center;
-    column-gap: 1rem;
-    padding: .5rem  0 .5rem 1.5rem;
-}
-
-.nav_logo{
-    margin-bottom: 2rem;
-}
-
-.nav_logo-icon{
-    font-size: 1.25rem;
-    color: var(--white-color);
-}
-
-.nav_logo-name{
-    color: var(--white-color);
-    font-weight: 700;
-}
-
-.nav_link{
-    position: relative;
-    color: var(--first-color-light);
-    margin-bottom: 1rem;
-    transition: .3s;
-    text-decoration: none;
-}
-
-.nav_icon{
-    font-size: 1.25rem;
-}
-
-.show{
-    left: 0;
-}
-
-.body-pd{
-    padding-left: calc(var(--nav-width) + 1rem);
-}
-
-.active{
-    color: var(--white-color);
-}
-
-.active::before{
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 2px;
-    height: 32px;
-
-}
-
-.height-100{
-    height:100vh;
-}
-@media screen and (min-width: 768px){
-    body{
-        margin: calc(var(--header-height) + 1rem) 0 0 0;
-        padding-left: calc(var(--nav-width) + 2rem);
-    }
-    .header{
-        height: calc(var(--header-height) + 1rem);
-        padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
-    }
-
-    .l-navbar{
-        left: 0;
-        padding: 1rem 0 0 0;
-    }
-    .show{
-        width: calc(var(--nav-width) + 156px);
-    }
-    .body-pd{
-        padding-left: calc(var(--nav-width) + 188px);
-    }
-
-}
-.file-section {
-    margin-top: 10px;
-}
-
-/*CSS DOCUMENTACION*/
-
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 6px 12px; /* Ajuste del tamaño */
-    font-size: 0.85rem; /* Tamaño de la fuente reducido */
-    border-radius: 4px; /* Bordes más pequeños */
+/* === 5. Botones === */
+.btn-doc {
+    font-size: 1.1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.4rem;
     cursor: pointer;
-    margin-top: 5px;
-    width: 200px;
+    border: none;
+    color: #fff;
+    background-color: #007bff;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    justify-content: center;
 }
 
-button:hover {
+.btn-doc:hover {
     background-color: #0056b3;
+}
+
+.btn-doc.eliminar {
+    background-color: #dc3545;
+}
+
+.btn-doc.eliminar:hover {
+    background-color: #a71d2a;
+}
+
+.btn-doc.restaurar {
+    background-color: #ffc107;
+    color: #222;
+}
+
+.btn-doc.restaurar:hover {
+    background-color: #d39e00;
+}
+
+/* === 6. Formularios === */
+form label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #222;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+input.doc-form-control,
+textarea.doc-form-control,
+select.doc-form-select {
+    font-size: 1.05rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+}
+
+/* === 7. Acciones === */
+.doc-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.doc-actions form {
+    margin-bottom: 0;
+}
+
+/* === 8. Modales === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-doc {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    padding: 2rem 2.5rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    animation: modalShow 0.3s ease forwards;
+}
+
+.modal-doc h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+
+.modal-doc .close-btn {
+    position: absolute;
+    top: 0.8rem;
+    right: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.modal-doc .close-btn:hover {
+    color: #007bff;
+}
+
+@keyframes modalShow {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* === 9. Buscador de proyectos === */
+#buscador-proyectos {
+    max-width: 400px;
+    margin: 1rem auto 1.5rem;
+    display: block;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* === 10. Utilidades === */
+.text-center {
+    text-align: center !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.alert {
+    max-width: 600px;
+    margin: 1rem auto;
+    font-size: 1.05rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.25rem;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
 }
