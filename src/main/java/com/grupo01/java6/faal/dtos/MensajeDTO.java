@@ -1,4 +1,4 @@
-package com.grupo01.java6.faal.dto;
+package com.grupo01.java6.faal.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

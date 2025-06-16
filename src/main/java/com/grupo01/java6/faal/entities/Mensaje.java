@@ -15,7 +15,7 @@ public class Mensaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_mensaje")
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_emisor", nullable = false)
@@ -33,4 +33,7 @@ public class Mensaje {
 
     @Column(name = "es_grupal", nullable = false)
     private Boolean esGrupal = false;
+
+    @Column(name = "es_leido", nullable = false)
+    private Boolean esLeido = false;
 }
