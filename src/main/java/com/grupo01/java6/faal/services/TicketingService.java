@@ -142,7 +142,7 @@ public class TicketingService implements TicketService {
         if (dto.getDescripcion() != null) existing.setDescripcion(dto.getDescripcion());
         if (dto.getTipoTicket() != null) existing.setTipoTicket(dto.getTipoTicket());
         // to do modify entity later on with the ux
-        if (dto.getFechaFin() != null) existing.setFechaFin(dto.getFechaQueja());
+        //if (dto.getFechaFin() != null) existing.setFechaFin(dto.getFechaQueja());
 
         return convertToDto(ticketingRepository.save(existing));
     }

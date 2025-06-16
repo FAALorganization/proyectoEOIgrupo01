@@ -124,8 +124,8 @@ public class Ticketing implements Serializable {
     @org.springframework.data.annotation.Transient
     private Integer fechaQuejaYear;
 
-    @org.springframework.data.annotation.Transient
-    private LocalDate fechaQueja ;
+//    @org.springframework.data.annotation.Transient
+//    private LocalDate fechaQueja ;
     private static final Map<String, Integer> SPANISH_MONTHS = Map.ofEntries(
             Map.entry("enero", 1),
             Map.entry("febrero", 2),
@@ -141,38 +141,38 @@ public class Ticketing implements Serializable {
             Map.entry("diciembre", 12)
     );
 
-    @Transient
-    public LocalDate getFechaQueja() {
-        if (fechaQuejaYear == null || fechaQuejaMonth == null || fechaQuejaDay == null) {
-            return null;
-        }
-
-        try {
-            // Try to parse month as enum first (English names)
-            try {
-                Month month = Month.valueOf(fechaQuejaMonth.toUpperCase());
-                return LocalDate.of(fechaQuejaYear, month, fechaQuejaDay);
-            } catch (IllegalArgumentException e) {
-                // If English names fail, try Spanish month names
-                String monthLower = fechaQuejaMonth.toLowerCase(Locale.ROOT);
-                Integer monthNumber = SPANISH_MONTHS.get(monthLower);
-
-                if (monthNumber != null) {
-                    return LocalDate.of(fechaQuejaYear, monthNumber, fechaQuejaDay);
-                }
-
-                // If not found in Spanish map, try parsing as number
-                try {
-                    monthNumber = Integer.parseInt(fechaQuejaMonth);
-                    return LocalDate.of(fechaQuejaYear, monthNumber, fechaQuejaDay);
-                } catch (NumberFormatException nfe) {
-                    return null;
-                }
-            }
-        } catch (DateTimeException e) {
-            return null;
-        }
-    }
+//    @Transient
+//    public LocalDate getFechaQuejaMo() {
+//        if (fechaQuejaYear == null || fechaQuejaMonth == null || fechaQuejaDay == null) {
+//            return null;
+//        }
+//
+//        try {
+//            // Try to parse month as enum first (English names)
+//            try {
+//                Month month = Month.valueOf(fechaQuejaMonth.toUpperCase());
+//                return LocalDate.of(fechaQuejaYear, month, fechaQuejaDay);
+//            } catch (IllegalArgumentException e) {
+//                // If English names fail, try Spanish month names
+//                String monthLower = fechaQuejaMonth.toLowerCase(Locale.ROOT);
+//                Integer monthNumber = SPANISH_MONTHS.get(monthLower);
+//
+//                if (monthNumber != null) {
+//                    return LocalDate.of(fechaQuejaYear, monthNumber, fechaQuejaDay);
+//                }
+//
+//                // If not found in Spanish map, try parsing as number
+//                try {
+//                    monthNumber = Integer.parseInt(fechaQuejaMonth);
+//                    return LocalDate.of(fechaQuejaYear, monthNumber, fechaQuejaDay);
+//                } catch (NumberFormatException nfe) {
+//                    return null;
+//                }
+//            }
+//        } catch (DateTimeException e) {
+//            return null;
+//        }
+//    }
     @org.springframework.data.annotation.Transient
     // transient bc m to lazy to modify the entiy so i will do it later  : )
     private String correoGerente;
