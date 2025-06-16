@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,13 +25,30 @@ public class LocalDataLoader {
     private final AusenciasRepository ausenciaRepository;
     private final ChatAbiertoRepository chatAbiertoRepository;
     private final MensajeRepository mensajeRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
+    /**
+     * Constructor de la clase {@code LocalDataLoader}.
+     *
+     * Inicializa un objeto {@code LocalDataLoader} configurado con los repositorios de las entidades,
+     * proporcionando la capacidad de interactuar con estas entidades en la base de datos.
+     *
+     * @param repository              El repositorio de la entidad padre {@code EntidadPadreRepository}.
+     *                                Se utiliza para realizar operaciones de persistencia, actualización,
+     *                                eliminación y consulta relacionadas con la entidad padre.
+     * @param entidadHijaRepository   El repositorio de la entidad hija {@code EntidadHijaRepository}.
+     *                                Es utilizado para gestionar datos de la entidad hija y su relación con
+     *                                la entidad padre.
+     */
+    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
+        this.repository = repository;
+        this.entidadHijaRepository = entidadHijaRepository;
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
         this.loginRepository = loginRepository;
         this.rolesRepository = rolesRepository;
         this.tiposAusenciasRepository = tiposAusenciasRepository;
         this.ausenciaRepository = ausenciaRepository;
+        this.passwordEncoder = passwordEncoder;
         this.chatAbiertoRepository = chatAbiertoRepository;
         this.mensajeRepository = mensajeRepository;
     }
@@ -80,7 +98,15 @@ public class LocalDataLoader {
         for (int i = 0; i < emailsTrabajo.length; i++) {
             Login login = new Login();
             login.setEmailPrimario(emailsTrabajo[i]);
-            login.setPassword(passwords[i]);
+
+            if (passwords[i] == null || passwords[i].isBlank()) {
+                // Si la contraseña es nula o vacía, dejamos el password en null (o podrías poner una cadena vacía)
+                login.setPassword(null);
+                System.out.println("Contraseña en posición " + i + " es nula o vacía, no se encripta");
+            } else {
+                login.setPassword(passwordEncoder.encode(passwords[i]));
+            }
+
             login.setToken(tokens[i]);
 
             if (fechasRegistro[i] == null || fechasRegistro[i].isBlank()) {
@@ -92,9 +118,11 @@ public class LocalDataLoader {
             Optional<Detallesdeusuario> detalles = detallesDeUsuarioRepository.findById(personaIds[i]);
             login.setIdDetallesDeUsuario(detalles.orElse(null));
 
-            login = loginRepository.save(login); // persistimos primero
-            loginMap.put(ids[i], login); // guardamos el login por ID
+            login = loginRepository.save(login);
+            loginMap.put(ids[i], login);
         }
+
+
 
 // Segunda fase: asignar jefes
         for (int i = 0; i < emailsTrabajo.length; i++) {

@@ -8,6 +8,7 @@ import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.repositories.LoginRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -115,6 +116,9 @@ public class LoginService {
                 .filter(user -> !user.getId().equals(idActual))
                 .toList();
     }
-
+    @Transactional
+    public void actualizarLogin(Login login) {
+        loginRepository.save(login); // O el método que uses para guardar
+    }
 
 }
