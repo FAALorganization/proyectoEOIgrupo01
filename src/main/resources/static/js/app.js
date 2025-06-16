@@ -1546,9 +1546,30 @@ if (window.location.pathname === "/gestion") {
                         tdElementAction.innerHTML = "-";
                     }
 
+
+/********************************GESTION CALENDARIO***********************************/
+function marcarDiaConPunto(fechaLista, yearSelected, monthSelected) {
+    const date = new Date(fechaLista);
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    if (yearSelected === year && monthSelected === month) {
+        if (![0, 6].includes(date.getDay())) {
+            const dayElement = document.querySelector(`.day[data-date="${day}"]`);
+            if (dayElement) {
+                // No añadir otro punto si ya existe
+                if (!dayElement.querySelector('span.dot')) {
+                    const puntoSpan = document.createElement("span");
+                    puntoSpan.className = "dot";
+                    dayElement.appendChild(puntoSpan);
+                }
+            }
+        }
+    }
+}
                     trElement.appendChild(tdElementName);
                     trElement.appendChild(tdElementAction);
-
                     tbodyElement.appendChild(trElement);
 
                 }
