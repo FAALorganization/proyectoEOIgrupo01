@@ -24,6 +24,6 @@ public class Roles implements java.io.Serializable {
 
     public String getNombre() {
 
-        return nombre;
+        return descripcion;
     }
 }

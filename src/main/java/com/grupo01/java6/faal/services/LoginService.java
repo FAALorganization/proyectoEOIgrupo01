@@ -80,10 +80,10 @@ public class LoginService {
         loginRepository.save(login); //metodo para guardar un Login
     }
 
-    public Login obtenerPorDetallesUsuario(Detallesdeusuario detallesdeusuario) {
-        return loginRepository.findByIdDetallesDeUsuario(detallesdeusuario).orElse(null);
-
-    }
+//    public Login obtenerPorDetallesUsuario(Detallesdeusuario detallesdeusuario) {
+//        return loginRepository.findByIdDetallesDeUsuario(detallesdeusuario).orElse(null);
+//
+//    }
 
     public Login obtenerPorId(Integer id) {
         return loginRepository.findById(id).orElse(null);

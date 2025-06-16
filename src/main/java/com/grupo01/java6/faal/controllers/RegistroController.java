@@ -54,7 +54,7 @@ public class RegistroController {
                     detallesdeuser.setNombre(nombre);
                     detallesdeuser.setApellidos(apellido);
 
-                    detallesdeusuarioService.guardarEntityEntity(detallesdeuser);
+                    detallesdeusuarioService.guardarEntidadEntidad(detallesdeuser);
 
                     Login login = new Login();
                     login.setActivo(true);

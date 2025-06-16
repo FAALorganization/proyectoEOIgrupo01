@@ -3,6 +3,7 @@ package com.grupo01.java6.faal.controllers;
 import com.grupo01.java6.faal.dtos.TicketingDTO;
 import com.grupo01.java6.faal.services.PriorityService;
 import com.grupo01.java6.faal.services.impl.TicketService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+
 import java.time.LocalDate;
 @Slf4j
 @Controller
