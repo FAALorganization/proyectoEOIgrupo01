@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class TicketingDTO {
     private Integer id;
@@ -57,10 +56,12 @@ public class TicketingDTO {
     @Transient
     private Integer fechaQuejaYear;
 
-    @Transient
-    private LocalDate fechaQueja ;
     @Transient      // transient bc m to lazy to modify the entiy so i will do it later  : )
     private String correoGerente;
+
+    public TicketingDTO() {
+///  return all the above  constructor
+    }
 
     public String getEstado() {
         if (aprobado == null) return "PENDIENTE";
