@@ -50,18 +50,18 @@ public class LocalDataLoader {
         String[] paises = {"España", null, "España", "España", "España", "España", "España", "España", "España", "España"};
 
         for (int i = 0; i < nombres.length; i++) {
-           Detallesdeusuario detalles = new Detallesdeusuario();
-           detalles.setNombre(nombres[i]);
-           detalles.setApellidos(apellidos[i]);
-           detalles.setPais(paises[i]);
-           detalles.setDireccion(direcciones[i]);
-           detalles.setTlf(tlf1[i]);
-           detalles.setTlf2(null);
-           detalles.setCodigoPostal(codigosPostales[i]);
-           detalles.setContactoEmergencia(contactoEmergencia[i]);
-           detalles.setEmailPersonal(emails[i]);
-           detalles.setPoblacion(ciudades[i]);
-           detallesDeUsuarioRepository.save(detalles);
+            Detallesdeusuario detalles = new Detallesdeusuario();
+            detalles.setNombre(nombres[i]);
+            detalles.setApellidos(apellidos[i]);
+            detalles.setPais(paises[i]);
+            detalles.setDireccion(direcciones[i]);
+            detalles.setTlf(tlf1[i]);
+            detalles.setTlf2(null);
+            detalles.setCodigoPostal(codigosPostales[i]);
+            detalles.setContactoEmergencia(contactoEmergencia[i]);
+            detalles.setEmailPersonal(emails[i]);
+            detalles.setPoblacion(ciudades[i]);
+            detallesDeUsuarioRepository.save(detalles);
         }
 
         int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};

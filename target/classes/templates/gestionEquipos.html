@@ -1,0 +1,161 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
+
+<head>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+    </th:block>
+    <link rel="stylesheet" th:href="@{/css/equipos.css}">
+</head>
+
+<body>
+<section layout:fragment="content">
+
+    <h2 class="mb-4 mt-5 text-center">Crear nuevo equipo</h2>
+
+    <form method="post" action="/gestionEquipos/crear">
+        <div class="mb-3">
+            <label for="nombreEquipo" class="form-label">Nombre del equipo</label>
+            <input type="text" class="form-control" id="nombreEquipo" name="nombre" placeholder="Nombre del equipo" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcionEquipo" class="form-label">Descripción</label>
+            <textarea class="form-control" id="descripcionEquipo" name="descripcion" rows="3" placeholder="Describe el propósito del equipo"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="miembrosSelect" class="form-label">Seleccionar miembros</label>
+            <select multiple class="form-select" id="miembrosSelect" name="loginIds">
+                <option th:each="compa : ${subordinados}"
+                        th:value="${compa.id}"
+                        th:text="${compa.nombre} + ' ' + ${compa.apellidos}">
+                </option>
+            </select>
+        </div>
+
+        <div class="text-end">
+            <a href="/perfil" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Crear equipo</button>
+        </div>
+    </form>
+
+    <h3 class="mt-5 text-center">Equipos existentes</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Miembros</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="equipo : ${equipos}">
+                <td th:text="${equipo.nombre}">Nombre del equipo</td>
+                <td th:text="${equipo.descripcion}">Descripción del equipo</td>
+
+                <td>
+                    <ul class="mb-0">
+                        <li th:each="companeroDTO : ${nombresPorEquipo[equipo.id]}">
+                            <span th:text="${companeroDTO.nombre}"></span>
+                            <span th:text="${companeroDTO.apellidos}"></span>
+                        </li>
+                    </ul>
+                </td>
+
+                <td>
+                    <!-- Botón que abre el modal (uno por equipo) -->
+                    <a data-bs-toggle="modal" th:data-bs-target="'#editarEquipoModal_' + ${equipo.id}" class="btn btn-sm btn-warning">
+                        Editar
+                    </a>
+
+
+                    <!-- Modal de edición -->
+                    <div th:id="'editarEquipoModal_' + ${equipo.id}" class="modal fade" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+
+                                <!-- Formulario para editar equipo -->
+                                <form th:action="@{'/gestionEquipos/editar'}" method="post">
+                                    <input type="hidden" name="equipoId" th:value="${equipo.id}" />
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Editar equipo</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <!-- Nombre del equipo -->
+                                        <div class="mb-3">
+                                            <label for="nombreEditado" class="form-label">Nombre del equipo</label>
+                                            <input type="text" class="form-control" id="nombreEditado" name="nombre" th:value="${equipo.nombre}" required>
+                                        </div>
+
+                                        <!-- Descripción -->
+                                        <div class="mb-3">
+                                            <label for="descripcionEditada" class="form-label">Descripción</label>
+                                            <textarea class="form-control" id="descripcionEditada" name="descripcion" rows="3" th:text="${equipo.descripcion}"></textarea>
+                                        </div>
+
+                                        <!-- Botón para guardar cambios de equipo -->
+                                        <button type="submit" class="btn btn-primary mb-4">Guardar cambios</button>
+                                    </div>
+                                </form>
+
+                                <!-- Miembros actuales -->
+                                <div class="modal-body">
+                                    <label class="form-label">Miembros actuales</label>
+                                    <ul class="list-group mb-3">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                                            th:each="companeroDTO : ${nombresPorEquipo[equipo.id]}">
+            <span>
+              <span th:text="${companeroDTO.nombre}">Nombre</span>
+              <span th:text="${companeroDTO.apellidos}">Apellidos</span>
+            </span>
+
+                                            <form th:action="@{/gestionEquipos/quitarMiembro}" method="post" class="mb-0">
+                                                <input type="hidden" name="equipoId" th:value="${equipo.id}" />
+                                                <input type="hidden" name="loginId" th:value="${companeroDTO.id}" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Quitar</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Formulario para añadir nuevos miembros -->
+                                <form th:action="@{/gestionEquipos/anadirMiembro}" method="post">
+                                    <input type="hidden" name="equipoId" th:value="${equipo.id}" />
+                                    <div class="modal-body">
+                                        <label for="nuevosMiembrosSelect" class="form-label">Añadir nuevos miembros</label>
+                                        <select class="form-select" id="nuevosMiembrosSelect" name="nuevosLoginIds" multiple>
+                                            <option th:each="compa : ${subordinados}"
+                                                    th:value="${compa.id}"
+                                                    th:text="${compa.nombre} + ' ' + ${compa.apellidos}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Añadir al equipo</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <a href="/gestionEquipos/eliminar/2" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+</body>
+</html>
