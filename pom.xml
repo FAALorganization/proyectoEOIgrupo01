@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <properties>
-        <java.version>24</java.version>
+        <java.version>23</java.version>
         <lombok.version>1.18.38</lombok.version>
         <sonar.coverage.exclusions>**/Application.*,**/loaders/*</sonar.coverage.exclusions>
         <project.name>faal</project.name>
@@ -159,6 +159,16 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.13</version>
         </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -174,7 +184,7 @@
                         <version>${lombok.version}</version>
                       </path>
                     </annotationProcessorPaths>
-                    <release>24</release>
+                    <release>23</release>
                 </configuration>
             </plugin>
             <plugin>

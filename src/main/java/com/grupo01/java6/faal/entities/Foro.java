@@ -2,44 +2,44 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
-
 import java.io.Serializable;
 import java.time.Instant;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
 @Entity(name = "Foro")
-@Table(name = "foro", schema = "faal", indexes = {
+@Table(name = "foro", indexes = {
         @Index(name = "fk_foro_estadoForo1_idx", columnList = "estadoForo_id"),
         @Index(name = "fk_foro_login1_idx", columnList = "idLogin")
 })
 public class Foro implements Serializable {
+
     @Id
     @Column(name = "idForo", nullable = false)
-    private Integer Id;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "estadoForo_id", nullable = false)
-    private Estadoforo estadoforo;
+    private Integer id;
+
     @Column(name = "titulo", nullable = false, length = 100)
     private String titulo;
-    @Lob
+
     @Column(name = "descripcion")
     private String descripcion;
+
     @ColumnDefault("current_timestamp()")
     @Column(name = "fechaCreacion")
     private Instant fechaCreacion;
+
     @Column(name = "fechaActualizacion")
     private Instant fechaActualizacion;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "idEstadoForo", nullable = false)
+    private Estadoforo estadoForo;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)
-    private Login idLogin;
+    private Login loginForo;
 
 }

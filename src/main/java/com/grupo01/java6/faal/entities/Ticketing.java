@@ -2,32 +2,24 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
 @Entity(name = "Ticketing")
-@Table(name = "ticketing", schema = "faal", indexes = {
+@Table(name = "ticketing", indexes = {
         @Index(name = "id_prior", columnList = "id_prior")
 })
 public class Ticketing implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_prior")
-    private Prioridade idPrior;
-    @Lob
     @Column(name = "descripcion")
     private String descripcion;
 
@@ -47,12 +39,16 @@ public class Ticketing implements Serializable {
     private LocalDate eliminacion;
 
     @Column(name = "aprobado")
-    private Byte aprobado;
+    private Boolean aprobado;
 
     @Column(name = "tipoTicket", length = 45)
     private String tipoTicket;
 
     @Column(name = "asunto", length = 50)
     private String asunto;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_prior")
+    private Prioridades idPrior;
 
 }
