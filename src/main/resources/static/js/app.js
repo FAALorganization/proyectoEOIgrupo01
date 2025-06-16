@@ -1897,6 +1897,7 @@ if (window.location.pathname === "/gestionVRes") {
     })
 }
 
+
 /********************************GESTION CALENDARIO***********************************/
 function marcarDiaConPunto(fechaLista, yearSelected, monthSelected) {
     const date = new Date(fechaLista);
