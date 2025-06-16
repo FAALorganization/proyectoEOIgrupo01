@@ -94,12 +94,12 @@ public class DefaultController {
         return "creacionTicket"; // View name
     }
 
-    @GetMapping("/tareas")
-    public String showtareas()
-    {
-
-        return "tareas"; // View name
-    }
+//    @GetMapping("/tareas")
+//    public String showtareas()
+//    {
+//
+//        return "tareas"; // View name
+//    }
 
     @GetMapping("/tareasJefe")
     public String showtareasJefe()
@@ -141,19 +141,19 @@ public class DefaultController {
         return "perfiladmin"; // View name
     }
 
-    @GetMapping("/perfil")
-    public String showPerfil()
-    {
+//    @GetMapping("/perfil")
+//    public String showPerfil()
+//    {
+//
+//        return "perfil"; // View name
+//    }
 
-        return "perfil"; // View name
-    }
-
-    @GetMapping("/chat")
-    public String showChat()
-    {
-
-        return "chat"; // View name
-    }
+//    @GetMapping("/chat")
+//    public String showChat()
+//    {
+//
+//        return "chat"; // View name
+//    }
 
     @GetMapping("/home")
     public String showhome()

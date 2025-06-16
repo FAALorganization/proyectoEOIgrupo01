@@ -6,7 +6,7 @@ import com.grupo01.java6.faal.entities.Login;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 public interface TicketService {

@@ -1,16 +1,15 @@
 package com.grupo01.java6.faal.config;
 
 import com.grupo01.java6.faal.entities.Login;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
-
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements UserDetails, CredentialsContainer {
 
     private final Login login;
 
@@ -18,16 +17,11 @@ public class UserDetailsImpl implements UserDetails {
         this.login = login;
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return login.getRoles().stream()
-//                .map(role -> new SimpleGrantedAuthority(role.getNombre()))
-//                .collect(Collectors.toList());
-//    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return login.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getDescripcion().toUpperCase()))
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -37,7 +31,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login.getEmailPrimario(); // Cambia si usas otro campo como "username"
+        return login.getEmailPrimario();
     }
 
     @Override
@@ -57,11 +51,15 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true; // Puedes vincularlo a algún campo en tu entidad `Login`
+        return true; // Puedes atarlo a algún campo como login.isActivo()
     }
 
     public Login getLogin() {
         return login;
     }
-}
 
+    @Override
+    public void eraseCredentials() {
+        // Podrías limpiar la contraseña si se desea
+    }
+}

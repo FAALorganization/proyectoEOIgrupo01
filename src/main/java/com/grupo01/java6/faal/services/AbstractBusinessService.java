@@ -1,6 +1,7 @@
 package com.grupo01.java6.faal.services;
 
-import com.grupo01.java6.faal.Mapper.AbstractServiceMapper;
+//import com.grupo01.java6.faal.Mapper.AbstractServiceMapper;
+import com.grupo01.java6.faal.services.mappers.AbstractServiceMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,8 +10,8 @@ import java.util.*;
 
 public abstract  class AbstractBusinessService <E, ID, DTO,  REPO extends JpaRepository<E,ID>,
         MAPPER extends AbstractServiceMapper<E,DTO>>  {
-    private final REPO repo;
-    private final MAPPER serviceMapper;
+    final REPO repo;
+    final MAPPER serviceMapper;
 
 
     protected AbstractBusinessService(REPO repo, MAPPER mapper) {
