@@ -20,7 +20,7 @@ public class UserDetailsImpl implements UserDetails, CredentialsContainer {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return login.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getNombre().toUpperCase()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getDescripcion().toUpperCase()))
                 .collect(Collectors.toSet());
     }
 

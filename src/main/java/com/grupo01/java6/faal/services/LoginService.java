@@ -8,9 +8,8 @@ import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.repositories.LoginRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.hibernate.Hibernate;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,8 +24,8 @@ public class LoginService {
         this.loginRepository = loginRepository;
     }
 
-    public Login obtainUser(String str) {
-        Optional<Login> logins = loginRepository.getLoginByEmailPrimario(str);
+    public Login obtainUser(String email){
+        Optional<Login> logins = loginRepository.getLoginByEmailPrimario(email);
         return logins.orElse(null);
         // Por ejemplo, devolver el email primario del primer Login
     }
@@ -74,20 +73,23 @@ public class LoginService {
                 .toList();
     }
 
+    public Login getUserBy_Id(Integer id) {
+        return loginRepository.findById(id).orElse(null);
+    }
+
     public void guardarLogin(Login login) {
         loginRepository.save(login); //metodo para guardar un Login
     }
 
-    public Login obtenerPorDetallesUsuario(Detallesdeusuario detallesdeusuario) {
-        return loginRepository.findByIdDetallesDeUsuario(detallesdeusuario).orElse(null);
-
-    }
+//    public Login obtenerPorDetallesUsuario(Detallesdeusuario detallesdeusuario) {
+//        return loginRepository.findByIdDetallesDeUsuario(detallesdeusuario).orElse(null);
+//
+//    }
 
     public Login obtenerPorId(Integer id) {
         return loginRepository.findById(id).orElse(null);
 
     }
-
     public List<Login> obtenerUsuariosSinConversacion(Login actual, List<Mensaje> recientes) {
         Set<Integer> idsConConversacion = recientes.stream()
                 .flatMap(m -> Stream.of(m.getEmisor().getId(), m.getReceptor() != null ? m.getReceptor().getId() : null))
@@ -114,7 +116,6 @@ public class LoginService {
                 .filter(user -> !user.getId().equals(idActual))
                 .toList();
     }
-
     @Transactional
     public Login obtenerPorIdConSubordinados(Integer id) {
         Login login = loginRepository.findById(id).orElse(null);
@@ -130,5 +131,8 @@ public class LoginService {
 
         return login;  // Devolver el Login con sus subordinados inicializados
 
+    public void actualizarLogin(Login login) {
+        loginRepository.save(login); // O el método que uses para guardar
     }
+
 }

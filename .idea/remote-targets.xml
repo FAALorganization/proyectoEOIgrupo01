@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="db" type="docker-compose" uuid="c9f35129-4c59-42c8-a2ed-952e428cc873">
+        <config>
+          <option name="targetPlatform">
+            <TargetPlatform />
+          </option>
+          <option name="configurationFiles">
+            <list>
+              <option value="C:\Users\1thea\IdeaProjects\proyectoEOIgrupo02\compose.yaml" />
+            </list>
+          </option>
+          <option name="serviceName" value="db" />
+        </config>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config />
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

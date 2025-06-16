@@ -28,6 +28,10 @@ public class Login implements Serializable {
     @Column(name = "password")
     private String password;
 
+    public String getContrasena() {
+        return password;
+    }
+
     @Column(name = "token", length = 50)
     private String token;
 
@@ -54,5 +58,9 @@ public class Login implements Serializable {
 
     @OneToMany(mappedBy = "loginRol", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Roles> roles;
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
 }
 

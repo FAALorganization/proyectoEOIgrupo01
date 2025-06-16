@@ -1,7 +1,6 @@
 package com.grupo01.java6.faal.services;
 
 import com.grupo01.java6.faal.PostgreSQLContainerTest;
-import com.grupo01.java6.faal.entities.EntidadPadre;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

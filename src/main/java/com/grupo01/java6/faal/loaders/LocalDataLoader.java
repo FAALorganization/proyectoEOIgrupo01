@@ -6,39 +6,26 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-
-/**
- * Clase de configuración que se utiliza exclusivamente para el perfil "default" en entornos locales.
- *
- * Su propósito principal es cargar datos de ejemplo en las bases de datos asociadas a las entidades
- * {@code EntidadPadre} y {@code EntidadHija}, permitiendo la inicialización de datos útiles para pruebas
- * y desarrollo en este perfil específico.
- *
- * Esta clase está anotada con:
- * - {@code @Configuration}: Define esta clase como fuente de beans y configuración.
- * - {@code @Log4j2}: Habilita el uso de la biblioteca Log4j2 para registro de mensajes en los logs.
- * - {@code @Profile("default")}: Asegura que esta clase solo se cargue en el perfil "default".
- *
- * @see EntidadPadreRepository
- * @see EntidadHijaRepository
- */
 @Configuration
 @Log4j2
 @Profile("local")
 public class LocalDataLoader {
 
-    private final EntidadPadreRepository repository;
-    private final EntidadHijaRepository entidadHijaRepository;
     private final DetallesDeUsuarioRepository detallesDeUsuarioRepository;
     private final LoginRepository loginRepository;
     private final RolesRepository rolesRepository;
     private final TiposAusenciasRepository tiposAusenciasRepository;
     private final AusenciasRepository ausenciaRepository;
+    private final ChatAbiertoRepository chatAbiertoRepository;
+    private final MensajeRepository mensajeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Constructor de la clase {@code LocalDataLoader}.
@@ -53,7 +40,7 @@ public class LocalDataLoader {
      *                                Es utilizado para gestionar datos de la entidad hija y su relación con
      *                                la entidad padre.
      */
-    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository) {
+    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
         this.repository = repository;
         this.entidadHijaRepository = entidadHijaRepository;
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
@@ -61,46 +48,11 @@ public class LocalDataLoader {
         this.rolesRepository = rolesRepository;
         this.tiposAusenciasRepository = tiposAusenciasRepository;
         this.ausenciaRepository = ausenciaRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.chatAbiertoRepository = chatAbiertoRepository;
+        this.mensajeRepository = mensajeRepository;
     }
 
-    /**
-     * Método anotado con {@code @PostConstruct} que inicializa datos de prueba en
-     * los repositorios para entornos locales. Este método se ejecuta automáticamente
-     * después de la inicialización del bean y antes de que esté disponible para uso,
-     * permitiendo cargar datos iniciales necesarios para el perfil local.
-     *
-     * Funcionalidad:
-     * - Crea 10 instancias de la entidad `EntidadPadre` con nombres predefinidos.
-     * - Guarda las instancias de `EntidadPadre` en el repositorio correspondiente.
-     * - Para cada instancia de `EntidadPadre`, crea una entidad relacionada de tipo
-     *   `EntidadHija` con un nombre identificativo, y la asocia a la entidad padre
-     *   pertinente.
-     * - Guarda las entidades hijas en el repositorio `entidadHijaRepository`.
-     * - Registra mensajes informativos en el log sobre el inicio y finalización del proceso.
-     *
-     * Proceso:
-     * 1. Se define un número fijo de entidades padre (10).
-     * 2. Se utiliza un array para almacenar las instancias y se inicializa con un nombre
-     *    único para cada entidad padre.
-     * 3. Todas las entidades padre se guardan de forma simultánea utilizando
-     *    {@code repository.saveAll}.
-     * 4. Para cada entidad padre, se crea una instancia de la entidad hija, se establece
-     *    la relación con el padre y se guarda en el repositorio correspondiente.
-     * 5. Se registran logs informativos sobre el estado del proceso.
-     *
-     * Dependencias principales:
-     * - `repository`: {@code EntidadPadreRepository}, usado para almacenar las entidades padre.
-     * - `entidadHijaRepository`: {@code EntidadHijaRepository}, usado para guardar las entidades hijas.
-     *
-     * Importante:
-     * - Este método está diseñado específicamente para ser utilizado en entornos con
-     *   el perfil local activo.
-     * - No debe usarse en entornos de producción, ya que sobrescribirá datos existentes.
-     *
-     * Logs:
-     * - Mensaje al inicio del proceso: "Iniciando la carga de datos para el perfil local".
-     * - Mensaje exitoso al finalizar: "Datos de entidades cargados correctamente."
-     */
     @PostConstruct
     public void loadDataLocal() {
         //int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -146,7 +98,15 @@ public class LocalDataLoader {
         for (int i = 0; i < emailsTrabajo.length; i++) {
             Login login = new Login();
             login.setEmailPrimario(emailsTrabajo[i]);
-            login.setPassword(passwords[i]);
+
+            if (passwords[i] == null || passwords[i].isBlank()) {
+                // Si la contraseña es nula o vacía, dejamos el password en null (o podrías poner una cadena vacía)
+                login.setPassword(null);
+                System.out.println("Contraseña en posición " + i + " es nula o vacía, no se encripta");
+            } else {
+                login.setPassword(passwordEncoder.encode(passwords[i]));
+            }
+
             login.setToken(tokens[i]);
 
             if (fechasRegistro[i] == null || fechasRegistro[i].isBlank()) {
@@ -158,9 +118,11 @@ public class LocalDataLoader {
             Optional<Detallesdeusuario> detalles = detallesDeUsuarioRepository.findById(personaIds[i]);
             login.setIdDetallesDeUsuario(detalles.orElse(null));
 
-            login = loginRepository.save(login); // persistimos primero
-            loginMap.put(ids[i], login); // guardamos el login por ID
+            login = loginRepository.save(login);
+            loginMap.put(ids[i], login);
         }
+
+
 
 // Segunda fase: asignar jefes
         for (int i = 0; i < emailsTrabajo.length; i++) {
@@ -229,9 +191,75 @@ public class LocalDataLoader {
             ausenciaRepository.save(ausencia);
         }
 
+        int[] userIds = {1, 3, 4, 5, 6, 7, 8, 9, 10}; // omitimos el ID 2 (usuario "vacío")
+
+        for (int i = 0; i < userIds.length; i++) {
+            for (int j = 0; j < userIds.length; j++) {
+                if (i != j) {
+                    Integer idA = userIds[i];
+                    Integer idB = userIds[j];
+
+                    Login usuarioA = loginRepository.findById(idA).orElse(null);
+                    Login usuarioB = loginRepository.findById(idB).orElse(null);
+
+                    if (usuarioA != null && usuarioB != null) {
+                        ChatAbierto chat = new ChatAbierto();
+                        chat.setUsuarioA(usuarioA);
+                        chat.setUsuarioB(usuarioB);
+                        chat.setActivo(false); // todos los chats cerrados por defecto
+                        chatAbiertoRepository.save(chat);
+                    }
+                }
+            }
+        }
+
+        Login usuario5 = loginRepository.findById(5).orElseThrow(() -> new RuntimeException("Usuario 5 no encontrado"));
+        Login usuario4 = loginRepository.findById(4).orElseThrow(() -> new RuntimeException("Usuario 4 no encontrado"));
+
+        Mensaje[] mensajes = new Mensaje[5];
+
+        mensajes[0] = new Mensaje();
+        mensajes[0].setEmisor(usuario5);
+        mensajes[0].setReceptor(usuario4);
+        mensajes[0].setContenido("Hola, ¿cómo estás?");
+        mensajes[0].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 0));
+        mensajes[0].setEsGrupal(false);
+        mensajes[0].setEsLeido(true);
+
+        mensajes[1] = new Mensaje();
+        mensajes[1].setEmisor(usuario4);
+        mensajes[1].setReceptor(usuario5);
+        mensajes[1].setContenido("¡Hola! Bien, gracias. ¿Y tú?");
+        mensajes[1].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 2));
+        mensajes[1].setEsGrupal(false);
+        mensajes[1].setEsLeido(true);
+
+        mensajes[2] = new Mensaje();
+        mensajes[2].setEmisor(usuario5);
+        mensajes[2].setReceptor(usuario4);
+        mensajes[2].setContenido("Todo bien, trabajando en el proyecto.");
+        mensajes[2].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 5));
+        mensajes[2].setEsGrupal(false);
+        mensajes[2].setEsLeido(true);
+
+        mensajes[3] = new Mensaje();
+        mensajes[3].setEmisor(usuario4);
+        mensajes[3].setReceptor(usuario5);
+        mensajes[3].setContenido("¡Genial! ¿Necesitas ayuda con algo?");
+        mensajes[3].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 7));
+        mensajes[3].setEsGrupal(false);
+        mensajes[3].setEsLeido(true);
+
+        mensajes[4] = new Mensaje();
+        mensajes[4].setEmisor(usuario5);
+        mensajes[4].setReceptor(usuario4);
+        mensajes[4].setContenido("Por ahora no, gracias! Te aviso si surge algo.");
+        mensajes[4].setFechaEnvio(LocalDateTime.of(2025, 6, 10, 10, 10));
+        mensajes[4].setEsGrupal(false);
+        mensajes[4].setEsLeido(true);
+
+        mensajeRepository.saveAll(Arrays.asList(mensajes));
     }
-
-
 
 
 

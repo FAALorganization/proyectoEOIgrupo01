@@ -49,7 +49,10 @@ public class DocumentacionController {
 
         for (MultipartFile archivo : archivos) {
             if (!archivo.isEmpty()) {
-                boolean guardado = documentoService.guardarDocumento(proyecto, archivo);
+                String nombreOriginal = archivo.getOriginalFilename();
+                String nombreLimpio = limpiarNombreArchivo(nombreOriginal);
+                // 🔧 Aquí podrías pasar el nombre limpio al servicio, si es necesario
+                boolean guardado = documentoService.guardarDocumento(proyecto, archivo, nombreLimpio);
                 if (!guardado) {
                     algunoFalló = true;
                 }
@@ -66,7 +69,6 @@ public class DocumentacionController {
 
         return "redirect:/documentacion";
     }
-
 
     /** 🔹 Descargar documento */
     @GetMapping("/descargar/{idDocumento}")
@@ -88,9 +90,20 @@ public class DocumentacionController {
 
     /** 🔹 Borrar documento */
     @PostMapping("/borrar")
-    public ResponseEntity<String> borrarDocumento(@RequestParam Integer idDocumento) {
+    public String borrarDocumento(@RequestParam Integer idDocumento,
+                                  RedirectAttributes redirectAttributes) {
         boolean eliminado = documentoService.eliminarDocumento(idDocumento);
-        return eliminado ? ResponseEntity.ok("Documento eliminado correctamente.")
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo eliminar el documento.");
+        if (eliminado) {
+            redirectAttributes.addFlashAttribute("mensaje", "✅ Documento eliminado correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "❌ No se pudo eliminar el documento.");
+        }
+        return "redirect:/documentacion";
+    }
+
+    /** 🔹 Sanitiza el nombre del archivo eliminando caracteres no seguros */
+    private String limpiarNombreArchivo(String nombreOriginal) {
+        if (nombreOriginal == null) return "archivo_desconocido";
+        return nombreOriginal.replaceAll("[^a-zA-Z0-9._-]", "_");
     }
 }

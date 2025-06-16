@@ -1,8 +1,4 @@
 package com.grupo01.java6.faal;
-import com.grupo01.java6.faal.entities.EntidadHija;
-import com.grupo01.java6.faal.entities.EntidadPadre;
-import com.grupo01.java6.faal.repositories.EntidadHijaRepository;
-import com.grupo01.java6.faal.repositories.EntidadPadreRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
