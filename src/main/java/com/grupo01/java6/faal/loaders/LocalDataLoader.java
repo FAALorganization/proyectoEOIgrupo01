@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +40,7 @@ public class LocalDataLoader {
     private final RolesRepository rolesRepository;
     private final TiposAusenciasRepository tiposAusenciasRepository;
     private final AusenciasRepository ausenciaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Constructor de la clase {@code LocalDataLoader}.
@@ -53,7 +55,7 @@ public class LocalDataLoader {
      *                                Es utilizado para gestionar datos de la entidad hija y su relación con
      *                                la entidad padre.
      */
-    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository) {
+    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.entidadHijaRepository = entidadHijaRepository;
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
@@ -61,6 +63,7 @@ public class LocalDataLoader {
         this.rolesRepository = rolesRepository;
         this.tiposAusenciasRepository = tiposAusenciasRepository;
         this.ausenciaRepository = ausenciaRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -146,7 +149,15 @@ public class LocalDataLoader {
         for (int i = 0; i < emailsTrabajo.length; i++) {
             Login login = new Login();
             login.setEmailPrimario(emailsTrabajo[i]);
-            login.setPassword(passwords[i]);
+
+            if (passwords[i] == null || passwords[i].isBlank()) {
+                // Si la contraseña es nula o vacía, dejamos el password en null (o podrías poner una cadena vacía)
+                login.setPassword(null);
+                System.out.println("Contraseña en posición " + i + " es nula o vacía, no se encripta");
+            } else {
+                login.setPassword(passwordEncoder.encode(passwords[i]));
+            }
+
             login.setToken(tokens[i]);
 
             if (fechasRegistro[i] == null || fechasRegistro[i].isBlank()) {
@@ -158,9 +169,11 @@ public class LocalDataLoader {
             Optional<Detallesdeusuario> detalles = detallesDeUsuarioRepository.findById(personaIds[i]);
             login.setIdDetallesDeUsuario(detalles.orElse(null));
 
-            login = loginRepository.save(login); // persistimos primero
-            loginMap.put(ids[i], login); // guardamos el login por ID
+            login = loginRepository.save(login);
+            loginMap.put(ids[i], login);
         }
+
+
 
 // Segunda fase: asignar jefes
         for (int i = 0; i < emailsTrabajo.length; i++) {

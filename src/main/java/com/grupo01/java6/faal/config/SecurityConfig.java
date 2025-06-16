@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,16 +27,21 @@ public class SecurityConfig {
         this.environment = environment;
     }
 
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();
+//    }
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**", "/gestionVRes/aprobar-justificacion").permitAll()
+                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**", "/gestionVRes/aprobar-justificacion","/login/validar-token", "login/cambiar-password").permitAll()
                         .requestMatchers("/admin-only").hasRole("ADMIN")
                         .requestMatchers("/jefe-only").hasRole("JEFE")
                         .requestMatchers("/usuario-only").hasRole("USUARIO")
