@@ -2,6 +2,7 @@ package com.grupo01.java6.faal.controllers;
 
 import com.grupo01.java6.faal.dtos.Mensaje2DTO;
 import com.grupo01.java6.faal.services.MensajeService;
+import com.grupo01.java6.faal.dto.MensajeDTO;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.services.LoginService;

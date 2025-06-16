@@ -2,7 +2,10 @@ package com.grupo01.java6.faal.controllers;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * Controlador encargado de manejar las solicitudes relacionadas con la entidad principal.
