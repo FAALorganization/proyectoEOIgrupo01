@@ -5,6 +5,6 @@
 /target/
 
 # Configs de IntelliJ
-.idea/
+/.idea/
 *.iml
 
