@@ -19,8 +19,24 @@ public class Prioridades implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idPri", nullable = false)
     private Integer id;
+// if created an enum
+    //@Column(name = "prioridades_enum", nullable = false, length = 100)
+    //private String prioridadesEnum;
 
-    @Column(name = "prioridades_enum", nullable = false, length = 100)
-    private String prioridadesEnum;
+    @Column(nullable = false, length = 20)
+    private String value;  // Should store "high", "medium", "low"
 
+    @Column(nullable = false, length = 20)
+    private String displayName; // Should store "Alta", "Media", "Baja"
+    // Business key equality
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Prioridades)) return false;
+        return value != null && value.equals(((Prioridades) o).getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();}
 }
