@@ -3,7 +3,7 @@ package com.grupo01.java6.faal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,6 +30,9 @@ public class Proyecto implements java.io.Serializable {
     @Column(name = "fechaFin")
     private LocalDate fechaFin;
 
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Documento> documentos;  // <-- Importante para obtener documentos relacionados
 
-
+    @ManyToMany
+    private List<Login> usuarios;
 }

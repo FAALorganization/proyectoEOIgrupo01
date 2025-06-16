@@ -14,100 +14,11 @@
     <!--Container Main start-->
     <div class="height-100 aus-container-personal">
         <div class="aus-container-personal-lista">
-            <div class="aus-tabla-usuarios-grupo-container">
-                <div class="aus-tabla-usuarios">
-                    <div class="aus-header-usuarios">
-                        <p>Selección de Usuario</p>
-                    </div>
-                    <div class="aus-content-usuarios">
-                        <div class="aus-usuario-info">
-                            <div class="aus-imagen-container">
-                                <div class="aus-circle-decorative1">
-                                    <div class="aus-circle-decorative2">
-                                        <div class="aus-mini-circle"></div>
-                                        <div class="aus-circle-decorativePNG">
-                                            <img th:src="@{images/perfil.png}" alt="perfil">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="aus-personal-info">
-                                <span class="aus-nombre">Nombre usuario</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="aus-mini-calendario-container">
-                <div class="aus-calendar-container">
-                    <div class="aus-calendar-header">
-                        <button class="aus-nav-button" id="aus-prevMonth">&lt;</button>
-                        <div class="aus-month-year" id="aus-monthYearLabel">Abril 2025</div>
-                        <button class="aus-nav-button" id="aus-nextMonth">&gt;</button>
-                        <select id="aus-yearSelect"></select>
-                    </div>
-                    <div class="aus-calendar-grid" id="aus-calendarGrid">
-                        <!-- Grid dinámica -->
-                    </div>
-                </div>
-            </div>
+            <div th:replace="fragments/aus-tabla-usuarios :: aus-tabla-usuarios"></div>
+            <div th:replace="fragments/aus-mini-calendario :: aus-mini-calendario"></div>
         </div>
     </div>
-
-    <div class="aus-modal-background"  id="aus-modal-container">
-        <div class="aus-modal-overlay" id="aus-modalOverlay">
-            <div class="aus-modal-overlay-content">
-                <span class="aus-close-btn" id="aus-closeModal">&times;</span>
-                <h2 id="aus-titulo">Ausencias</h2>
-                <div class="aus-modal-content-text">
-                    <table class="aus-tabla-modal-ausencias">
-                        <thead class="aus-table-modal-header">
-                        <tr>
-                            <th>Tipo Ausencia</th>
-                            <th>Fecha Ausencia</th>
-                            <th>Acciones</th>
-                        </tr>
-                        </thead>
-                        <tbody class="aus-table-modal-body">
-                        <tr>
-                            <td>Vacaciones</td>
-                            <td>01/07/2025 to 07/07/2025</td>
-                            <td>
-                                <label class="aus-checkbox-btn">
-                                    <input type="checkbox" name="accion" value="A">
-                                    <span class="btn-letter">A</span>
-                                </label>
-                                <label class="aus-checkbox-btn">
-                                    <input type="checkbox" name="accion" value="R">
-                                    <span class="btn-letter">R</span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ausencia laboral</td>
-                            <td>01/03/2025 to 01/03/2025</td>
-                            <td>
-                                <button class="btn btn-warning aus-btn">D</button>
-                                <label class="aus-checkbox-btn">
-                                    <input type="checkbox" name="accion" value="A">
-                                    <span class="btn-letter">A</span>
-                                </label>
-                                <label class="aus-checkbox-btn">
-                                    <input type="checkbox" name="accion" value="R">
-                                    <span class="btn-letter">R</span>
-                                </label>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="modal-buttons-enviarinfo">
-                        <button class="btn btn-primary aus-btn" id="aus-enviarInfo">Enviar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <div th:replace="fragments/aus-modal :: aus-modal"></div>
 </section>
 </body>
 </html>

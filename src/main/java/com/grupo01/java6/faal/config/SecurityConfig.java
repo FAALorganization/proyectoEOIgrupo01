@@ -34,7 +34,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-
 public class SecurityConfig {
 
 
@@ -70,7 +69,6 @@ public class SecurityConfig {
      *
      * @Author No se especificó autor.
      */
-
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        String name = environment.getProperty("spring.security.user.name", "user");
@@ -154,6 +152,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .loginProcessingUrl("/login")
                         .usernameParameter("correo")
                         .passwordParameter("contrasena")
                         .defaultSuccessUrl("/home", true)

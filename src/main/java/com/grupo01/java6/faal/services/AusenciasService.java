@@ -2,30 +2,38 @@ package com.grupo01.java6.faal.services;
 
 import com.grupo01.java6.faal.dtos.JustificacionDTO;
 import com.grupo01.java6.faal.entities.Ausencias;
+import com.grupo01.java6.faal.entities.Detallesdeusuario;
+import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.repositories.AusenciasRepository;
+import com.grupo01.java6.faal.repositories.DetallesDeUsuarioRepository;
+import com.grupo01.java6.faal.services.mappers.AusenciasMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
-public class AusenciasService {
-    private final AusenciasRepository ausenciasRepository;
+public class AusenciasService extends AbstractBusinessService<Ausencias,Integer,JustificacionDTO,AusenciasRepository,AusenciasMapper>{
 
-    public AusenciasService(AusenciasRepository ausenciasRepository) {
-        this.ausenciasRepository = ausenciasRepository;
+    private final LoginService loginService;
+    private final DetallesDeUsuarioRepository detallesDeUsuarioRepository;
+    public AusenciasService(AusenciasRepository repo, AusenciasMapper ausenciasMapper, LoginService loginService, DetallesDeUsuarioRepository detallesDeUsuarioRepository) {
+        super(repo, ausenciasMapper);
+        this.loginService = loginService;
+        this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
     }
 
     public List<Ausencias> findVacaciones(Integer id){
-        return ausenciasRepository.findByLoginAusencias_Id(id);
+        return repo.findByLoginAusencias_Id(id);
     }
 
-    public void guardarVacacion(Ausencias ausencia) {
-        ausenciasRepository.save(ausencia);
+    public void guardarVacacion(Ausencias ausencia) throws Exception {
+        guardarEntityEntity(ausencia);
     }
 
     public Optional<Ausencias> obtainHolidayByStartDate(LocalDate date, Integer idUsuario) {
@@ -38,40 +46,42 @@ public class AusenciasService {
         return Optional.empty();
     }
 
-    public void eliminateHoliday(Ausencias ausencia) {
-        ausenciasRepository.delete(ausencia);
-    }
-    public boolean justificarAusencia(JustificacionDTO dto) {
-        String fechaString = dto.getFecha();
-        Optional<Ausencias> ausenciaRegistro;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        if (fechaString.contains(" al ")) {
-            String[] fechas = fechaString.split(" al ");
-            LocalDate fechaFin = LocalDate.parse(fechas[1], formatter);
-            LocalDate fechaInicio = LocalDate.parse(fechas[0], formatter);
-            ausenciaRegistro = ausenciasRepository.findByFechaFinAndFechaInicio(fechaFin, fechaInicio);
+    public Optional<Ausencias> obtainAusenciaByFechaInicioFechaFinId(LocalDate inicio, LocalDate fin, String nombre) {
+        List<String> listaNombre = List.of(nombre.split("-"));
+        String nombrePila = listaNombre.getFirst();
 
-            log.info("\nFECHAS:\n" + fechaFin + "\n" + fechaInicio);
+        String apellidos;
+        if (nombre.split("-").length > 1) {
+            apellidos = listaNombre.get(1) + " " + listaNombre.getLast();
         } else {
-            LocalDate fechaFin = LocalDate.parse(fechaString, formatter);
-            LocalDate fechaInicio = LocalDate.parse(fechaString, formatter);
-            ausenciaRegistro = ausenciasRepository.findByFechaFinAndFechaInicio(fechaFin, fechaInicio);
-            log.info("\nFECHAS:\n" + fechaFin + "\n" + fechaInicio);
-
+            apellidos = listaNombre.getLast();
         }
 
-        if(ausenciaRegistro.isPresent()){
-            Ausencias ausencia = ausenciaRegistro.get();
-            String asunto = dto.getAsunto();
-            String descripcion = dto.getDescripcion();
-            ausencia.setJustificacion(asunto + "//" + descripcion);
-            if (dto.getArchivos() != null) {
-                ausencia.setDocumentos(dto.getArchivos());
+        Detallesdeusuario detallesusu = detallesDeUsuarioRepository.findByNombreAndApellidos(nombrePila, apellidos);
+
+        Login login = detallesusu.getUsuarioLogin();
+        List<Ausencias> listaAusencias = repo.findByLoginAusencias_Id(login.getId());
+        for (Ausencias ausencia : listaAusencias) {
+            if (ausencia.getFechaInicio().isEqual(inicio) && ausencia.getFechaFin().isEqual(fin)) {
+                return Optional.of(ausencia);
             }
-            ausenciasRepository.save(ausencia);
-            return true;
         }
-        return false;
+        return Optional.empty();
+    }
 
+    public void eliminateHoliday(Ausencias ausencia) {
+        repo.delete(ausencia);
+    }
+
+    public void justificarAusencia(JustificacionDTO dto, Authentication auth) throws Exception {
+        String email = auth.getName();
+
+        Ausencias ausencia = serviceMapper.toEntity(dto);
+        repo.save(ausencia);
+    }
+
+    public void cambiarAprobado(Ausencias ausencia, Boolean respuesta) {
+        ausencia.setAprobado(respuesta);
+        repo.save(ausencia);
     }
 }

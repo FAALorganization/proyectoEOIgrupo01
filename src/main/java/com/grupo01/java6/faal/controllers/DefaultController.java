@@ -154,13 +154,14 @@ public class DefaultController {
     public String showCheckinjefe()
     {
         return "checkinjefe";}
-  
-    @GetMapping("/documentacion")
-    public String showDocumentation()
-    {
 
-        return "documentacion"; // View name
-    }
+
+//    @GetMapping("/chat")
+//    public String showChat()
+//    {
+//
+//        return "chat"; // View name
+//    }
 
     @GetMapping("/perfiljefe")
     public String showPerfiljefe()
@@ -195,6 +196,7 @@ public class DefaultController {
     {
 
         return "home"; // View name
+
     }
     @GetMapping("/Ticketdesplay")
     public String showTicketdesplay()
