@@ -16,7 +16,12 @@
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">Ajustes del perfil</h4>
-                    <button type="button" class="btn btn-primary gestion" id="openGestionModalBtn" th:if="${isAdmin}">Gestión de usuarios</button>
+                    <button type="button" class="btn btn-primary gestion" id="openGestionModalBtn"
+                            data-bs-toggle="modal" data-bs-target="#gestionModal"
+                            th:if="${isAdmin}">
+                        Gestión de usuarios
+                    </button>
+
                     <button type="button" class="btn btn-primary gestion" data-bs-toggle="modal" data-bs-target="#JefeModal" th:if="${isJefe}">
                         Gestión de usuarios y equipos
                     </button>
@@ -179,8 +184,10 @@
         </div>
     </div>
 </section>
-<script th:src="@{js/perfil.js}"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
+<th:block layout:fragment="scripts">
+    <script th:src="@{/js/perfil.js}"></script>
+</th:block>
+</body>
+</html>
 </body>
 </html>
