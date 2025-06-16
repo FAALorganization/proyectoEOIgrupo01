@@ -143,10 +143,14 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/ticket").hasAnyRole("USUARIO", "ADMIN", "VISITANTE", "JEFE")
-                        .requestMatchers("/admin").hasAnyRole( "ADMIN")
+                        .requestMatchers("/ticket").hasAnyRole("USUARIO","ADMIN","VISITANTE", "JEFE")
+                        .requestMatchers("/admin-tickets").hasAnyRole( "ADMIN")
 
                         .anyRequest().authenticated()  // siempre al final
+
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/error")
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
