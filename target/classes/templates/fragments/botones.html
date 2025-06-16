@@ -1,0 +1,30 @@
+<div th:fragment="botones (rol)">
+    <div class="container-buttons-gestion-all">
+        <div class="buttons-calendar-div">
+            <div class="btn-wrapper">
+                <button class="btn-general btn-gestion">General</button>
+                <div class="perfiles-usuarios-btn">
+                    <b>Perfiles usuarios</b>
+                    <!-- Aquí irán los compañeros -->
+                    <div id="companeros-container">
+                        <!-- Se insertan con JS -->
+                    </div>
+                </div>
+            </div>
+            <button class="btn-ind-vac btn-gestion">Individual</button>
+            <form th:action="@{/gestionVRes}" method="get">
+                <button th:if="${rol == 'Jefe'}" id="submitbtn" type="submit" class="button-gestion btn-gestion">Gestión</button>
+            </form>
+        </div>
+        <div class="container-contador-dias">
+            <p class="contador-totales">Totales: </p>
+            <p class="contador-aceptados">Aceptados: </p>
+            <p class="contador-aprobar">Por aprobar: </p>
+            <p class="contador-disfrutados">Disfrutados: </p>
+        </div>
+        <div class="container-btn-incidencias">
+            <!--<button class="btn-incidencias btn-gestion">Incidencias</button>-->
+            <button type="button" class="btn-incidencias btn-gestion aus-btn-incidencias">Gestión Ausencias</button>
+        </div>
+    </div>
+</div>
