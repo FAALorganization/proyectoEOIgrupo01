@@ -22,4 +22,5 @@ public class TipoNotificacion implements Serializable{
     @Column(name = "descripcion")
     private String descripcion;
 
+
 }

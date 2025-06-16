@@ -9,8 +9,6 @@ import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.repositories.LoginRepository;
 import org.springframework.stereotype.Service;
-import org.hibernate.Hibernate;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,8 +23,8 @@ public class LoginService {
         this.loginRepository = loginRepository;
     }
 
-    public Login obtainUser(String str) {
-        Optional<Login> logins = loginRepository.getLoginByEmailPrimario(str);
+    public Login obtainUser(String email){
+        Optional<Login> logins = loginRepository.getLoginByEmailPrimario(email);
         return logins.orElse(null);
         // Por ejemplo, devolver el email primario del primer Login
     }
@@ -74,6 +72,10 @@ public class LoginService {
                 .toList();
     }
 
+    public Login getUserBy_Id(Integer id) {
+        return loginRepository.findById(id).orElse(null);
+    }
+
     public void guardarLogin(Login login) {
         loginRepository.save(login); //metodo para guardar un Login
     }
@@ -87,7 +89,6 @@ public class LoginService {
         return loginRepository.findById(id).orElse(null);
 
     }
-
     public List<Login> obtenerUsuariosSinConversacion(Login actual, List<Mensaje> recientes) {
         Set<Integer> idsConConversacion = recientes.stream()
                 .flatMap(m -> Stream.of(m.getEmisor().getId(), m.getReceptor() != null ? m.getReceptor().getId() : null))
@@ -115,19 +116,5 @@ public class LoginService {
                 .toList();
     }
 
-    @Transactional
-    public Login obtenerPorIdConSubordinados(Integer id) {
-        Login login = loginRepository.findById(id).orElse(null);
 
-        if (login != null) {
-            Hibernate.initialize(login.getSubordinados());
-            for (Login subordinado : login.getSubordinados()) {
-                if (subordinado.getIdDetallesDeUsuario() != null) {
-                    Hibernate.initialize(subordinado.getIdDetallesDeUsuario());
-                }
-            }
-        }
-
-        return login;
-    }
 }
