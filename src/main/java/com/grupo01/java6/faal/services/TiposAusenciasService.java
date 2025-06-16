@@ -5,7 +5,7 @@ import com.grupo01.java6.faal.repositories.TiposAusenciasRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TiposAusenciasService {
+public class  TiposAusenciasService {
     private final TiposAusenciasRepository tiposAusenciasRepository;
 
     public TiposAusenciasService(TiposAusenciasRepository tiposAusenciasRepository) {
