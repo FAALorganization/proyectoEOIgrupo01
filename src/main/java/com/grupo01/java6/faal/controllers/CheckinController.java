@@ -62,8 +62,6 @@ public class CheckinController {
         return "checkin"; // o el nombre de tu vista
     }
 
-
-
     @PostMapping("/checkin")
     public ResponseEntity<String> realizarCheckin(@RequestParam String tipo) {
         Login login = getUsuarioAutenticado();
