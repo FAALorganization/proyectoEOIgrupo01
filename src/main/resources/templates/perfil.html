@@ -20,7 +20,6 @@
                     <button type="button" class="btn btn-primary gestion" data-bs-toggle="modal" data-bs-target="#JefeModal" th:if="${isJefe}">
                         Gestión de usuarios y equipos
                     </button>
-
                 </div>
                 <form method="post" action="/perfil/guardar" th:object="${detallesdeusuario}">
                     <div class="row mt-2">
@@ -73,7 +72,6 @@
                         <button class="btn btn-primary profile-button" type="submit">Guardar</button>
                     </div>
                 </form>
-                <!-- Modal único para gestión y confirmación -->
                 <div class="modal fade" id="gestionModal" tabindex="-1" aria-labelledby="gestionModalLabel" aria-hidden="true" data-bs-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
@@ -82,12 +80,10 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                             </div>
                             <div class="modal-body" id="gestionModalBody">
-                                <!-- Contenedor para mostrar tokens generados -->
                                 <div id="tokensGeneratedContent" style="display: none; margin-top: 20px;">
                                     <h5>Tokens Generados</h5>
                                     <pre id="tokensGenerated" style="white-space: pre-wrap; background-color: #f8f9fa; padding: 10px; border: 1px solid #ddd;"></pre>
                                 </div>
-                                <!-- Contenido para gestión -->
                                 <div id="gestionContent">
                                     <form id="uploadCsvForm">
                                         <div class="mb-3">
@@ -127,8 +123,6 @@
                                         </table>
                                     </div>
                                 </div>
-
-                                <!-- Contenido para confirmación de eliminación -->
                                 <div id="confirmDeleteContent" style="display:none;">
                                     <p>¿Estás seguro de que deseas eliminar a este usuario? Esta acción no se puede deshacer.</p>
                                     <input type="hidden" id="usuarioIdEliminar" value="" />
@@ -142,24 +136,14 @@
                         </div>
                     </div>
                 </div>
-
-
-                <!--****************************************************JEFE*************************************************-->
-                <!-- Modal Gestión Usuarios y Equipos -->
                 <div class="modal fade" id="JefeModal" tabindex="-1" aria-labelledby="JefeModalLabel" aria-hidden="true" data-bs-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
-
-                            <!-- Header -->
                             <div class="modal-header">
                                 <h5 class="modal-title" id="JefeModalLabel">Gestión de usuarios</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                             </div>
-
-                            <!-- Body -->
                             <div class="modal-body">
-
-                                <!-- Vista Usuarios -->
                                 <div id="usuariosView">
                                     <h4 class="text-center">Lista de usuarios</h4>
                                     <input class="form-control mb-3" id="jefeMyInput" type="text" onkeyup="buscarUser()" placeholder="Escriba para buscar...">
@@ -183,81 +167,20 @@
                                         </th:block>
                                         </tbody>
                                     </table>
-                                    <!-- Botón para cambiar a equipos -->
                                     <div class="d-flex justify-content-center mt-3">
-                                        <button class="btn btn-primary" id="btnShowEquipos">Equipos de trabajo</button>
+                                        <button class="btn btn-primary" onclick="window.location.href='/gestionEquipos'">Ir a Gestión de Equipos</button>
                                     </div>
                                 </div>
-
-                                <!-- Vista Equipos (inicialmente oculta) -->
-                                <div id="equiposView" style="display:none;">
-                                    <div class="mb-3">
-                                        <label for="teamSelect" class="form-label">Seleccionar equipo</label>
-                                        <select class="form-select" id="teamSelect">
-                                            <option value="">Selecciona un equipo</option>
-                                            <option value="equipo1">Marketing</option>
-                                            <option value="equipo2">Desarrollo</option>
-                                            <option value="equipo3">Diseño</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Miembros actuales</label>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered align-middle">
-                                                <thead class="table-light">
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Nombre</th>
-                                                    <th class="text-center">Acciones</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="teamMembersTableBody">
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Nadie</td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-danger btn-sm">Eliminar</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Alguien</td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-danger btn-sm">Eliminar</button>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <!-- Footer de equipos -->
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn btn-secondary" id="btnBackUsuarios">Cancelar</button>
-                                        <button type="button" class="btn btn-success" id="saveChangesBtn">Guardar cambios</button>
-                                    </div>
-                                </div>
-
-                            </div> <!-- /modal-body -->
-
-                        </div> <!-- /modal-content -->
-                    </div> <!-- /modal-dialog -->
-                </div> <!-- /modal -->
-
-
-            </div>
+                            </div>
                         </div>
                     </div>
-
-                <!-- Scripts -->
-                <script th:src="@{js/perfil.js}"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
+                </div>
             </div>
         </div>
     </div>
-    </div>
 </section>
+<script th:src="@{js/perfil.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

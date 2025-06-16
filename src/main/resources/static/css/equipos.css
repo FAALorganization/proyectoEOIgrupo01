@@ -1,0 +1,107 @@
+/* Contenedor principal */
+.container {
+    border-radius: 10px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    top: var(--header-height);
+    margin-top: calc(var(--header-height) + 2rem) !important;
+    background-color: #fff;
+    padding: 2rem;
+}
+
+/* Etiquetas pequeñas */
+.labels,
+.form-text {
+    font-size: 11px;
+    color: #6c757d;
+}
+
+/* Títulos */
+h2, h3 {
+
+    font-weight: bold;
+}
+
+/* Inputs y Textareas */
+.form-control, .form-select {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #1B17FF;
+    box-shadow: 0 0 5px rgba(27, 23, 255, 0.4);
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #1B17FF !important;
+    color: #F5F1ED;
+    border: none !important;
+}
+
+.btn-primary:hover {
+    background-color: #0d0aca !important;
+    color: #F5F1ED;
+}
+
+.btn-primary:focus,
+.btn-primary:active {
+    border: 2px solid #1B17FF !important;
+    box-shadow: 0 0 5px #1B17FF !important;
+    transform: none !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+}
+
+.btn-warning {
+    background-color: #ffb300;
+    border: none;
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #e63946;
+    border: none;
+    color: #fff;
+}
+
+/* Tabla de equipos */
+.table {
+    table-layout: fixed;
+    word-wrap: break-word;
+    margin-top: 1rem;
+}
+
+.table thead {
+    background-color: #1B17FF;
+    color: #fff;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Responsive para listas dentro de la tabla */
+td ul {
+    padding-left: 1rem;
+    list-style-type: disc;
+}
+
+/* Transición para elementos */
+.fade-transition {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.fade-transition.show {
+    opacity: 1;
+    visibility: visible;
+}

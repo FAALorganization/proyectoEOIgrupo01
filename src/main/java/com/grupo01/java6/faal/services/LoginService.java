@@ -8,6 +8,7 @@ import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.entities.Login;
 import com.grupo01.java6.faal.entities.Mensaje;
 import com.grupo01.java6.faal.repositories.LoginRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -115,6 +116,23 @@ public class LoginService {
                 .filter(user -> !user.getId().equals(idActual))
                 .toList();
     }
+    @Transactional
+    public Login obtenerPorIdConSubordinados(Integer id) {
+        Login login = loginRepository.findById(id).orElse(null);
 
+        if (login != null) {
+            Hibernate.initialize(login.getSubordinados());
+            for (Login subordinado : login.getSubordinados()) {
+                if (subordinado.getIdDetallesDeUsuario() != null) {
+                    Hibernate.initialize(subordinado.getIdDetallesDeUsuario());
+                }
+            }
+        }
+
+        return login;  // Devolver el Login con sus subordinados inicializados
+
+    public void actualizarLogin(Login login) {
+        loginRepository.save(login); // O el método que uses para guardar
+    }
 
 }

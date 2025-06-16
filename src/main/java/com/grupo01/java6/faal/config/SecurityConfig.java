@@ -46,13 +46,15 @@ public class SecurityConfig {
         this.customUserDetailsService = customUserDetailsService;
         this.environment = environment;
     }
-
-    //Por ahora lo comento porque no lo usamos (no tenemos las passwords codificadas: pass1, pass2, etc.)
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();
+//    }
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-        //return new BCryptPasswordEncoder(); //Codificacion de passwords con BCrypt
+        return new BCryptPasswordEncoder();
     }
+   
 
 
 
@@ -135,12 +137,15 @@ public class SecurityConfig {
 //    }
 
     //ESTO TE IMPIDE IR A OTRA RUTA SIN HABERTE LOGEADO PRIMERO:
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**", "/gestionVRes/aprobar-justificacion","/login/validar-token", "login/cambiar-password").permitAll()
+                        .requestMatchers("/admin-only").hasRole("ADMIN")
+                        .requestMatchers("/jefe-only").hasRole("JEFE")
+                        .requestMatchers("/usuario-only").hasRole("USUARIO")
+                        .requestMatchers("/visitante-only").hasRole("VISITANTE")
                         .requestMatchers("/ticket").hasAnyRole("USUARIO","ADMIN","VISITANTE", "JEFE")
                         .requestMatchers("/admin-tickets").hasAnyRole( "ADMIN")
 

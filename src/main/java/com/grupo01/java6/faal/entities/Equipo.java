@@ -26,11 +26,15 @@ public class Equipo implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @OneToOne (fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idGrupoChat", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "idGrupoChat", nullable = true)
     private GrupoChat idGrupoChat;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Login> listaLogin;
+
+    @Transient
+    private Set<Integer> listaLoginIds;  // este es solo para el form, no va a BD
 
 }
