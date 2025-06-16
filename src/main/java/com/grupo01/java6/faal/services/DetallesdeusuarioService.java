@@ -39,4 +39,12 @@ public class DetallesdeusuarioService extends AbstractBusinessService<Detallesde
     public List<Detallesdeusuario> obtenerUsuariosActivos() {
         return detallesdeusuarioRepository.findUsuariosActivos();
     }
+
+    public void guardar(Detallesdeusuario detallesdeusuario) {
+        detallesdeusuarioRepository.save(detallesdeusuario);
+    }
+
+    public Detallesdeusuario findByEmail(String emailPrimario) {
+        return detallesdeusuarioRepository.findByEmailPrimario(emailPrimario);
+    }
 }

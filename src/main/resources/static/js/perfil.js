@@ -77,7 +77,18 @@ document.addEventListener('DOMContentLoaded', () => {
         myInput.addEventListener('keyup', buscarUser);
     }
 
-    // Subir CSV
+    // Mostrar tokens generados en el contenedor
+    function mostrarTokensEnGestion(tokens) {
+        const tokensGeneratedContent = document.getElementById('tokensGeneratedContent');
+        const tokensGenerated = document.getElementById('tokensGenerated');
+
+        if (tokensGeneratedContent && tokensGenerated) {
+            tokensGenerated.textContent = tokens; // Muestra los tokens en el contenedor
+            tokensGeneratedContent.style.display = 'block'; // Muestra el contenedor
+        }
+    }
+
+    // Función de subida de CSV
     async function uploadCsv() {
         try {
             const fileInput = document.getElementById('csvFileInput');
@@ -101,8 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.text();
-            alert(`Subida completada: ${data}`);
-            gestionModal.hide();
+            mostrarTokensEnGestion(data);
         } catch (error) {
             console.error('Error al subir archivo:', error);
             alert(`Error al subir archivo: ${error.message}`);
@@ -148,26 +158,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Exponer funciones al contexto global
+    // Exponer función al contexto global para que puedas llamar openConfirmDeleteView desde HTML
     window.openConfirmDeleteView = openConfirmDeleteView;
 });
-function toggleView(isGestionView) {
-    if (gestionContent && confirmDeleteContent) {
-        // Oculta ambas vistas inicialmente
-        gestionContent.classList.remove('show', 'fade-transition');
-        confirmDeleteContent.classList.remove('show', 'fade-transition');
 
-        // Usa un pequeño retraso para aplicar la transición
-        setTimeout(() => {
-            if (isGestionView) {
-                gestionContent.classList.add('fade-transition', 'show');
-            } else {
-                confirmDeleteContent.classList.add('fade-transition', 'show');
-            }
-        }, 10);
+// Funcionalidad jefe
+document.addEventListener('DOMContentLoaded', () => {
+    const usuariosView = document.getElementById('usuariosView');
+    const equiposView = document.getElementById('equiposView');
+    const modalTitle = document.getElementById('JefeModalLabel');
+
+    function showUsuarios() {
+        usuariosView.style.display = 'block';
+        equiposView.style.display = 'none';
+        modalTitle.textContent = 'Gestión de usuarios';
     }
 
-    if (cancelDeleteBtn) cancelDeleteBtn.style.display = isGestionView ? 'none' : 'inline-block';
-    if (confirmDeleteBtn) confirmDeleteBtn.style.display = isGestionView ? 'none' : 'inline-block';
-    if (closeGestionBtn) closeGestionBtn.style.display = isGestionView ? 'inline-block' : 'none';
-}
+    function showEquipos() {
+        usuariosView.style.display = 'none';
+        equiposView.style.display = 'block';
+        modalTitle.textContent = 'Gestión de equipos';
+    }
+
+    // Botón para cambiar a equipos
+    const btnShowEquipos = document.getElementById('btnShowEquipos');
+    if (btnShowEquipos) {
+        btnShowEquipos.addEventListener('click', () => {
+            showEquipos();
+        });
+    }
+
+    // Botón "Cancelar" o "Volver" en equipos para regresar a usuarios
+    const btnBackUsuarios = document.getElementById('btnBackUsuarios');
+    if (btnBackUsuarios) {
+        btnBackUsuarios.addEventListener('click', () => {
+            showUsuarios();
+        });
+    }
+
+    // Función para buscar usuario en la tabla de jefe
+    function buscarUserJefe() {
+        const input = document.getElementById("jefeMyInput");
+        if (!input) return;
+
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById("jefeMyTable");
+        if (!table) return;
+
+        const tr = table.getElementsByTagName("tr");
+        for (let i = 0; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+    }
+
+    const jefeMyInput = document.getElementById("jefeMyInput");
+    if (jefeMyInput) {
+        jefeMyInput.addEventListener('keyup', buscarUserJefe);
+    }
+});

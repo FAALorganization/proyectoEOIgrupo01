@@ -98,6 +98,13 @@ public class DefaultController {
         return "checkinjefe";}
 
 
+//    @GetMapping("/chat")
+//    public String showChat()
+//    {
+//
+//        return "chat"; // View name
+//    }
+
 
     @GetMapping("/perfiljefe")
     public String showPerfiljefe()
