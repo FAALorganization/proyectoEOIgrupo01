@@ -25,24 +25,10 @@ public class LocalDataLoader {
     private final AusenciasRepository ausenciaRepository;
     private final ChatAbiertoRepository chatAbiertoRepository;
     private final MensajeRepository mensajeRepository;
+    private final PrioridadesRepository prioridadesRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Constructor de la clase {@code LocalDataLoader}.
-     *
-     * Inicializa un objeto {@code LocalDataLoader} configurado con los repositorios de las entidades,
-     * proporcionando la capacidad de interactuar con estas entidades en la base de datos.
-     *
-     * @param repository              El repositorio de la entidad padre {@code EntidadPadreRepository}.
-     *                                Se utiliza para realizar operaciones de persistencia, actualización,
-     *                                eliminación y consulta relacionadas con la entidad padre.
-     * @param entidadHijaRepository   El repositorio de la entidad hija {@code EntidadHijaRepository}.
-     *                                Es utilizado para gestionar datos de la entidad hija y su relación con
-     *                                la entidad padre.
-     */
-    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
-        this.repository = repository;
-        this.entidadHijaRepository = entidadHijaRepository;
+    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository, PrioridadesRepository prioridadesRepository) {
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
         this.loginRepository = loginRepository;
         this.rolesRepository = rolesRepository;
@@ -51,6 +37,7 @@ public class LocalDataLoader {
         this.passwordEncoder = passwordEncoder;
         this.chatAbiertoRepository = chatAbiertoRepository;
         this.mensajeRepository = mensajeRepository;
+        this.prioridadesRepository = prioridadesRepository;
     }
 
     @PostConstruct
@@ -68,18 +55,18 @@ public class LocalDataLoader {
         String[] paises = {"España", null, "España", "España", "España", "España", "España", "España", "España", "España"};
 
         for (int i = 0; i < nombres.length; i++) {
-            Detallesdeusuario detalles = new Detallesdeusuario();
-            detalles.setNombre(nombres[i]);
-            detalles.setApellidos(apellidos[i]);
-            detalles.setPais(paises[i]);
-            detalles.setDireccion(direcciones[i]);
-            detalles.setTlf(tlf1[i]);
-            detalles.setTlf2(null);
-            detalles.setCodigoPostal(codigosPostales[i]);
-            detalles.setContactoEmergencia(contactoEmergencia[i]);
-            detalles.setEmailPersonal(emails[i]);
-            detalles.setPoblacion(ciudades[i]);
-            detallesDeUsuarioRepository.save(detalles);
+           Detallesdeusuario detalles = new Detallesdeusuario();
+           detalles.setNombre(nombres[i]);
+           detalles.setApellidos(apellidos[i]);
+           detalles.setPais(paises[i]);
+           detalles.setDireccion(direcciones[i]);
+           detalles.setTlf(tlf1[i]);
+           detalles.setTlf2(null);
+           detalles.setCodigoPostal(codigosPostales[i]);
+           detalles.setContactoEmergencia(contactoEmergencia[i]);
+           detalles.setEmailPersonal(emails[i]);
+           detalles.setPoblacion(ciudades[i]);
+           detallesDeUsuarioRepository.save(detalles);
         }
 
         int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -121,8 +108,6 @@ public class LocalDataLoader {
             login = loginRepository.save(login);
             loginMap.put(ids[i], login);
         }
-
-
 
 // Segunda fase: asignar jefes
         for (int i = 0; i < emailsTrabajo.length; i++) {
@@ -259,6 +244,14 @@ public class LocalDataLoader {
         mensajes[4].setEsLeido(true);
 
         mensajeRepository.saveAll(Arrays.asList(mensajes));
+        // === PRIORIDADES ===
+        String[][] prioridades = {{"high", "Alta"}, {"medium", "Media"}, {"low", "Baja"}};
+        for (String[] p : prioridades) {
+            Prioridades pr = new Prioridades();
+            pr.setValue(p[0]);
+            pr.setDisplayName(p[1]);
+            prioridadesRepository.save(pr);
+        }
     }
 
 

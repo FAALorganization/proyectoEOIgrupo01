@@ -1,1 +1,10 @@
-.idea
+# Archivos compilados
+#*.class
+
+# Carpeta de salida de Maven o Gradle
+/target/
+
+# Configs de IntelliJ
+/.idea/
+#*.iml
+

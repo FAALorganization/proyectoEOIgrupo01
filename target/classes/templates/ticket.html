@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Import your CSS file -->
-    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" th:href="@{/css/ticket.css}">
 </head>
 <body>
 <div class="container">
@@ -116,18 +116,10 @@
                         <!-- Month -->
                         <select th:field="*{fechaQuejaMonth}" required>
                             <option value="">Mes</option>
-                            <option value="January">Enero</option>
-                            <option value="February">Febrero</option>
-                            <option value="March">Marzo</option>
-                            <option value="April">Abril</option>
-                            <option value="May">Mayo</option>
-                            <option value="June">Junio</option>
-                            <option value="July">Julio</option>
-                            <option value="August">Agosto</option>
-                            <option value="September">Septiembre</option>
-                            <option value="October">Octubre</option>
-                            <option value="November">Noviembre</option>
-                            <option value="December">Diciembre</option>
+                            <option th:each="month : ${T(com.grupo01.java6.faal.entities.Ticketing).SPANISH_MONTHS.keySet()}"
+                                    th:value="${month}"
+                                    th:text="${#strings.capitalize(month)}">
+                            </option>
                         </select>
 
                         <!-- Year -->
