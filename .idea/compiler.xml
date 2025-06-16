@@ -12,7 +12,6 @@
         </processorPath>
         <module name="faal" />
         <module name="ProyectoFAAL" />
-        <module name="proyectoEOIgrupo02" />
         <module name="proyectoEOIgrupo01" />
       </profile>
     </annotationProcessing>
