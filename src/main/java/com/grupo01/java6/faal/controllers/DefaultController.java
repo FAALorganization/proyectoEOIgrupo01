@@ -51,12 +51,19 @@ public class DefaultController {
         return "forum"; // View name
     }
 
-    @GetMapping("/ticket")
-    public String showticket()
-    {
-
-        return "ticket"; // View name
-    }
+//    @GetMapping("/ticket")
+//    public String showticket()
+//    {
+//
+//        return "ticket"; // View name
+//    }
+//
+//    @GetMapping("/admin")
+//    public String showadminTickets()
+//    {
+//
+//        return "admin-tickets"; // View name
+//    }
 
 
     @GetMapping("/gestionAusencias")
@@ -87,6 +94,21 @@ public class DefaultController {
         return "creacionTicket"; // View name
     }
 
+    @GetMapping("/tareas")
+    public String showtareas()
+    {
+
+        return "tareas"; // View name
+    }
+
+    @GetMapping("/tareasJefe")
+    public String showtareasJefe()
+    {
+
+        return "tareasJefe"; // View name
+    }
+
+
     @GetMapping("/checkin")
     public String showCheckin()
     {
@@ -105,12 +127,18 @@ public class DefaultController {
 //        return "chat"; // View name
 //    }
 
-
     @GetMapping("/perfiljefe")
     public String showPerfiljefe()
     {
 
         return "perfiljefe"; // View name
+    }
+
+    @GetMapping("/perfiladmin")
+    public String showPerfiladmin()
+    {
+
+        return "perfiladmin"; // View name
     }
 
     @GetMapping("/perfil")
@@ -120,21 +148,45 @@ public class DefaultController {
         return "perfil"; // View name
     }
 
+    @GetMapping("/chat")
+    public String showChat()
+    {
+
+        return "chat"; // View name
+    }
 
     @GetMapping("/home")
-    public String showHome()
+    public String showhome()
     {
 
         return "home"; // View name
 
     }
-    @GetMapping("/TicketAdmin")
-    public String showTicketAdmin()
+    @GetMapping("/Ticketdesplay")
+    public String showTicketdesplay()
     {
 
-        return "TicketAdmin"; // View name
+        return "Ticketdesplay"; // View name
 
     }
+
+
+
+
+//    @GetMapping("/ticket/admin")
+//    public String showTicketAdmin()
+//    {
+//
+//       return "admin-tickets"; // View name
+//
+// }
+//    @GetMapping("ticket")
+//    public String showTicket()
+//    {
+//
+//        return "ticket"; // View name
+//
+//    }
 
     @GetMapping("/TermsAndConditions")
     public String showTermsAndConditions()

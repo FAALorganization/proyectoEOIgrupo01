@@ -1,11 +1,20 @@
 package com.grupo01.java6.faal.controllers;
 
+import com.grupo01.java6.faal.entities.Login;
+import com.grupo01.java6.faal.entities.Roles;
 import com.grupo01.java6.faal.services.LoginService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -18,58 +27,50 @@ public class LoginController {
     private final LoginService loginService;
     private final AuthenticationManager authenticationManager;
 
+
     public LoginController(LoginService loginService, AuthenticationManager authenticationManager) {
         this.loginService = loginService;
         this.authenticationManager = authenticationManager;
     }
 
     @GetMapping({"/loginFaal", "/", "/login"})
-    public String showLogin() {
+    public String showLogin()
+    {
+        return "loginFaal"; // View name
+    }
+
+    @PostMapping("/login")
+    public String login(
+            @RequestParam String correo,
+            @RequestParam String contrasena,
+            Model model,
+            HttpServletRequest request
+    ) { try {
+        // 1. Crear token de autenticacion con las credenciales recibidas:
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(correo, contrasena);
+        var authentication = authenticationManager.authenticate(authRequest);
+
+        // 2. Delegar autenticacion a Spring Security:
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 3. Si la autenticación es correcta, guardar contexto de seguridad:
+        HttpSession session = request.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+
+        // 5. Mensaje y redirección a home:
+        model.addAttribute("mensaje", "¡Inicio de sesión exitoso!");
+        log.info("Correcto: " + correo);
+        return "redirect:/home";
+
+    } catch (BadCredentialsException e) {
+        // 6. Si la autenticación falla, mostrar error:
+        model.addAttribute("error", "Credenciales incorrectas");
+        log.info("Error login: " + correo + " - " + e.getMessage());
+        return "loginFaal";  // Volver a login
+        }catch (Exception e) {
+        model.addAttribute("error", "Error inesperado: " + e.getMessage());
+        log.error("Error inesperado en login: " + correo, e);
         return "loginFaal";
-    }
-
-//Endpoints de prueba para ver roles:
-    //@PreAuthorize("hasRole('JEFE')")  //En caso de no tener el .requestMatchers().hasRole()
-    @GetMapping("/jefe-only")
-    @ResponseBody
-    public Map<String, String> jefeOnlyEndpoint(Authentication auth) {
-        Map<String, String> response = new LinkedHashMap<>();
-        response.put("mensaje", "¡Bienvenido JEFE!");
-        response.put("name", auth.getName());
-        response.put("authority", auth.getAuthorities().toString());
-        return response;
-    }
-
-    @GetMapping("/admin-only")
-    @ResponseBody
-   // @PreAuthorize("hasRole('ADMIN')") //Si usamos PreAuthorize debemos activar en la Aplication.class -> @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public Map<String, String> adminOnlyEndpoint(Authentication auth) {
-        Map<String, String> response = new LinkedHashMap<>();
-        response.put("mensaje", "¡Bienvenido ADMIN!");
-        response.put("name", auth.getName());
-        response.put("authority", auth.getAuthorities().toString());
-        return response;
-    }
-
-    @GetMapping("/usuario-only")
-    @ResponseBody
-    //@PreAuthorize("hasRole('USUARIO')")
-    public Map<String, String> usuarioOnlyEndpoint(Authentication auth) {
-        Map<String, String> response = new LinkedHashMap<>();
-        response.put("mensaje", "¡Bienvenido USUARIO!");
-        response.put("name", auth.getName());
-        response.put("authority", auth.getAuthorities().toString());
-        return response;
-    }
-
-    @GetMapping("/visitante-only")
-    @ResponseBody
-    //@PreAuthorize("hasRole('VISITANTE')")
-    public Map<String, String> visitanteOnlyEndpoint(Authentication auth) {
-        Map<String, String> response = new LinkedHashMap<>();
-        response.put("mensaje", "¡Bienvenido VISITANTE!");
-        response.put("name", auth.getName());
-        response.put("authority", auth.getAuthorities().toString());
-        return response;
+        }
     }
 }

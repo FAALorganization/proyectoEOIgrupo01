@@ -23,8 +23,8 @@ public class LoginService {
         this.loginRepository = loginRepository;
     }
 
-    public Login obtainUser(String str){
-        Optional<Login> logins = loginRepository.getLoginByEmailPrimario(str);
+    public Login obtainUser(String email){
+        Optional<Login> logins = loginRepository.getLoginByEmailPrimario(email);
         return logins.orElse(null);
         // Por ejemplo, devolver el email primario del primer Login
     }
