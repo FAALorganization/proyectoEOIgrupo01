@@ -1,0 +1,85 @@
+/*CSS CHAT*/
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
+}
+
+#userList li {
+    border: none;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+#userList li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+#userList li.selected {
+    background-color: #0d6efd;
+    color: white;
+}
+
+#chatMessages .message {
+    margin-bottom: 10px;
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 1rem;
+    display: inline-block;
+}
+
+.message.self {
+    background-color: #0d6efd;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message.other {
+    background-color: #e9ecef;
+    color: #333;
+    align-self: flex-start;
+}
+
+.chat-header, .chat-footer {
+    z-index: 1;
+}
+
+#chatMessages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mensaje {
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    word-wrap: break-word;
+}
+
+.mensaje-emisor {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.mensaje-receptor {
+    background-color: #ffffff;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.mensaje .contenido {
+    font-size: 15px;
+}
+
+.mensaje .fecha {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+}
+
