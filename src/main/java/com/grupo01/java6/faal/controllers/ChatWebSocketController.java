@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 @Controller
 public class ChatWebSocketController {
 
@@ -24,7 +26,10 @@ public class ChatWebSocketController {
     private LoginService loginService;
 
     @MessageMapping("/enviarMensaje")
-    public void enviarMensaje(Mensaje2DTO dto) {
+    public void enviarMensaje(Mensaje2DTO dto, Principal principal) {
+        System.out.println("Principal conectado: " + (principal != null ? principal.getName() : "null"));
+        System.out.println("Enviando a receptor: " + dto.getIdReceptor());
+        System.out.println("Enviando a emisor: " + dto.getIdEmisor());
         System.out.println("🟢 DTO RECIBIDO: " + dto);
         System.out.println("Contenido: " + dto.getContenido());
         System.out.println("Emisor ID: " + dto.getIdEmisor());
@@ -59,12 +64,30 @@ public class ChatWebSocketController {
             dto2.setEsLeido(saved.getEsLeido());
             dto2.setIdEmisor(saved.getEmisor().getId());
             dto2.setIdReceptor(saved.getReceptor().getId());
-            //dto2.setEmisorNombre(saved.getEmisor().getNombre());
+            // dto2.setEmisorNombre(saved.getEmisor().getNombre());
 
-            System.out.println("📤 Enviando por WebSocket a: /queue/mensajes/" + dto2.getIdReceptor());
+            // System.out.println("📤 Enviando por WebSocket a: /queue/mensajes/" + dto2.getIdReceptor());
+            // System.out.println("Payload: " + dto2);
+            // messagingTemplate.convertAndSend("/queue/mensajes/" + dto2.getIdReceptor(), dto2);
+            // messagingTemplate.convertAndSend("/queue/mensajes/" + dto2.getIdEmisor(), dto2); // Echo al emisor
+
+            System.out.println("📤 Enviando por WebSocket PRIVADO al RECEPTOR " + dto2.getIdReceptor());
             System.out.println("Payload: " + dto2);
-            messagingTemplate.convertAndSend("/queue/mensajes/" + dto2.getIdReceptor(), dto2);
-            messagingTemplate.convertAndSend("/queue/mensajes/" + dto2.getIdEmisor(), dto2); // Echo al emisor
+            messagingTemplate.convertAndSendToUser(
+                    String.valueOf(dto2.getIdReceptor()),
+                    "/queue/mensajes",
+                    dto2
+            );
+
+            System.out.println("📤 Enviando por WebSocket PRIVADO al EMISOR " + dto2.getIdEmisor());
+            System.out.println("Payload: " + dto2);
+            messagingTemplate.convertAndSendToUser(
+                    String.valueOf(dto2.getIdEmisor()),
+                    "/queue/mensajes",
+                    dto2
+            );
+
+
         } else {
             // Chat grupal
             System.out.println("GUARDANDO mensaje: " + mensaje);
@@ -77,10 +100,12 @@ public class ChatWebSocketController {
             dto2.setEsGrupal(true);
             dto2.setEsLeido(saved.getEsLeido());
             dto2.setIdEmisor(saved.getEmisor().getId());
-            //dto2.setEmisorNombre(saved.getEmisor().getIdDetallesDeUsuario().getNombre());
+            // dto2.setEmisorNombre(saved.getEmisor().getIdDetallesDeUsuario().getNombre());
 
-            System.out.println("📤 Enviando por WebSocket a: /queue/mensajes/" + dto2.getIdReceptor());
-            System.out.println("Payload: " + dto2);
+            // System.out.println("📤 Enviando por WebSocket a: /queue/mensajes/" + dto2.getIdReceptor());
+            // messagingTemplate.convertAndSend("/topic/mensajes", dto2);
+
+            System.out.println("📤 Enviando por WebSocket GRUPAL a: /topic/mensajes");
             messagingTemplate.convertAndSend("/topic/mensajes", dto2);
         }
     }
