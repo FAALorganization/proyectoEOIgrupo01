@@ -24,8 +24,9 @@ public class LocalDataLoader {
     private final AusenciasRepository ausenciaRepository;
     private final ChatAbiertoRepository chatAbiertoRepository;
     private final MensajeRepository mensajeRepository;
+    private final PrioridadesRepository prioridadesRepository;
 
-    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
+    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository, PrioridadesRepository prioridadesRepository) {
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
         this.loginRepository = loginRepository;
         this.rolesRepository = rolesRepository;
@@ -33,6 +34,7 @@ public class LocalDataLoader {
         this.ausenciaRepository = ausenciaRepository;
         this.chatAbiertoRepository = chatAbiertoRepository;
         this.mensajeRepository = mensajeRepository;
+        this.prioridadesRepository = prioridadesRepository;
     }
 
     @PostConstruct
@@ -231,6 +233,14 @@ public class LocalDataLoader {
         mensajes[4].setEsLeido(true);
 
         mensajeRepository.saveAll(Arrays.asList(mensajes));
+        // === PRIORIDADES ===
+        String[][] prioridades = {{"high", "Alta"}, {"medium", "Media"}, {"low", "Baja"}};
+        for (String[] p : prioridades) {
+            Prioridades pr = new Prioridades();
+            pr.setValue(p[0]);
+            pr.setDisplayName(p[1]);
+            prioridadesRepository.save(pr);
+        }
     }
 
 

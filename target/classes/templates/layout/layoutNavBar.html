@@ -18,7 +18,7 @@
     <nav class="nav navbar-style">
         <div class="nav_list">
             <a th:href="@{/home}" class="nav_link"> <i class="fa-solid fa-house nav_icon"></i> <span class="nav_name">Home</span> </a>
-            <a th:href="@{/perfiladmin}" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
+            <a th:href="@{/perfil}" class="nav_link"> <i class="fa-solid fa-address-card"></i> <span class="nav_name">Perfil</span> </a>
             <a th:href="@{/checkin}" class="nav_link"> <i class="fa-solid fa-clock"></i> <span class="nav_name">Check In</span> </a>
             <a th:href="@{/calendario}" class="nav_link active"> <i class="fa-solid fa-calendar-days"></i> <span class="nav_name">Calendario</span> </a>
             <a href="#" class="nav_link" id="gestionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -33,7 +33,8 @@
 
             </ul>
             <a th:href="@{/documentacion}" class="nav_link"> <i class="fa-solid fa-paperclip"></i> <span class="nav_name">Documentación</span> </a>
-            <a th:href="@{/creacionTicket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
+            <a th:href="@{/ticket}" class="nav_link"> <i class="fa-solid fa-file-invoice"></i> <span class="nav_name">Ticketing</span> </a>
+            <a th:href="@{/admin-tickets}" class="nav_link"> <i class="fa-solid fa-user-shield"></i> <span class="nav_name">Admin</span> </a>
             <a th:href="@{/chat}" class="nav_link"> <i class="fa-solid fa-comment-dots"></i> <span class="nav_name">Chat</span> </a>
             <a th:href="@{/forum}" class="nav_link"> <i class="fa-solid fa-users"></i> <span class="nav_name">Foro</span> </a>
             <form th:action="@{/logout}" method="post" style="display: inline;">
