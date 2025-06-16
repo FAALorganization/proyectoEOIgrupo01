@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,11 +22,15 @@ public class MensajeLeido implements Serializable {
     private Integer id;
 
     @Column(name = "fechaLeido")
-    private LocalDate fechaLeido;
+    private LocalDateTime fechaLeido;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idMensajeGrupo", nullable = false)
+    @JoinColumn(name = "idMensajeGrupo")
     private MensajeGrupo mensajeGrupo;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "idMensajeEnviado")
+    private Mensaje mensaje;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idLogin", nullable = false)

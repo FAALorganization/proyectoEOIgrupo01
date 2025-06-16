@@ -1,4 +1,6 @@
 package com.grupo01.java6.faal.services;
+
+//import com.grupo01.java6.faal.Mapper.AbstractServiceMapper;
 import com.grupo01.java6.faal.services.mappers.AbstractServiceMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -6,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.*;
 
-public abstract class AbstractBusinessService <E, ID, DTO,  REPO extends JpaRepository<E,ID> ,
+public abstract  class AbstractBusinessService <E, ID, DTO,  REPO extends JpaRepository<E,ID>,
         MAPPER extends AbstractServiceMapper<E,DTO>>  {
-    protected final REPO repo;
+    final REPO repo;
     final MAPPER serviceMapper;
 
 
@@ -16,51 +18,41 @@ public abstract class AbstractBusinessService <E, ID, DTO,  REPO extends JpaRepo
         this.repo = repo;
         this.serviceMapper = mapper;
     }
-
-    //Busca una entidad por ID, retorna la entidad directamente.
-    public Optional<E> buscarEntity(ID id){
-        return  this.repo.findById(id);
-    }
-
-    //Devuelve una lista de todos los elementos convertidos a DTO.
-    public List<DTO> buscarAllDTO(){
+    //Buscamos por id
+    public Optional<E> buscar(ID id){return  this.repo.findById(id);}
+    //Lista de todos los DTOs buscarTodos devolvera lista y paginas
+    public List<DTO> buscarTodos(){
         return  this.serviceMapper.toDto(this.repo.findAll());
     }
 
-    //Devuelve todas las entidades sin conversión.
-    public List<E> buscarAllEntity(){
+    public List<E> buscarEntidades(){
         return  this.repo.findAll();
     }
-
-    //Devuelve todas las entidades sin conversión en un Set para eliminar duplicados.
-    public Set<E> buscarAllEntitySet(){
-        return new HashSet<E>(this.repo.findAll());
+    public Set<E> buscarEntidadesSet(){
+        Set<E> eSet = new HashSet<E>(this.repo.findAll());
+        return  eSet;
     }
 
-    //Devuelve los DTOs sin duplicados.
-    public Set<DTO> buscarAllDTOSet(){
-        return new HashSet<DTO>(this.serviceMapper.toDto(this.repo.findAll()));
+    public Set<DTO> buscarTodosSet(){
+        Set<DTO> dtos = new HashSet<DTO>(this.serviceMapper.toDto(this.repo.findAll()));
+        return  dtos;
     }
 
-    //Devuelve una página de DTOs, útil para paginación.
-    public Page<DTO> buscarAllDTOPage(Pageable pageable){
+    public Page<DTO> buscarTodos(Pageable pageable){
         return  repo.findAll(pageable).map(this.serviceMapper::toDto);
     }
 
-    //Buscar por id retornando un DTO.
-    public Optional<DTO> buscarByIdDTO(ID id){
+    //Buscar por id
+    public Optional<DTO> encuentraPorId(ID id){
 
         return this.repo.findById(id).map(this.serviceMapper::toDto);
     }
-
-    //Busca por id retornando una entidad pura.
-    public Optional<E> buscarByIdEntity(ID id){
+    public Optional<E> encuentraPorIdEntity(ID id){
 
         return this.repo.findById(id);
     }
-
-    //Recibe un DTO, lo convierte a entidad, guarda y vuelve a convertir a DTO.
-    public DTO guardarDTODTO(DTO dto) throws Exception {
+    //Guardar
+    public DTO guardar(DTO dto) throws Exception {
         //Traduzco del dto con datos de entrada a la entidad
         final E entidad = serviceMapper.toEntity(dto);
         //Guardo el la base de datos
@@ -68,25 +60,21 @@ public abstract class AbstractBusinessService <E, ID, DTO,  REPO extends JpaRepo
         //Traducir la entidad a DTO para devolver el DTO
         return serviceMapper.toDto(entidadGuardada);
     }
-
-    //Guarda una entidad y retorna su DTO.
-    public DTO guardarEntityDTO(E entidad)  {
+    //Guardar
+    public DTO guardarEntidadDto(E entidad)  {
         //Guardo el la base de datos
         E entidadGuardada =  repo.save(entidad);
         //Traducir la entidad a DTO para devolver el DTO
         return serviceMapper.toDto(entidadGuardada);
     }
-
-    //Guarda y devuelve la entidad como tal.
-    public E guardarEntityEntity(E entidad) throws Exception {
+    //Guardar
+    public E guardarEntidadEntidad(E entidad) throws Exception {
         //Guardo el la base de datos
         E entidadGuardada =  repo.save(entidad);
         //Traducir la entidad a DTO para devolver el DTO
         return entidadGuardada;
     }
-
-    //Guarda una lista de DTOs uno por uno en la ddbb.
-    public void  guardarListDTO(List<DTO> dtos) throws Exception {
+    public void  guardar(List<DTO> dtos) throws Exception {
         Iterator<DTO> it = dtos.iterator();
 
         // mientras al iterador queda proximo juego
@@ -97,12 +85,10 @@ public abstract class AbstractBusinessService <E, ID, DTO,  REPO extends JpaRepo
             repo.save(e);
         }
     }
-
-    //Eliminar un registro.
-    public void eliminarById(ID id){
+    //eliminar un registro
+    public void eliminarPorId(ID id){
         this.repo.deleteById(id);
     }
-
     //Obtener el mapper
     public MAPPER getMapper(){return  serviceMapper;}
     //Obtener el repo

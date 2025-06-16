@@ -3,6 +3,7 @@ package com.grupo01.java6.faal.repositories;
 
 import com.grupo01.java6.faal.dtos.NombreConAusenciasDTO;
 import com.grupo01.java6.faal.dtos.NombreDTO;
+import com.grupo01.java6.faal.entities.Detallesdeusuario;
 import com.grupo01.java6.faal.entities.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,8 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface LoginRepository extends JpaRepository<Login, Integer> {
+
+
     @Query("select l from Login l left join fetch l.roles where l.emailPrimario = :email")
     Optional<Login> getLoginByEmailPrimario(@Param("email") String email);
 
@@ -34,10 +37,7 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
         d.nombre,
         d.apellidos,
         a.fechaInicio,
-        a.fechaFin,
-        a.aprobado,
-        a.tiposAusencias,
-        a.justificacion
+        a.fechaFin
 )
     FROM Login usuario
     JOIN Login jefe ON usuario.jefeLogin.id = jefe.id
@@ -45,10 +45,14 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     JOIN Detallesdeusuario d ON d.usuarioLogin.id = sub.id
     JOIN Ausencias a ON a.loginAusencias.id = sub.id
     WHERE usuario.emailPrimario = :email
+      AND a.tiposAusencias.id = 1
+      AND a.aprobado = true
 """)
-//    AND a.tiposAusencias.id = 1
-//    AND a.aprobado = true
     List<NombreConAusenciasDTO> obtenerCompanerosConAusencias(@Param("email") String email);
+
+    Integer id(Integer id);
+
+    Optional<Login> findById(Integer id);
 
     @Query("""
     SELECT DISTINCT l FROM Login l
@@ -58,4 +62,18 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
 """)
     List<Login> findAllWithRoleUsuarioOrVisitante();
 
+    Optional<Login> findByIdDetallesDeUsuario(Detallesdeusuario detallesdeusuario);
+    @Query("""
+    SELECT l 
+    FROM Login l 
+    WHERE l.activo = true
+""")
+    List<Login> findByActivoTrue();
+    @Query("SELECT l FROM Login l WHERE l.id <> :idActual")
+    List<Login> obtenerTodosMenosActual(@Param("idActual") Integer idActual);
+
+
+    //List<Login> findByRolesContaining(String roleAdmin);
+
+    //Optional<Object> findByEmailPrimario(String email);
 }

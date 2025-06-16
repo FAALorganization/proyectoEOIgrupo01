@@ -15,7 +15,7 @@ public class Roles implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idRol", nullable = false)
     private Integer id;
-
+    private String nombre;
     @Column(name = "descripcion", length = 10)
     private String descripcion;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -23,6 +23,7 @@ public class Roles implements java.io.Serializable {
     private Login loginRol;
 
     public String getNombre() {
+
         return descripcion;
     }
 }

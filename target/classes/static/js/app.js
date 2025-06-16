@@ -329,41 +329,53 @@ if (ausCalendarGrid) {
 /*Funcio agrupar fechas*/
 function agruparFechasConsecutivas(selectedDays) {
     const selectedArray = Array.from(selectedDays);
-    if (selectedArray.length === 0) return [];
-
     const fechasOrdenadas = selectedArray.sort((a, b) => {
         const [diaA, mesA, yearA] = a.split("-").map(Number);
         const [diaB, mesB, yearB] = b.split("-").map(Number);
-        return new Date(yearA, mesA - 1, diaA) - new Date(yearB, mesB - 1, diaB);
+
+        const fechaA = new Date(yearA, mesA - 1, diaA);
+        const fechaB = new Date(yearB, mesB - 1, diaB);
+
+        return fechaA - fechaB;
     });
 
     let diasTotales = [];
-    let grupoActual = [fechasOrdenadas[0]];
+    let j = 0;
 
-    for (let i = 1; i < fechasOrdenadas.length; i++) {
-        const [diaPrev, mesPrev, yearPrev] = fechasOrdenadas[i - 1].split("-").map(Number);
-        const [diaAct, mesAct, yearAct] = fechasOrdenadas[i].split("-").map(Number);
+    for (let i = 0; i < fechasOrdenadas.length - 1; i++) {
+        const fechaActualParts = fechasOrdenadas[i].split("-");
+        const fechaSiguienteParts = fechasOrdenadas[i + 1].split("-");
 
-        const fechaPrev = new Date(yearPrev, mesPrev - 1, diaPrev);
-        const fechaAct = new Date(yearAct, mesAct - 1, diaAct);
+        const fechaActual = new Date(
+            parseInt(fechaActualParts[2]),
+            parseInt(fechaActualParts[1]) - 1,
+            parseInt(fechaActualParts[0])
+        );
+        const fechaSiguiente = new Date(
+            parseInt(fechaSiguienteParts[2]),
+            parseInt(fechaSiguienteParts[1]) - 1,
+            parseInt(fechaSiguienteParts[0])
+        );
 
-        const diffDays = (fechaAct - fechaPrev) / (1000 * 60 * 60 * 24);
+        const diffTime = fechaSiguiente - fechaActual;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
 
         if (diffDays === 1) {
-            grupoActual.push(fechasOrdenadas[i]);
+            continue;
         } else {
-            diasTotales.push(grupoActual);
-            grupoActual = [fechasOrdenadas[i]];
+            diasTotales.push(fechasOrdenadas.slice(j, i + 1));
+            j = i + 1;
         }
     }
-
-    // Agregar el último grupo
-    if (grupoActual.length) {
-        diasTotales.push(grupoActual);
+    if (j < fechasOrdenadas.length) {
+        diasTotales.push(fechasOrdenadas.slice(j));
     }
 
     return diasTotales;
 }
+
+
+
 
 /**************/
 document.addEventListener('click', function (event) {
@@ -573,21 +585,18 @@ function crearFechasDir(companero) {
         const diaInicio = fechaInicio.getDate();
         const diaFin = fechaFin.getDate();
 
-        const tipo = ausencia.tipoAusencias.id;
-        const aprobado = ausencia.aprobado;
-
         if (mesInicio === mesFin) {
             for (let i = diaInicio; i <= diaFin; i++) {
-                fechas[fechaInicio.getFullYear()][mesInicio][i] = [tipo,aprobado];
+                fechas[fechaInicio.getFullYear()][mesInicio][i] = [];
             }
         } else if (mesInicio !== mesFin) {
             const lastDayMonth = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth() + 1, 0).getDate();
             for (let i = diaInicio; i <= lastDayMonth; i++) {
-                fechas[fechaInicio.getFullYear()][mesInicio][i] = [tipo,aprobado];
+                fechas[fechaInicio.getFullYear()][mesInicio][i] = [];
             }
 
             for (let i = 1; i <= diaFin; i++) {
-                fechas[fechaFin.getFullYear()][mesFin][i] = [tipo,aprobado];
+                fechas[fechaFin.getFullYear()][mesFin][i] = [];
             }
         }
     });
@@ -781,8 +790,8 @@ function getColor(index) {
 }
 
 
-if (window.location.pathname === '/gestion') {
 document.querySelector(".btn-ind-vac").addEventListener("click", (event) => {
+    if (window.location.pathname === '/gestion') {
         let ausencias = [];
 
         fetch('/gestion/ausencias')
@@ -806,8 +815,9 @@ document.querySelector(".btn-ind-vac").addEventListener("click", (event) => {
                 pintarAusencias(ausencias);
             });
         });
+    }
 });
-}
+
 /*******************************************REST NOMBRES***************************************/
 // Opcional: función para variar colores
 if (window.location.pathname === '/gestion') {
@@ -849,191 +859,171 @@ if (window.location.pathname === '/gestion') {
     });
 }
 
-    /***********************************************GENERAL CO-WORKERS HOLIDAYS********************************/
-    function crearSimbolosAusencias() {
-        fetch("/gestion/companeros")
-            .then(response => {
-                if (!response.ok) throw new Error("Error al obtener los compañeros");
-                return response.json();
-            })
-            .then(companeros => {
-                let dirColorsNames = {};
-                companeros.forEach((companero, index) => {
-                    let nombreCompleto = companero.nombre + " " + companero.apellidos;
-                    dirColorsNames[nombreCompleto] = getColor(index);
-                });
+/***********************************************GENERAL CO-WORKERS HOLIDAYS********************************/
+function crearSimbolosAusencias() {
+    fetch("/companeros-con-ausencias")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al obtener los compañeros");
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach((companero, index) => {
+                let fechas = crearFechasDir(companero)
+                const selectedMonth = parseInt(document.getElementById('monthSelect').value);
 
-                // Solo un fetch a ausencias
-                return fetch("/companeros-con-ausencias")
-                    .then(response => {
-                        if (!response.ok) throw new Error("Error al obtener ausencias");
-                        return response.json();
-                    })
-                    .then(companerosAusencias => {
-                        companerosAusencias.forEach((companero2, index2) => {
+                Object.keys(fechas).forEach(year => {
+                    Object.keys(fechas[year]).forEach(month => {
+                        Object.keys(fechas[year][month]).forEach(dayNum => {
+                            const divIcon = document.createElement("div")
+                            divIcon.className = "div-container-icons";
+                            if (parseInt(month) === selectedMonth) {
+                                if (![0,6].includes(new Date(year,month,dayNum).getDay())) {
+                                    const claseName = document.querySelector(`.day[data-date="${parseInt(dayNum)}"]`);
+                                    if (claseName) {
+                                        const icon = document.createElement("i");
+                                        icon.className = "fa-regular fa-user icon-container-estilo";
+                                        icon.style.color = getColor(index); // función para cambiar color
+                                        divIcon.appendChild(icon);
+                                        claseName.appendChild(divIcon);
+                                    }
+                                }
 
-                            let registros = crearFechasDir(companero2);
-                            let nombre = companero2.nombre;
-                            let apellidos = companero2.apellidos;
-                            console.log(registros);
-                            const selectedMonth = parseInt(document.getElementById('monthSelect').value);
-
-                            Object.keys(registros).forEach(year => {
-                                Object.keys(registros[year]).forEach(month => {
-                                    Object.keys(registros[year][month]).forEach(dayNum => {
-                                        const tipo = registros[year][month][dayNum][0]
-                                        const aprobado = registros[year][month][dayNum][1]
-                                        if (tipo === 1 && aprobado === true) {
-                                            const divIcon = document.createElement("div");
-                                            divIcon.className = "div-container-icons";
-
-                                            const isSelectedMonth = parseInt(month) === selectedMonth;
-                                            const isAdjacentMonth = (parseInt(month) === selectedMonth - 1 && parseInt(dayNum) > 24)
-                                                || (parseInt(month) === selectedMonth + 1 && parseInt(dayNum) < 8);
-
-                                            const isWeekday = ![0, 6].includes(new Date(year, month, dayNum).getDay());
-
-                                            if ((isSelectedMonth || isAdjacentMonth) && isWeekday) {
-                                                let claseName;
-                                                if (isSelectedMonth) {
-                                                    claseName = document.querySelector(`.day[data-date="${parseInt(dayNum)}"]`);
-                                                } else {
-                                                    claseName = document.getElementsByClassName("dayInact-" + dayNum)[0];
-                                                }
-
-                                                if (claseName) {
-                                                    const icon = document.createElement("i");
-                                                    icon.className = "fa-regular fa-user icon-container-estilo";
-                                                    icon.style.color = dirColorsNames[nombre + " " +  apellidos]; // o usar dirColorsNames si coincide
-                                                    divIcon.appendChild(icon);
-                                                    claseName.appendChild(divIcon);
-                                                }
-                                            }
-                                        }
-
-                                    });
-                                });
-                            });
-                        });
-
-                        // Añadir relleno para los días que tienen icono
-                        const days = document.querySelectorAll('.day');
-                        days.forEach(day => {
-                            const hasIcon = day.querySelector('i') !== null;
-                            if (hasIcon) {
-                                const emptyDiv1 = document.createElement("div");
-                                const emptyDiv2 = document.createElement("div");
-                                day.insertBefore(emptyDiv2, day.children[0]);
-                                day.insertBefore(emptyDiv1, day.children[0]);
+                            } else if (parseInt(month) === selectedMonth - 1 && parseInt(dayNum) > 24 || parseInt(month) === selectedMonth + 1 && parseInt(dayNum) < 8) {
+                                if (![0,6].includes(new Date(year,month,dayNum).getDay())) {
+                                    const claseName = document.getElementsByClassName("dayInact-" + dayNum)[0];
+                                    if (claseName) {
+                                        const icon = document.createElement("i");
+                                        icon.className = "fa-regular fa-user icon-container-estilo";
+                                        icon.style.color = getColor(index); // función para cambiar color
+                                        divIcon.appendChild(icon);
+                                        claseName.appendChild(divIcon);
+                                }
+                                }
                             }
-                        });
-                    });
-            })
-            .catch(error => {
-                console.error("Error:", error);
+
+                        })
+                    })
+                });
             });
-    }
+            const days = document.querySelectorAll('.day');
+
+            days.forEach(day => {
+                const hasIcon = day.querySelector('i') !== null;
+                if (hasIcon) {
+                    const emptyDiv1 = document.createElement("div");
+                    const emptyDiv2 = document.createElement("div");
+                    day.insertBefore(emptyDiv1, day.children[0]);
+                    day.insertBefore(emptyDiv2, day.children[0]);
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
 
 
-    if (window.location.pathname === '/gestion') {
-        document.addEventListener("DOMContentLoaded", function () {
-            crearSimbolosAusencias();
+if (window.location.pathname === '/gestion') {
+    document.addEventListener("DOMContentLoaded", function () {
+        crearSimbolosAusencias();
 
+    });
+
+    // Ocultar íconos
+    document.querySelector('.btn-ind-vac').addEventListener('click', () => {
+        document.querySelectorAll('i.icon-container-estilo').forEach(icon => {
+            icon.classList.add('icon-hidden');
         });
 
-        // Ocultar íconos
-        document.querySelector('.btn-ind-vac').addEventListener('click', () => {
-            document.querySelectorAll('i.icon-container-estilo').forEach(icon => {
-                icon.classList.add('icon-hidden');
-            });
-
-            document.querySelectorAll('.day').forEach(day => {
-                day.classList.remove("normal-bg-color")
-            });
+        document.querySelectorAll('.day').forEach(day => {
+            day.classList.remove("normal-bg-color")
         });
+    });
 
 // Mostrar íconos
-        document.querySelector('.btn-general').addEventListener('click', () => {
+    document.querySelector('.btn-general').addEventListener('click', () => {
 
-            if (document.querySelectorAll('i.icon-container-estilo').length === 0) {
-                crearSimbolosAusencias();
-            }
-
-            document.querySelectorAll('i.icon-container-estilo').forEach(icon => {
-                icon.classList.remove('icon-hidden');
-            });
-
-            document.querySelectorAll('.day').forEach(day => {
-                day.classList.add("normal-bg-color")
-            });
-        });
-    }
-
-    /********************************************CONTADOR AUSENCIAS******************************************************/
-    function createSimpleDate(dayNum, month, year) {
-        const mes = (parseInt(month) + 1).toString();
-        return `${dayNum.length === 1 ? '0' + dayNum : dayNum}-${mes.length === 1 ? '0' + mes : mes}-${year}`;
-    }
-
-    function ordenarFechas(objFechas) {
-        return Object.keys(objFechas).sort((a, b) => {
-            const sepA = a.includes('/') ? '/' : '-';
-            const sepB = b.includes('/') ? '/' : '-';
-
-            const [diaA, mesA, yearA] = a.split(sepA);
-            const [diaB, mesB, yearB] = b.split(sepB);
-
-            const fechaA = new Date(`${yearA}-${mesA}-${diaA}`);
-            const fechaB = new Date(`${yearB}-${mesB}-${diaB}`);
-
-            return fechaA - fechaB; // ascendente
-        })
-            .reduce((ordenado, key) => {
-                ordenado[key] = objFechas[key];
-                return ordenado;
-            }, {});
-    }
-
-    function createAusenciaLaboral(string, historial) {
-        let listaFechas = [];
-        console.log(historial);
-        if (string.length > 0) {
-            listaFechas = string.split('.');
-            let nombre;
-            if (listaFechas.length === 1) {
-                nombre = listaFechas[0];
-            } else if (listaFechas.length > 1) {
-                nombre = listaFechas[0] + " al " + listaFechas.at(-1);
-            }
-
-            let nombreClase = "btn btn-sm btn-warning aus-btn-justificar";
-            let mensaje = "Justificar";
-
-            if (nombre.length > 3) {
-                if (historial[nombre.split(" al ")[0]][1] === true) {
-                    nombreClase = "btn btn-sm btn-success aus-btn-justificar";
-                    mensaje = "Re-justificar";
-                }
-            }
-            let trElemento = document.createElement("tr");
-            let tdElementoCabecera = document.createElement("td");
-            let tdElementoIntervalo = document.createElement("td");
-            let tdElementoButton = document.createElement("td");
-            let elementoButton = document.createElement("button");
-
-            elementoButton.className = nombreClase;
-            elementoButton.innerText = mensaje;
-            tdElementoCabecera.innerHTML = "No asiste";
-            tdElementoIntervalo.innerHTML = nombre;
-            tdElementoButton.appendChild(elementoButton);
-
-            trElemento.appendChild(tdElementoCabecera);
-            trElemento.appendChild(tdElementoIntervalo);
-            trElemento.appendChild(tdElementoButton);
-
-            return trElemento;
+        if (document.querySelectorAll('i.icon-container-estilo').length === 0) {
+            crearSimbolosAusencias();
         }
+
+        document.querySelectorAll('i.icon-container-estilo').forEach(icon => {
+            icon.classList.remove('icon-hidden');
+        });
+
+        document.querySelectorAll('.day').forEach(day => {
+            day.classList.add("normal-bg-color")
+        });
+    });
+}
+
+/********************************************CONTADOR AUSENCIAS******************************************************/
+function createSimpleDate(dayNum, month, year) {
+    const mes = (parseInt(month) + 1).toString();
+    return `${dayNum.length === 1 ? '0' + dayNum : dayNum}-${mes.length === 1 ? '0' + mes : mes}-${year}`;
+}
+
+function ordenarFechas(objFechas) {
+    return Object.keys(objFechas).sort((a, b) => {
+        const sepA = a.includes('/') ? '/' : '-';
+        const sepB = b.includes('/') ? '/' : '-';
+
+        const [diaA, mesA, yearA] = a.split(sepA);
+        const [diaB, mesB, yearB] = b.split(sepB);
+
+        const fechaA = new Date(`${yearA}-${mesA}-${diaA}`);
+        const fechaB = new Date(`${yearB}-${mesB}-${diaB}`);
+
+        return fechaA - fechaB; // ascendente
+    })
+        .reduce((ordenado, key) => {
+            ordenado[key] = objFechas[key];
+            return ordenado;
+        }, {});
+}
+
+function createAusenciaLaboral(string, historial) {
+    let listaFechas = [];
+
+    if (string.length > 0) {
+        listaFechas = string.split('.');
+        let nombre;
+        if (listaFechas.length === 1) {
+            nombre = listaFechas[0];
+        } else if (listaFechas.length > 1) {
+            nombre = listaFechas[0] + " al " + listaFechas.at(-1);
+        }
+
+        let nombreClase = "btn btn-sm btn-warning aus-btn-justificar";
+        let mensaje = "Justificar";
+
+        if (nombre.length > 3) {
+            if (historial[nombre.split(" al ")[0]][1] === true) {
+                nombreClase = "btn btn-sm btn-success aus-btn-justificar";
+                mensaje = "Re-justificar";
+            }
+        }
+        let trElemento = document.createElement("tr");
+        let tdElementoCabecera = document.createElement("td");
+        let tdElementoIntervalo = document.createElement("td");
+        let tdElementoButton = document.createElement("td");
+        let elementoButton = document.createElement("button");
+
+        elementoButton.className = nombreClase;
+        elementoButton.innerText = mensaje;
+        tdElementoCabecera.innerHTML = "No asiste";
+        tdElementoIntervalo.innerHTML = nombre;
+        tdElementoButton.appendChild(elementoButton);
+
+        trElemento.appendChild(tdElementoCabecera);
+        trElemento.appendChild(tdElementoIntervalo);
+        trElemento.appendChild(tdElementoButton);
+
+        return trElemento;
     }
+}
 
 function calcularDiasControl(ausencias, boolean) {
 
@@ -1070,32 +1060,33 @@ function calcularDiasControl(ausencias, boolean) {
                         historialVacaciones[createSimpleDate(dayNum, month, year)] = "Pendiente";
 
                     } else if (fechas[year][month][dayNum][1] === true && fechas[year][month][dayNum][0] === 1) {
-                        if (parseInt(month) < currMonth || (parseInt(month) === currMonth && dayNum <= currentDay)) {
+                        if (parseInt(month) < currMonth || dayNum <= currentDay && parseInt(month) === currMonth) {
                             contadorDisfrutados += 1;
                             historialVacaciones[createSimpleDate(dayNum, month, year)] = "Disfrutada";
-                        } else {
+                        } else if (dayNum => currentDay || parseInt(month) > currMonth) {
                             contadorAceptados += 1;
                             historialVacaciones[createSimpleDate(dayNum, month, year)] = "Aceptada";
                         }
                     } else if ([2, 3, 4].includes(fechas[year][month][dayNum][0]) && fechas[year][month][dayNum][1] === false) {
-                        historialAusencias[createSimpleDate(dayNum, month, year)] = ["No asiste", fechas[year][month][dayNum][2]];
+                        historialAusencias[createSimpleDate(dayNum, month, year)] = ["No asiste",fechas[year][month][dayNum][2]];
                     }
                 }
             })
+            contadores[year] = {
+                "totales": contadorTotales,
+                "aceptados": contadorAceptados,
+                "aprobar": contadorAprobar,
+                "disfrutados": contadorDisfrutados
+            }
         })
 
-        contadores[year] = {
-            "totales": contadorTotales,
-            "aceptados": contadorAceptados,
-            "aprobar": contadorAprobar,
-            "disfrutados": contadorDisfrutados
-        }
-
+        //console.log(contadores);
         if (boolean === true) {
             document.querySelector('.contador-totales').innerHTML = "Totales: " + (contadores[selectedYear]["totales"] ?? "-")
             document.querySelector('.contador-aceptados').innerHTML = "Aceptados: " + (contadores[selectedYear]["aceptados"] ?? "-")
             document.querySelector('.contador-aprobar').innerHTML = "Por aprobar: " + (contadores[selectedYear]["aprobar"] ?? "-")
             document.querySelector('.contador-disfrutados').innerHTML = "Disfrutados: " + (contadores[selectedYear]["disfrutados"] ?? "-")
+
         }
 
         let historialVacacionesOrdenado = ordenarFechas(historialVacaciones);
@@ -1105,9 +1096,6 @@ function calcularDiasControl(ausencias, boolean) {
             let divTablaHistorial = document.querySelector('.historial-vacaciones-tabla');
             let divTablaIncidencias = document.querySelector('.historial-vacaciones-tabla-noasis')
             divTablaHistorial.innerHTML = "";
-            divTablaIncidencias.innerHTML = "";
-
-            // Tabla de vacaciones
             Object.keys(historialVacacionesOrdenado).forEach(key => {
                 let trElement = document.createElement("tr");
                 let tdElementFecha = document.createElement("td");
@@ -1121,8 +1109,11 @@ function calcularDiasControl(ausencias, boolean) {
                 trElement.appendChild(tdElementEstado);
 
                 if (historialVacacionesOrdenado[key] === "Aceptada" || historialVacacionesOrdenado[key] === "Pendiente") {
-                    // Botón pendiente
-                    tdElementButton.innerHTML = "   ";
+                    // let elementButton = document.createElement("button");
+                    // elementButton.classList.add("btn", "btn-sm", "btn-danger");
+                    // elementButton.innerHTML = "   ✖";
+
+                    //XXX
                 } else {
                     tdElementButton.innerHTML = "   -";
                 }
@@ -1131,999 +1122,566 @@ function calcularDiasControl(ausencias, boolean) {
                 divTablaHistorial.appendChild(trElement);
             })
 
-            // Tabla de ausencias
+            //console.log(historialAusenciasOrdenado);
+            //console.log(historialVacaciones);
             let keys = Object.keys(historialAusenciasOrdenado);
-            let grupo = [];
+            let string = "";
+            let c;
+            let newIndex = 0;
 
+            //console.log(historialAusenciasOrdenado);
             for (let i = 0; i < keys.length; i++) {
-                const fechaActual = keys[i];
-                const [diaAct, mesAct] = fechaActual.split("-").map(n => parseInt(n));
-                const fechaSig = keys[i + 1];
-                let esContigua = false;
-
-                if (fechaSig) {
-                    const [diaSig, mesSig] = fechaSig.split("-").map(n => parseInt(n));
-                    esContigua = (mesAct === mesSig) && (diaSig === diaAct + 1);
+                if (i === keys.length - 1) {
+                    c = i;
+                } else {
+                    c = i + 1;
                 }
 
-                grupo.push(fechaActual);
+                let diaPrimero = (parseInt(keys[i].split("-")[0]) + 1).toString();
+                let diaSegundo = keys[c].split("-")[0];
+                let mesPrimero = keys[i].split("-")[1];
+                let mesSegundo = keys[c].split("-")[1];
 
-                if (!esContigua || i === keys.length - 1) {
-                    let stringGrupo = grupo.join(".");
-                    let elemento = createAusenciaLaboral(stringGrupo, historialAusenciasOrdenado);
-                    if (elemento) {
-                        divTablaIncidencias.appendChild(elemento);
+                //console.log(diaPrimero, diaSegundo, typeof diaPrimero, typeof diaSegundo);
+
+                if (diaPrimero === diaSegundo && mesPrimero === mesSegundo) {
+                    string += keys[i] + "."
+                } else {
+                    if (string.length > 1) {
+                        string += keys[i];
+                        let elemento = createAusenciaLaboral(string,historialAusenciasOrdenado);
+                        if (elemento) {
+                            divTablaIncidencias.appendChild(elemento);
+                        }
+                        string = "";
+                    } else {
+                        let elemento = createAusenciaLaboral(string,historialAusenciasOrdenado);
+                        if (elemento) {
+                            divTablaIncidencias.appendChild(elemento);
+                        }
+                        string = "";
                     }
-                    grupo = [];
+                }
+
+                if (![0, keys.length - 1].includes(i)) {
+                    let diaAnterior = (parseInt(keys[i - 1].split("-")[0]) + 2).toString();
+                    if (diaAnterior !== diaPrimero && diaPrimero !== diaSegundo) {
+                        string += keys[i];
+                        let elemento = createAusenciaLaboral(string,historialAusenciasOrdenado);
+                        if (elemento) {
+                            divTablaIncidencias.appendChild(elemento);
+                        }
+                        string = "";
+                    }
+                } else if (i === keys.length - 1) {
+                    let diaAnterior = (parseInt(keys[i - 1].split("-")[0]) + 2).toString();
+                    if (diaAnterior !== diaPrimero) {
+                        string += keys[i];
+                        let elemento = createAusenciaLaboral(string,historialAusenciasOrdenado);
+                        if (elemento) {
+                            divTablaIncidencias.appendChild(elemento);
+                        }
+                        string = "";
+                    }
+
+                } else if (i === 0) {
+                    if (diaPrimero !== diaSegundo) {
+                        string += keys[i];
+                        let elemento = createAusenciaLaboral(string,historialAusenciasOrdenado);
+                        if (elemento) {
+                            divTablaIncidencias.appendChild(elemento);
+                        }
+                        string = "";
+                    }
                 }
             }
         }
 
     });
-
     return [historialVacaciones, historialAusencias];
 }
 
 
-
 document.addEventListener("DOMContentLoaded", function () {
-        if (window.location.pathname === '/gestion') {
-            let ausencias = [];
+    if (window.location.pathname === '/gestion') {
+        let ausencias = [];
 
-            fetch('/gestion/ausencias')
-                .then(response => response.json())
-                .then(data => {
-                    ausencias = data;
-                    let ausenciasList = calcularDiasControl(ausencias, true);
+        fetch('/gestion/ausencias')
+            .then(response => response.json())
+            .then(data => {
+                ausencias = data;
+                let ausenciasList = calcularDiasControl(ausencias, true);
 
-                    abrirModal();
-                });
+                abrirModal();
+            });
 
+    }
+});
+
+
+/*********************************************Enviar Justificacion********************************************/
+if (window.location.pathname === "/gestion") {
+    let fecha = null;
+    let btn = null;
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('aus-btn-justificar')) {
+            const tr = e.target.closest('tr');
+            //const fecha = tr?.children[1]?.textContent?.trim();
+            fecha = tr?.children[1]?.innerHTML;
+            btn = e;
+        }
+    });
+    document.getElementById("aus-form-justificacion").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const asuntoSelect = document.getElementById("aus-asunto");
+        const descripcionInput = document.getElementById("aus-descripcion");
+        const archivosInput = document.getElementById("aus-archivos");
+
+        const asuntoValue = asuntoSelect.value;
+        const descripcionValue = descripcionInput.value.trim();
+
+        if (asuntoValue === "Selecciona una opción" || !descripcionValue) {
+            alert("Por favor, selecciona un asunto y completa la descripción.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("fecha", fecha);
+        formData.append("asunto", asuntoValue);
+        formData.append("descripcion", descripcionValue);
+
+        for (const file of archivosInput.files) {
+            formData.append("archivos", file); // Puedes usar "archivos[]" si esperas un array en backend
+        }
+
+        try {
+            const response = await fetch("/gestion/justificacion", {
+                method: "POST",
+                body:formData
+                // headers: {
+                //     "Content-Type": "application/json"
+                // },
+                // body: JSON.stringify({
+                //     fecha: fecha,
+                //     asunto: asuntoValue,
+                //     descripcion: descripcionValue
+                // })
+            });
+
+            if (response.ok) {
+                console.log("Justificación enviada correctamente.");
+                location.reload();
+
+                // Puedes cerrar el modal o resetear el formulario aquí
+            } else {
+                console.log("Error al enviar la justificación.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Error de red.");
         }
     });
 
+    document.getElementById('aus-form-justificacion').addEventListener('submit', function(event) {
+        event.preventDefault();  // evitar envío real si quieres controlar con JS
+        // Aquí podrías procesar el formulario o validaciones
+        // Obtener el modal padre
+        const modal = this.closest('.modal');
+        // Obtener instancia de Bootstrap Modal
+        const instance = bootstrap.Modal.getInstance(modal);
+        // Ocultar el modal
+        instance?.hide();
+        // Eliminar todos los backdrops (por si quedan)
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    });
+}
 
-    /*********************************************Enviar Justificacion********************************************/
-    if (window.location.pathname === "/gestion") {
-        let fecha = null;
-        let btn = null;
-        document.addEventListener('click', function (e) {
-            if (e.target.classList.contains('aus-btn-justificar')) {
-                const tr = e.target.closest('tr');
-                //const fecha = tr?.children[1]?.textContent?.trim();
-                fecha = tr?.children[1]?.innerHTML;
-                btn = e;
+/*****************************Gestion Ausencias calendario completo***********************/
+if (window.location.pathname === '/gestion') {
+
+    let holidaysTaken = [];
+    fetch('/gestion/ausencias')
+        .then(response => response.json())
+        .then(data => {
+            ausencias = data;
+            let ausenciasList = calcularDiasControl(ausencias,false);
+            holidaysTaken = Object.keys(ausenciasList[0]);
+
+            const calendarContainer = document.getElementById("calendarContainer");
+            const yearDisplay = document.getElementById("yearDisplay");
+            let currentYear = new Date().getFullYear();
+            const selectedDays = new Set();
+            let remainingDays = 25 - holidaysTaken.length;
+            const maxSelectableDays = remainingDays;
+            const remainingDaysEl = document.getElementById("remainingDays");
+
+
+            //holidaysTaken = ["12-01-2025", "25-12-2025", "01-01-2025", "15-08-2025", "01-05-2025"];
+            const monthNames = [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ];
+
+            const weekDays = ["L", "M", "X", "J", "V", "S", "D"];
+
+            function updateRemainingDays() {
+                remainingDaysEl.textContent = remainingDays;
             }
-        });
-        document.getElementById("aus-form-justificacion").addEventListener("submit", async function (e) {
-            e.preventDefault();
 
-            const asuntoSelect = document.getElementById("aus-asunto");
-            const descripcionInput = document.getElementById("aus-descripcion");
-            const archivosInput = document.getElementById("aus-archivos");
+            function generateCalendar(year) {
+                calendarContainer.innerHTML = "";
+                yearDisplay.textContent = year;
 
-            const asuntoValue = asuntoSelect.value;
-            const descripcionValue = descripcionInput.value.trim();
+                for (let m = 0; m < 12; m++) {
+                    const firstDayOfMonth = new Date(year, m, 1);
+                    const lastDayOfMonth = new Date(year, m + 1, 0);
+                    const totalDaysInMonth = lastDayOfMonth.getDate();
+                    const firstWeekDay = (firstDayOfMonth.getDay() + 6) % 7;
 
-            if (asuntoValue === "Selecciona una opción" || !descripcionValue) {
-                alert("Por favor, selecciona un asunto y completa la descripción.");
-                return;
-            }
+                    const monthDiv = document.createElement("div");
+                    monthDiv.className = "month-container-modal-gest shadow-sm";
 
-            const formData = new FormData();
-            formData.append("fecha", fecha);
-            formData.append("asunto", asuntoValue);
-            formData.append("descripcion", descripcionValue);
+                    const title = document.createElement("h6");
+                    title.className = "text-center text-muted";
+                    title.textContent = monthNames[m];
+                    monthDiv.appendChild(title);
 
-            for (const file of archivosInput.files) {
-                formData.append("archivos", file); // Puedes usar "archivos[]" si esperas un array en backend
-            }
+                    const weekHeader = document.createElement("div");
+                    weekHeader.className = "calendar-grid-modal-gest";
+                    weekDays.forEach(day => {
+                        const dayEl = document.createElement("div");
+                        dayEl.className = "calendar-day-name-modal-gest font-weight-bold";
+                        dayEl.textContent = day;
+                        weekHeader.appendChild(dayEl);
+                    });
+                    monthDiv.appendChild(weekHeader);
 
-            try {
-                const response = await fetch("/gestion/justificacion", {
-                    method: "POST",
-                    body: formData
-                    // headers: {
-                    //     "Content-Type": "application/json"
-                    // },
-                    // body: JSON.stringify({
-                    //     fecha: fecha,
-                    //     asunto: asuntoValue,
-                    //     descripcion: descripcionValue
-                    // })
-                });
+                    const grid = document.createElement("div");
+                    grid.className = "calendar-grid-modal-gest";
 
-                if (response.ok) {
-                    console.log("Justificación enviada correctamente.");
-                    location.reload();
+                    const totalCells = 42;
+                    const prevMonth = new Date(year, m, 0);
+                    const prevMonthDays = prevMonth.getDate();
 
-                    // Puedes cerrar el modal o resetear el formulario aquí
-                } else {
-                    console.log("Error al enviar la justificación.");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Error de red.");
-            }
-        });
+                    for (let i = 0; i < totalCells; i++) {
+                        const dayDiv = document.createElement("div");
+                        let date;
+                        let displayDay;
+                        let classList = "calendar-day-modal-gest";
 
-        document.getElementById('aus-form-justificacion').addEventListener('submit', function (event) {
-            event.preventDefault();  // evitar envío real si quieres controlar con JS
-            // Aquí podrías procesar el formulario o validaciones
-            // Obtener el modal padre
-            const modal = this.closest('.modal');
-            // Obtener instancia de Bootstrap Modal
-            const instance = bootstrap.Modal.getInstance(modal);
-            // Ocultar el modal
-            instance?.hide();
-            // Eliminar todos los backdrops (por si quedan)
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-        });
-    }
-
-    /*****************************Gestion Ausencias calendario completo***********************/
-    if (window.location.pathname === '/gestion') {
-
-        let holidaysTaken = [];
-        fetch('/gestion/ausencias')
-            .then(response => response.json())
-            .then(data => {
-                ausencias = data;
-                let ausenciasList = calcularDiasControl(ausencias, false);
-                holidaysTaken = Object.keys(ausenciasList[0]);
-
-                const calendarContainer = document.getElementById("calendarContainer");
-                const yearDisplay = document.getElementById("yearDisplay");
-                let currentYear = new Date().getFullYear();
-                const selectedDays = new Set();
-                let remainingDays = 25 - holidaysTaken.length;
-                const maxSelectableDays = remainingDays;
-                const remainingDaysEl = document.getElementById("remainingDays");
-
-
-                //holidaysTaken = ["12-01-2025", "25-12-2025", "01-01-2025", "15-08-2025", "01-05-2025"];
-                const monthNames = [
-                    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-                ];
-
-                const weekDays = ["L", "M", "X", "J", "V", "S", "D"];
-
-                function updateRemainingDays() {
-                    remainingDaysEl.textContent = remainingDays;
-                }
-
-                function generateCalendar(year) {
-                    calendarContainer.innerHTML = "";
-                    yearDisplay.textContent = year;
-
-                    for (let m = 0; m < 12; m++) {
-                        const firstDayOfMonth = new Date(year, m, 1);
-                        const lastDayOfMonth = new Date(year, m + 1, 0);
-                        const totalDaysInMonth = lastDayOfMonth.getDate();
-                        const firstWeekDay = (firstDayOfMonth.getDay() + 6) % 7;
-
-                        const monthDiv = document.createElement("div");
-                        monthDiv.className = "month-container-modal-gest shadow-sm";
-
-                        const title = document.createElement("h6");
-                        title.className = "text-center text-muted";
-                        title.textContent = monthNames[m];
-                        monthDiv.appendChild(title);
-
-                        const weekHeader = document.createElement("div");
-                        weekHeader.className = "calendar-grid-modal-gest";
-                        weekDays.forEach(day => {
-                            const dayEl = document.createElement("div");
-                            dayEl.className = "calendar-day-name-modal-gest font-weight-bold";
-                            dayEl.textContent = day;
-                            weekHeader.appendChild(dayEl);
-                        });
-                        monthDiv.appendChild(weekHeader);
-
-                        const grid = document.createElement("div");
-                        grid.className = "calendar-grid-modal-gest";
-
-                        const totalCells = 42;
-                        const prevMonth = new Date(year, m, 0);
-                        const prevMonthDays = prevMonth.getDate();
-
-                        for (let i = 0; i < totalCells; i++) {
-                            const dayDiv = document.createElement("div");
-                            let date;
-                            let displayDay;
-                            let classList = "calendar-day-modal-gest";
-
-                            if (i < firstWeekDay) {
-                                displayDay = prevMonthDays - firstWeekDay + i + 1;
-                                classList = "faded-day-modal-gest";
-                                date = new Date(year, m - 1, displayDay);
-                            } else if (i >= firstWeekDay + totalDaysInMonth) {
-                                displayDay = i - (firstWeekDay + totalDaysInMonth) + 1;
-                                classList = "faded-day-modal-gest";
-                                date = new Date(year, m + 1, displayDay);
-                            } else {
-                                displayDay = i - firstWeekDay + 1;
-                                date = new Date(year, m, displayDay);
-                                const id = `${displayDay.toString().padStart(2, '0')}-${(m + 1).toString().padStart(2, '0')}-${year}`;
-                                classList += ` ${id}`;
-                                if (holidaysTaken.includes(id)) {
-                                    classList += " inactive-modal-gest";
-                                }
+                        if (i < firstWeekDay) {
+                            displayDay = prevMonthDays - firstWeekDay + i + 1;
+                            classList = "faded-day-modal-gest";
+                            date = new Date(year, m - 1, displayDay);
+                        } else if (i >= firstWeekDay + totalDaysInMonth) {
+                            displayDay = i - (firstWeekDay + totalDaysInMonth) + 1;
+                            classList = "faded-day-modal-gest";
+                            date = new Date(year, m + 1, displayDay);
+                        } else {
+                            displayDay = i - firstWeekDay + 1;
+                            date = new Date(year, m, displayDay);
+                            const id = `${displayDay.toString().padStart(2, '0')}-${(m + 1).toString().padStart(2, '0')}-${year}`;
+                            classList += ` ${id}`;
+                            if (holidaysTaken.includes(id)) {
+                                classList += " inactive-modal-gest";
                             }
+                        }
 
-                            dayDiv.className = classList;
-                            dayDiv.textContent = displayDay;
+                        dayDiv.className = classList;
+                        dayDiv.textContent = displayDay;
 
-                            const id = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
+                        const id = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
 
-                            if (!dayDiv.classList.contains("faded-day-modal-gest") && !dayDiv.classList.contains("inactive-modal-gest")) {
-                                dayDiv.addEventListener("click", () => {
-                                    if (dayDiv.classList.contains("selected-modal-gest")) {
-                                        dayDiv.classList.remove("selected-modal-gest");
-                                        selectedDays.delete(id);
-                                        remainingDays++;
+                        if (!dayDiv.classList.contains("faded-day-modal-gest") && !dayDiv.classList.contains("inactive-modal-gest")) {
+                            dayDiv.addEventListener("click", () => {
+                                if (dayDiv.classList.contains("selected-modal-gest")) {
+                                    dayDiv.classList.remove("selected-modal-gest");
+                                    selectedDays.delete(id);
+                                    remainingDays++;
+                                    updateRemainingDays();
+                                } else {
+                                    if (remainingDays > 0) {
+                                        dayDiv.classList.add("selected-modal-gest");
+                                        selectedDays.add(id);
+                                        remainingDays--;
                                         updateRemainingDays();
-                                    } else {
-                                        if (remainingDays > 0) {
-                                            dayDiv.classList.add("selected-modal-gest");
-                                            selectedDays.add(id);
-                                            remainingDays--;
-                                            updateRemainingDays();
-                                        }
                                     }
-                                });
-                            }
-
-                            grid.appendChild(dayDiv);
-                        }
-
-                        monthDiv.appendChild(grid);
-                        calendarContainer.appendChild(monthDiv);
-                    }
-                }
-
-                document.getElementById("prevYearBtn").addEventListener("click", () => {
-                    currentYear--;
-                    generateCalendar(currentYear);
-                });
-
-                document.getElementById("nextYearBtn").addEventListener("click", () => {
-                    currentYear++;
-                    generateCalendar(currentYear);
-                });
-
-                document.getElementById("sendSelectedDays").addEventListener("click", async function (e) {
-                    e.preventDefault();
-                    const diasTotales = agruparFechasConsecutivas(selectedDays);
-                    if (diasTotales.length >= 1) {
-
-                        try {
-                            //console.log(JSON.stringify(diasTotales));
-                            const response = await fetch("/gestion/pedirVacaciones", {
-                                method: "POST",
-                                headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify(diasTotales),
+                                }
                             });
-
-                            if (response.ok) {
-                                console.log("Vacaciones enviadas correctamente.");
-                                location.reload();
-
-                                // Puedes cerrar el modal o resetear el formulario aquí
-                            } else {
-                                console.log("Error al enviar las vacaciones.");
-                            }
-                        } catch (err) {
-                            console.error(err);
-                            alert("Error de red.");
                         }
+
+                        grid.appendChild(dayDiv);
                     }
 
-                });
-
-                generateCalendar(currentYear);
-                updateRemainingDays();
-
-                //añadimos inactive a sabados y domingos.
-                //inactive-modal-gest
-
-                let year = parseInt(yearDisplay.innerHTML);
-                const startDate = new Date(year, 0, 1); // enero = 0
-                const endDate = new Date(year, 11, 31); // diciembre = 11
-
-                const currentDate = new Date();
-                while (startDate <= endDate) {
-                    //console.log("Estoy en el while");
-                    const dayOfWeek = startDate.getDay();
-                    const day = startDate.getDate().toString();
-                    const mes = (startDate.getMonth()).toString();
-                    const year = startDate.getFullYear()
-                    const fechaStr = createSimpleDate(day, mes, year);
-
-                    const cell = document.getElementsByClassName(fechaStr)[0];
-
-                    // Si es sábado (6) o domingo (0)
-                    if (dayOfWeek === 6 || dayOfWeek === 0) {
-                        // Seleccionamos el elemento con esa fecha
-                        if (cell) {
-                            cell.classList.add("inactive-modal-gest"); // clase personalizada
-                        }
-                    } else if (startDate <= currentDate) {
-                        cell.classList.add("inactive-modal-gest");
-                    }
-                    startDate.setDate(startDate.getDate() + 1);
+                    monthDiv.appendChild(grid);
+                    calendarContainer.appendChild(monthDiv);
                 }
-            })
-    }
-
-    /***********************************Gestion vacaciones modificar****************************************/
-    if (window.location.pathname === "/gestion") {
-        fetch('/gestion/ausencias')
-            .then(response => response.json())
-            .then(data => {
-                ausencias = data;
-                const tbodyElement = document.querySelector('.historial-vacaciones-modificar-tabla');
-                const currentDate = new Date();
-                ausencias.forEach(ausencia => {
-
-                    if (ausencia.tipoAusenciaId === 1) {
-                        const fechaIni = ausencia.fechaInicio;
-                        const fechaFin = ausencia.fechaFin;
-
-                        const iniDate = new Date(fechaIni);
-                        const trElement = document.createElement("tr");
-
-                        let fechaName;
-                        if (fechaIni === fechaFin) {
-                            fechaName = fechaIni;
-                        } else {
-                            fechaName = fechaIni + " al " + fechaFin;
-                        }
-
-                        const tdElementName = document.createElement("td");
-                        tdElementName.innerHTML = fechaName;
-                        const tdElementAction = document.createElement("td");
-
-                        const fechaLimite = new Date(currentDate);
-                        fechaLimite.setDate(currentDate.getDate() + 14)
-                        if (iniDate >= fechaLimite) {
-
-                            let elementLable = document.createElement("label");
-                            let elementInput = document.createElement("input");
-                            let elementSpan = document.createElement("span");
-
-                            elementLable.classList = "aus-checkbox-btn";
-                            elementInput.type = "checkbox";
-                            elementInput.name = "accion";
-                            elementInput.value = "R";
-                            elementSpan.classList = "btn-letter";
-                            elementSpan.innerHTML = "R";
-                            elementInput.setAttribute("data-fecha", fechaIni);
-
-
-                            elementLable.appendChild(elementInput);
-                            elementLable.appendChild(elementSpan);
-                            tdElementAction.appendChild(elementLable);
-                        } else {
-
-                            tdElementAction.innerHTML = "-";
-                        }
-
-                        trElement.appendChild(tdElementName);
-                        trElement.appendChild(tdElementAction);
-
-                        tbodyElement.appendChild(trElement);
-
-                    }
-
-                })
-            });
-        // Lista global para mantener las fechas seleccionadas
-        const fechasSeleccionadas = [];
-
-        // Delegamos el evento en el contenedor
-        document.addEventListener('change', function (event) {
-            const checkbox = event.target;
-
-            // Nos aseguramos que sea un checkbox con name="accion"
-            if (checkbox.matches('input[type="checkbox"][name="accion"]')) {
-                const fecha = checkbox.getAttribute('data-fecha');
-
-                if (checkbox.checked) {
-                    if (!fechasSeleccionadas.includes(fecha)) {
-                        fechasSeleccionadas.push(fecha);
-                    }
-                } else {
-                    const index = fechasSeleccionadas.indexOf(fecha);
-                    if (index > -1) {
-                        fechasSeleccionadas.splice(index, 1);
-                    }
-                }
-
-                console.log('Fechas seleccionadas:', fechasSeleccionadas);
             }
 
-        });
+            document.getElementById("prevYearBtn").addEventListener("click", () => {
+                currentYear--;
+                generateCalendar(currentYear);
+            });
 
-        document.querySelector(".aus-btn-enviar-cancelar").addEventListener("click", async function (e) {
-            e.preventDefault();
-            if (fechasSeleccionadas.length > 0) {
-                //console.log(fechasSeleccionadas);
-                const diasTotales = agruparFechasConsecutivas(fechasSeleccionadas);
-                //console.log(diasTotales);
+            document.getElementById("nextYearBtn").addEventListener("click", () => {
+                currentYear++;
+                generateCalendar(currentYear);
+            });
+
+            document.getElementById("sendSelectedDays").addEventListener("click", async function (e) {
+                e.preventDefault();
+                const diasTotales = agruparFechasConsecutivas(selectedDays);
                 if (diasTotales.length >= 1) {
+
                     try {
                         //console.log(JSON.stringify(diasTotales));
-                        const response = await fetch("/gestion/anularVacaciones", {
+                        const response = await fetch("/gestion/pedirVacaciones", {
                             method: "POST",
-                            headers: {"Content-Type": "application/json"},
+                            headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(diasTotales),
                         });
+
                         if (response.ok) {
-                            console.log("Vacaciones para anular enviadas correctamente.");
+                            console.log("Vacaciones enviadas correctamente.");
                             location.reload();
 
                             // Puedes cerrar el modal o resetear el formulario aquí
                         } else {
-                            console.log("Error al enviar las vacaciones para anular.");
+                            console.log("Error al enviar las vacaciones.");
                         }
                     } catch (err) {
                         console.error(err);
                         alert("Error de red.");
                     }
                 }
-            }
-        });
 
-    }
-
-    /*******************************Gestion companeros justificacion******************************/
-    if (window.location.pathname === "/gestionVRes") {
-        // Crear tooltip global una vez
-        const tooltip = document.createElement("div");
-        tooltip.id = "aus-tooltip";
-        tooltip.classList = "aus-tooltip";
-        tooltip.style.display = "none";
-        document.body.appendChild(tooltip);
-        console.log("Estas en gestionVres!!")
-        fetch('/companeros-con-ausencias').then(response => response.json())
-            .then(data => {
-                let ausencias = data;
-                let divGeneral = document.querySelector(".aus-content-usuarios");
-                //console.log(ausencias);
-                Object.keys(ausencias).forEach(index => {
-                    // Crear estructura de usuario
-                    let divName1 = document.createElement("div");
-                    divName1.classList = "aus-usuario-info";
-
-                    let divName2 = document.createElement("div");
-                    divName2.classList = "aus-imagen-container";
-
-                    let divName3 = document.createElement("div");
-                    divName3.classList = "aus-circle-decorative1";
-
-                    let divName4 = document.createElement("div");
-                    divName4.classList = "aus-circle-decorative2";
-
-                    let divName5 = document.createElement("div");
-                    divName5.classList = "aus-circle-decorativePNG";
-
-                    let divImg = document.createElement("img");
-                    divImg.src = "/images/perfil.png";
-                    divImg.alt = "perfil";
-
-                    divName5.appendChild(divImg);
-                    divName4.appendChild(divName5);
-                    divName3.appendChild(divName4);
-                    divName2.appendChild(divName3);
-                    divName1.appendChild(divName2);
-
-                    let divInfo = document.createElement("div");
-                    divInfo.classList = "aus-personal-info";
-
-                    let spanNombre = document.createElement("span");
-                    const nombreInc = `${ausencias[index].nombre} ${ausencias[index].apellidos}`;
-                    spanNombre.classList = "aus-nombre " + nombreInc.replaceAll(" ",".");
-
-                    spanNombre.textContent = nombreInc;
-
-                    divInfo.appendChild(spanNombre);
-                    divName1.appendChild(divInfo);
-                    divGeneral.appendChild(divName1);
-
-                    // Modal y tabla
-                    const modalContainer = document.getElementById("aus-modal-container");
-                    const modalOverlay = modalContainer.querySelector(".aus-modal-overlay");
-                    const tbody = document.querySelector(".aus-table-modal-body");
-
-                    divName1.addEventListener("click", function () {
-                        tbody.innerHTML = "";
-                        ausencias[index].ausencias.forEach(ausencia => {
-                            if (ausencia.aprobado === false) {
-                                // Crear fila y celdas
-                                let trElement = document.createElement("tr");
-                                let tdTitulo = document.createElement("td");
-                                let tdFechas = document.createElement("td");
-                                let tdAcciones = document.createElement("td");
-
-                                let boolVar = ausencia.tipoAusencias.id === 1;
-                                tdTitulo.innerHTML = boolVar ? "Vacaciones" : "No asiste";
-
-                                let fechaIni = ausencia.fechaInicio;
-                                let fechaFin = ausencia.fechaFin;
-                                tdFechas.innerHTML = (fechaIni === fechaFin) ? fechaIni : `${fechaIni} al ${fechaFin}`;
-
-                                // Crear acciones
-                                let tdLabel1 = document.createElement("label");
-                                tdLabel1.classList = "aus-checkbox-btn";
-                                let input1 = document.createElement("input");
-                                input1.type = "checkbox";
-                                input1.name = "accion";
-                                input1.value = "A";
-                                let span1 = document.createElement("span");
-                                span1.classList = "btn-letter";
-                                span1.innerHTML = "A";
-
-                                let tdLabel2 = document.createElement("label");
-                                tdLabel2.classList = "aus-checkbox-btn";
-                                let input2 = document.createElement("input");
-                                input2.type = "checkbox";
-                                input2.name = "accion";
-                                input2.value = "R";
-                                let span2 = document.createElement("span");
-                                span2.classList = "btn-letter";
-                                span2.innerHTML = "R";
-
-                                tdLabel1.appendChild(input1);
-                                tdLabel1.appendChild(span1);
-                                tdLabel2.appendChild(input2);
-                                tdLabel2.appendChild(span2);
-                                tdAcciones.appendChild(tdLabel1);
-                                tdAcciones.appendChild(tdLabel2);
-
-                                const justificacion = ausencia.justificacion;
-
-                                if (!boolVar) {
-                                    let tdButton = document.createElement("button");
-                                    tdButton.classList = `btn btn-warning aus-btn ${fechaIni}-${fechaFin}`;
-                                    tdButton.innerHTML = "D";
-
-                                    // Crear tooltip
-                                    let tooltip = document.createElement("div");
-                                    tooltip.classList = "aus-tooltip";
-                                    tooltip.style.left = "0px";
-                                    tooltip.style.top = "0px";
-                                    document.body.appendChild(tooltip);
-
-                                    if (justificacion === null) {
-                                        // Simular estado deshabilitado sin usar 'disabled'
-                                        input1.disabled = true;
-                                        input2.disabled = true;
-                                        tdLabel1.style.opacity = "0.5";
-                                        tdLabel2.style.opacity = "0.5";
-                                        tdLabel1.style.pointerEvents = "none";
-                                        tdLabel2.style.pointerEvents = "none";
-
-                                        // Botón D apariencia deshabilitada pero sin disabled
-                                        tdButton.style.opacity = "0.5";
-                                        tdButton.style.cursor = "not-allowed";
-                                        tdButton.setAttribute("data-disabled", "true"); // atributo personalizado para controlar
-
-                                        // Prevenir clic si "deshabilitado"
-                                        tdButton.addEventListener("click", (e) => {
-                                            if (tdButton.getAttribute("data-disabled") === "true") {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                            }
-                                        });
-
-                                        tdButton.addEventListener("mouseenter", (e) => {
-                                            tooltip.innerHTML = "Justificación no disponible";
-                                            tooltip.classList.add("visible");
-                                            tooltip.style.left = (e.pageX + 10) + "px";
-                                            tooltip.style.top = (e.pageY + 10) + "px";
-                                        });
-
-                                        tdButton.addEventListener("mousemove", (e) => {
-                                            tooltip.style.left = (e.pageX + 10) + "px";
-                                            tooltip.style.top = (e.pageY + 10) + "px";
-                                        });
-
-                                        tdButton.addEventListener("mouseleave", () => {
-                                            tooltip.classList.remove("visible");
-                                        });
-                                    } else {
-                                        // Si justificación existe, comportamiento normal
-                                        const justList = ["Enfermedad o Incapacidad temporal", "Cita Médica", "Permiso Personal", "Permiso retribuido", "Huelga", "Baja maternidad", "Reducción de jornada"]
-                                        tdButton.addEventListener("mouseenter", (e) => {
-                                            const motivo = justList[parseInt(justificacion.split("//")[0].trim()) - 1];
-                                            const cuerpoJust = justificacion.split("//")[1].trim();
-                                            tooltip.innerHTML = motivo + " - " + cuerpoJust;
-                                            tooltip.classList.add("visible");
-                                            tooltip.style.left = (e.pageX + 10) + "px";
-                                            tooltip.style.top = (e.pageY + 10) + "px";
-                                        });
-
-                                        tdButton.addEventListener("mousemove", (e) => {
-                                            tooltip.style.left = (e.pageX + 10) + "px";
-                                            tooltip.style.top = (e.pageY + 10) + "px";
-                                        });
-
-                                        tdButton.addEventListener("mouseleave", () => {
-                                            tooltip.classList.remove("visible");
-                                        });
-                                    }
-
-                                    tdAcciones.appendChild(tdButton);
-                                }
-
-                                trElement.appendChild(tdTitulo);
-                                trElement.appendChild(tdFechas);
-                                trElement.appendChild(tdAcciones);
-                                tbody.appendChild(trElement);
-                                tbody.classList = nombreInc.replaceAll(" ",".");
-                            }
-                        });
-
-                        // Comportamiento de checkboxes (solo uno activo)
-                        tbody.querySelectorAll('tr').forEach(fila => {
-                            const checks = fila.querySelectorAll('input[name="accion"]');
-                            checks.forEach(check => {
-                                check.addEventListener("change", function () {
-                                    if (this.checked) {
-                                        checks.forEach(c => {
-                                            if (c !== this) c.checked = false;
-                                        });
-                                    }
-                                });
-                            });
-                        });
-
-                        modalContainer.style.display = "block";
-                        modalOverlay.style.display = "block";
-                    });
-
-                    // Cerrar modal
-                    document.getElementById("aus-closeModal").addEventListener("click", function () {
-                        modalContainer.style.display = "none";
-                        modalOverlay.style.display = "none";
-                        document.querySelectorAll('.aus-modal-background').forEach(el => el.style.display = 'none');
-                        tooltip.style.display = "none";
-                    });
-                });
             });
-    }
 
-/*Download justificantes*/
-if (window.location.pathname === "/gestionVRes") {
-    document.addEventListener('click', async function (event) {
-        const elemento = event.target;
-        if (elemento.innerHTML === "D") {
-            const trPadre = elemento.closest('tr');
-            const name = elemento.closest('tbody').classList[0];
-            const fechas = trPadre.children[1].innerHTML;
-            const fechaIni = fechas.split(" al ")[0];
-            const fechaFin = fechas.split(" al ")[1];
-            // Para nombre archivo mejor usar guiones en vez de puntos
-            const fechasSeleccionadas = fechaIni + "." + fechaFin;
+            generateCalendar(currentYear);
+            updateRemainingDays();
 
-            try {
-                const response = await fetch('/gestionVRes/aprobar-justificacion', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    },
-                    body: name.replaceAll(".","-") + "." + fechasSeleccionadas
-                });
+            //añadimos inactive a sabados y domingos.
+            //inactive-modal-gest
 
-                if (!response.ok) {
-                    throw new Error('Error al comunicar con el backend');
-                }
+            let year = parseInt(yearDisplay.innerHTML);
+            const startDate = new Date(year, 0, 1); // enero = 0
+            const endDate = new Date(year, 11, 31); // diciembre = 11
 
-                // Asegurarse de que la respuesta es un blob con tipo zip
-                const blob = await response.blob();
+            const currentDate = new Date();
+            while (startDate <= endDate) {
+                //console.log("Estoy en el while");
+                const dayOfWeek = startDate.getDay();
+                const day = startDate.getDate().toString();
+                const mes = (startDate.getMonth()).toString();
+                const year =  startDate.getFullYear()
+                const fechaStr = createSimpleDate(day, mes, year);
 
-                // Crear URL blob y forzar descarga
-                const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/zip' }));
+                const cell = document.getElementsByClassName(fechaStr)[0];
 
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `justificantes_${fechasSeleccionadas}.zip`;
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-
-                window.URL.revokeObjectURL(url);
-
-            } catch (error) {
-                console.error("Error enviando las fechas o descargando:", error);
-            }
-        }
-    });
-}
-
-/*Enviar resolucion justificacion*/
-if (window.location.pathname === "/gestionVRes") {
-    document.querySelector('#aus-enviarInfo').addEventListener('click', async function (event) {
-        const name = document.querySelector('#aus-modalOverlay tbody').classList[0];
-        let dirRespuestas = {};
-        dirRespuestas[name] = {};
-        const trElementos = document.querySelector('#aus-modalOverlay tbody').querySelectorAll('tr');
-        trElementos.forEach(trElemento => {
-            const tdElementos = trElemento.children[2].children;
-            for (const tdElemento of tdElementos) {
-                if (tdElemento.tagName === 'LABEL') {
-                    const checkbox = tdElemento.querySelector('input[type="checkbox"]')
-                    if (checkbox.checked) {
-                        const spanElement = tdElemento.children[1];
-                        const trElementParent = spanElement.closest('tr');
-                        const fecha = trElementParent.children[1].innerHTML.split(" al ");
-                        let fechaFinal = "";
-                        if (fecha.length > 1) {
-                            fechaFinal = fecha[0] + "." + fecha[1];
-                        } else {
-                            fechaFinal = fecha[0] + "." + fecha[0];
-                        }
-                        const nombreResolucion = spanElement.innerHTML;
-                        let resolucion = false;
-                        if (nombreResolucion === "A") {
-                            resolucion = true;
-                        }
-                        dirRespuestas[name][fechaFinal] = resolucion;
+                // Si es sábado (6) o domingo (0)
+                if (dayOfWeek === 6 || dayOfWeek === 0) {
+                    // Seleccionamos el elemento con esa fecha
+                    if (cell) {
+                        cell.classList.add("inactive-modal-gest"); // clase personalizada
                     }
+                } else if(startDate <= currentDate) {
+                    cell.classList.add("inactive-modal-gest");
                 }
+                startDate.setDate(startDate.getDate() + 1);
             }
         })
-        try {
-            const response = await fetch('/gestionVRes/resolucion', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dirRespuestas)
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al comunicar con el backend');
-            }else {
-                console.log("Justificacion enviada correctamente")
-                location.reload();
-            }
-
-        } catch (error) {
-            console.error("Error enviando las fechas o descargando:", error);
-        }
-    })
 }
 
-/********************************GESTION CALENDARIO***********************************/
-function marcarDiaConPunto(fechaLista, yearSelected, monthSelected) {
-    const date = new Date(fechaLista);
-    const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+/***********************************Gestion vacaciones modificar****************************************/
+if (window.location.pathname === "/gestion") {
+    fetch('/gestion/ausencias')
+        .then(response => response.json())
+        .then(data => {
+            ausencias = data;
+            const tbodyElement = document.querySelector('.historial-vacaciones-modificar-tabla');
+            const currentDate = new Date();
+            ausencias.forEach(ausencia => {
 
-    if (yearSelected === year && monthSelected === month) {
-        if (![0, 6].includes(date.getDay())) {
-            const dayElement = document.querySelector(`.day[data-date="${day}"]`);
-            if (dayElement) {
-                // No añadir otro punto si ya existe
-                if (!dayElement.querySelector('span.dot')) {
-                    const puntoSpan = document.createElement("span");
-                    puntoSpan.className = "dot";
-                    dayElement.appendChild(puntoSpan);
+                if (ausencia.tipoAusenciaId === 1) {
+                    const fechaIni = ausencia.fechaInicio;
+                    const fechaFin = ausencia.fechaFin;
+
+                    const iniDate = new Date(fechaIni);
+                    const trElement = document.createElement("tr");
+
+                    let fechaName;
+                    if (fechaIni === fechaFin) {
+                        fechaName = fechaIni;
+                    }else {
+                        fechaName = fechaIni + " al " + fechaFin;
+                    }
+
+                    const tdElementName = document.createElement("td");
+                    tdElementName.innerHTML = fechaName;
+                    const tdElementAction = document.createElement("td");
+
+                    const fechaLimite = new Date(currentDate);
+                    fechaLimite.setDate(currentDate.getDate() + 14)
+                    if (iniDate >= fechaLimite) {
+                        console.log("creando...")
+                        let elementLable = document.createElement("label");
+                        let elementInput = document.createElement("input");
+                        let elementSpan = document.createElement("span");
+
+                        elementLable.classList = "aus-checkbox-btn";
+                        elementInput.type = "checkbox";
+                        elementInput.name = "accion";
+                        elementInput.value = "R";
+                        elementSpan.classList = "btn-letter";
+                        elementSpan.innerHTML = "R";
+                        elementInput.setAttribute("data-fecha", fechaIni);
+
+
+                        elementLable.appendChild(elementInput);
+                        elementLable.appendChild(elementSpan);
+                        tdElementAction.appendChild(elementLable);
+                    }else {
+
+                        tdElementAction.innerHTML = "-";
+                    }
+
+                    trElement.appendChild(tdElementName);
+                    trElement.appendChild(tdElementAction);
+
+                    tbodyElement.appendChild(trElement);
+
+                }
+
+            })
+        });
+    // Lista global para mantener las fechas seleccionadas
+    const fechasSeleccionadas = [];
+
+    // Delegamos el evento en el contenedor
+    document.addEventListener('change', function (event) {
+        const checkbox = event.target;
+
+        // Nos aseguramos que sea un checkbox con name="accion"
+        if (checkbox.matches('input[type="checkbox"][name="accion"]')) {
+            const fecha = checkbox.getAttribute('data-fecha');
+
+            if (checkbox.checked) {
+                if (!fechasSeleccionadas.includes(fecha)) {
+                    fechasSeleccionadas.push(fecha);
+                }
+            } else {
+                const index = fechasSeleccionadas.indexOf(fecha);
+                if (index > -1) {
+                    fechasSeleccionadas.splice(index, 1);
+                }
+            }
+
+            console.log('Fechas seleccionadas:', fechasSeleccionadas);
+        }
+
+    });
+
+    document.querySelector(".aus-btn-enviar-cancelar").addEventListener("click", async function (e) {
+        e.preventDefault();
+        if (fechasSeleccionadas.length > 0) {
+            console.log(fechasSeleccionadas);
+            const diasTotales = agruparFechasConsecutivas(fechasSeleccionadas);
+            console.log(diasTotales);
+            if (diasTotales.length >= 1) {
+                try {
+                    console.log(JSON.stringify(diasTotales));
+                    const response = await fetch("/gestion/anularVacaciones", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(diasTotales),
+                    });
+                    if (response.ok) {
+                        console.log("Vacaciones para anular enviadas correctamente.");
+                        location.reload();
+
+                        // Puedes cerrar el modal o resetear el formulario aquí
+                    } else {
+                        console.log("Error al enviar las vacaciones para anular.");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("Error de red.");
                 }
             }
         }
-    }
+    });
+
 }
 
-
-if (window.location.pathname === "/calendario") {
-    let booleanVar = true; // variable global para el estado actual
-
-    function limpiarMarcas() {
-        // Seleccionamos todos los spans con clase dot dentro de cualquier elemento con clase day
-        const puntos = document.querySelectorAll('.day span.dot');
-        puntos.forEach(punto => {
-            punto.remove();  // elimina físicamente el span del DOM
-        });
-    }
-
-    function locateTareas(boolean) {
-        limpiarMarcas();
-        // Aquí tu código actual, con fetch dinámico según boolean
-        const endpoint = boolean ? "/calendario/tareas" : "/calendario/tareas-general";
-
-        fetch(endpoint)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Error al obtener los tareas");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    tareas = data;
-                    let fechas = [];
-                    contenidos = {};
-                    tareas.forEach( (tarea, index) => {
-                        const fechaIni = tarea.fechaInicio;
-                        const fechaFin = tarea.fechaFin;
-                        const fechaEli = tarea.fechaEliminada;
-                        const fechaLim = tarea.fechaLimite;
-                        const titulo = tarea.titulo;
-                        const descripcion = tarea.descripcion;
-                        const tipoTarea = tarea.tipoTarea;
-
-                        if (fechaEli === null && fechaFin === null) {
-                            if (fechaIni === fechaLim) {
-                                fechas.push([fechaIni])
-                                contenidos[fechaIni + "." + index] = [titulo,descripcion,tipoTarea]
-                            }else {
-                                const yearIni = fechaIni.split("-")[0];
-                                const monthIni = fechaIni.split("-")[1];
-                                const dayIni = fechaIni.split("-")[2];
-                                const yearLim = fechaLim.split("-")[0];
-                                const monthLim = fechaLim.split("-")[1];
-                                const dayLim = fechaLim.split("-")[2];
-                                let temp = [];
-                                if (yearIni === yearLim) {
-                                    if (monthIni === monthLim) {
-                                        const start = parseInt(dayIni), end = parseInt(dayLim);
-                                        const intervalo = Array.from({length: end - start + 1}, (_, i) => `${yearIni}-${monthIni}-${start + i}`);
-                                        temp.push(intervalo);
-                                        for (const int of intervalo) {
-                                            contenidos[int + "." + index] = [titulo,descripcion,tipoTarea]
-                                        }
-
-                                    }
-                                }
-                                fechas.push([temp])
-                            }
-                        }
-
-                    })
-                    //console.log(fechas, contenidos);
-
-                    const yearselect = document.querySelector('#yearSelect');
-                    const yearSelected = String(yearselect.value);
-                    const monthselect = document.querySelector('#monthSelect');
-                    const mesCeroIndex = parseInt(monthselect.value); // valor del select, 0-based
-                    const monthSelected = String(mesCeroIndex + 1).padStart(2, '0'); // formatea a "01", "02", ...
+// ticketing js
 
 
-                    for (let i = 0; i < fechas.length; i++) {
-                        let fechaLista = fechas[i];
-                        for (const element of fechaLista) {
-                            if (Array.isArray(element)) {
-                                for (const elm of element) {
-                                    for (const a of elm) {
-                                        marcarDiaConPunto(a,yearSelected,monthSelected);
-                                        //console.log(i,a,yearSelected,monthSelected);
-                                    }
-                                }
-                            }else {
-                                marcarDiaConPunto(element,yearSelected,monthSelected);
-                                //console.log(i,element,yearSelected,monthSelected);
-                            }
-                        }
-                    }
+// Enhanced form interactions
+document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scroll for better UX
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('input, select, textarea');
 
-                    const days = document.querySelectorAll('.day');
-                    let modalContent = document.querySelector('.modal-content-text');
+    // Add subtle animations to form elements
+    inputs.forEach((input, index) => {
+        input.style.animationDelay = `${index * 0.1}s`;
 
-                    // Eliminar event listeners previos para evitar duplicados
-                    days.forEach(day => {
-                        day.replaceWith(day.cloneNode(true));
-                    });
-
-                    // Volver a seleccionar para añadir listeners
-                    const newDays = document.querySelectorAll('.day');
-                    const listaTareas = ['Desarrollo', 'Corrección de errores', 'Documentación', 'Testing', 'Revisión de código', 'Reunión', 'Evento'];
-
-                    newDays.forEach(day => {
-                        day.style.cursor = 'pointer';
-                        day.addEventListener('click', (e) => {
-                            const daySelected = day.getAttribute('data-date');
-                            modalContent.innerHTML = "";
-                            if (daySelected) {
-                                const formattedDay = daySelected.trim().padStart(2, '0');
-                                const yearselect = document.querySelector('#yearSelect');
-                                const yearSelected = String(yearselect.value);
-                                const monthselect = document.querySelector('#monthSelect');
-                                const mesCeroIndex = parseInt(monthselect.value); // valor del select, 0-based
-                                const monthSelected = String(mesCeroIndex + 1).padStart(2, '0'); // formatea a "01", "02", ...
-
-                                const reconstructedDate = yearSelected + "-" + monthSelected + "-" + formattedDay
-                                console.log(reconstructedDate);
-                                const tareasParaFecha = Object.keys(contenidos).filter(date => date.split(".")[0] === reconstructedDate);
-
-                                modalContent.innerHTML = ""; // limpio antes
-
-                                if (tareasParaFecha.length === 0) {
-                                    const spanElement = document.createElement("span");
-                                    spanElement.textContent = "No hay tareas para el día seleccionado.";
-                                    modalContent.appendChild(spanElement);
-                                } else {
-                                    tareasParaFecha.forEach(date => {
-                                        const [titulo, descripcion, tipoTarea] = contenidos[date];
-
-                                        const tareaDiv = document.createElement("div");
-                                        tareaDiv.classList.add("tarea");
-
-                                        const h4Element = document.createElement("h4");
-                                        h4Element.innerText = titulo;
-
-                                        const descripcionSpan = document.createElement("span");
-                                        descripcionSpan.innerText = descripcion;
-
-                                        const tipoSpan = document.createElement("span");
-                                        tipoSpan.innerText = "Tipo de tarea: " + listaTareas[parseInt(tipoTarea)-1];
-
-                                        tareaDiv.appendChild(h4Element);
-                                        tareaDiv.appendChild(descripcionSpan);
-                                        tareaDiv.appendChild(tipoSpan);
-
-                                        modalContent.appendChild(tareaDiv);
-                                    });
-                                }
-                            }
-                        })
-                    })
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    limpiarMarcas();
-                });
-        }
-
-    // Ejecutar la función al cargar la página
-    document.addEventListener("DOMContentLoaded", () => {
-        locateTareas(booleanVar);
-
-        // Añadir listeners para recargar datos al cambiar año o mes
-        const yearSelect = document.getElementById('yearSelect');
-        const monthSelect = document.getElementById('monthSelect');
-
-        yearSelect.addEventListener('change', () => {
-            locateTareas(booleanVar);
+        // Enhanced focus effects
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
         });
 
-        monthSelect.addEventListener('change', () => {
-            locateTareas(booleanVar);
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+
+    // Form validation feedback
+    form.addEventListener('submit', function(e) {
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.style.borderColor = '#ff4757';
+                field.style.boxShadow = '0 0 0 3px rgba(255, 71, 87, 0.1)';
+                isValid = false;
+            } else {
+                field.style.borderColor = '#2ed573';
+                field.style.boxShadow = '0 0 0 3px rgba(46, 213, 115, 0.1)';
+            }
         });
 
-        // Añadir listeners para flechas de mes (cambia los selectores si es necesario)
-        const btnPrev = document.getElementById('prevMonth');
-        const btnNext = document.getElementById('nextMonth');
-
-        if (btnPrev) {
-            btnPrev.addEventListener('click', () => {
-                locateTareas(booleanVar);
-            });
-        }
-        if (btnNext) {
-            btnNext.addEventListener('click', () => {
-                locateTareas(booleanVar);
-            });
-        }
-
-        const btnIndividual = document.getElementById('btnIndividual');
-        const btnGeneral = document.getElementById('btnGeneral');
-
-        if (btnIndividual) {
-            btnIndividual.addEventListener('click', () => {
-                booleanVar = true;
-                locateTareas(booleanVar);
-            });
-        }
-
-        if (btnGeneral) {
-            btnGeneral.addEventListener('click', () => {
-                booleanVar = false;
-                locateTareas(booleanVar);
-            });
+        if (!isValid) {
+            e.preventDefault();
+            // Scroll to first invalid field
+            const firstInvalid = form.querySelector('[required]:invalid, [required][value=""]');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstInvalid.focus();
+            }
         }
     });
-}
+
+    // Reset form styling on reset
+    form.addEventListener('reset', function() {
+        setTimeout(() => {
+            inputs.forEach(input => {
+                input.style.borderColor = '#e0e0e0';
+                input.style.boxShadow = 'none';
+            });
+        }, 100);
+    });
+
+    // File input enhancement
+    const fileInput = document.getElementById('file');
+    fileInput.addEventListener('change', function() {
+        const fileName = this.files[0]?.name;
+        if (fileName) {
+            const label = this.previousElementSibling;
+            label.textContent = `Archivo seleccionado: ${fileName}`;
+            label.style.color = '#2ed573';
+        }
+    });
+});

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Tickets</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Add your custom CSS if needed -->
+    <link rel="stylesheet" th:href="@{/css/list.css}">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Mis Tickets</h2>
+
+    <!-- Success message (from redirect) -->
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+    <!-- Error message -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <!-- Tickets Table -->
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Asunto</th>
+            <th>Descripción</th>
+            <th>Tipo</th>
+            <th>Fecha Inicio</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ticket : ${tickets}">
+            <td th:text="${ticket.id}">1</td>  <!-- Fixed from tickets.id -->
+            <td th:text="${ticket.asunto}">Asunto</td>
+            <td th:text="${ticket.descripcion}">Descripción</td>
+            <td th:text="${ticket.tipoTicket}">Tipo</td>
+            <td th:text="${ticket.fechaInicio}">Fecha</td>
+            <td th:text="${ticket.aprobado} ? 'Aprobado' : 'Pendiente'">Estado</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Optional actions -->
+    <div class="mt-3">
+        <a th:href="@{/ticket}" class="btn btn-primary">Crear Nuevo Ticket</a>
+    </div>
+
+    <!-- User info -->
+    <p class="text-muted mt-3">Usuario: <span th:text="${userEmail}"></span></p>
+</div>
+
+<!-- Add your JS at the end -->
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
