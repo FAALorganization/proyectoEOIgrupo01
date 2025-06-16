@@ -26,6 +26,7 @@ public class LocalDataLoader {
     private final ChatAbiertoRepository chatAbiertoRepository;
     private final MensajeRepository mensajeRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PrioridadesRepository prioridadesRepository;
 
     /**
      * Constructor de la clase {@code LocalDataLoader}.
@@ -40,9 +41,7 @@ public class LocalDataLoader {
      *                                Es utilizado para gestionar datos de la entidad hija y su relación con
      *                                la entidad padre.
      */
-    public LocalDataLoader(EntidadPadreRepository repository, EntidadHijaRepository entidadHijaRepository, DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository) {
-        this.repository = repository;
-        this.entidadHijaRepository = entidadHijaRepository;
+    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository, PrioridadesRepository prioridadesRepository) {
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
         this.loginRepository = loginRepository;
         this.rolesRepository = rolesRepository;
@@ -51,6 +50,7 @@ public class LocalDataLoader {
         this.passwordEncoder = passwordEncoder;
         this.chatAbiertoRepository = chatAbiertoRepository;
         this.mensajeRepository = mensajeRepository;
+        this.prioridadesRepository = prioridadesRepository;
     }
 
     @PostConstruct
@@ -259,7 +259,15 @@ public class LocalDataLoader {
         mensajes[4].setEsLeido(true);
 
         mensajeRepository.saveAll(Arrays.asList(mensajes));
+        String[][] prioridades = {{"high", "Alta"}, {"medium", "Media"}, {"low", "Baja"}};
+        for (String[] p : prioridades) {
+            Prioridades pr = new Prioridades();
+            pr.setValue(p[0]);
+            pr.setDisplayName(p[1]);
+            prioridadesRepository.save(pr);
+        }
     }
+
 
 
 

@@ -1,96 +1,126 @@
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\Application.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\config\CustomPrincipalHandshakeHandler.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\config\SecurityConfig.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\config\ThymeleafConfig.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\config\UserDetailsImpl.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\config\UserIdHandshakeInterceptor.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\config\UserInterceptor.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\config\WebConfig.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\config\WebSocketConfig.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\CalendarioController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\ChatController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\ChatWebSocketController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\DefaultController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\DocumentacionController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\GestionController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\JustificacionController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\LoginController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\MensajeController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\ProyectoController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\RegistroController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\TareaController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\TareasJefeController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\UsuarioController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\controllers\VacacionesController.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\AusenciaDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\CompaneroDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\EmpleadoConAusenciasDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\JustificacionDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\Mensaje2DTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\MensajeDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\NombreConAusenciasDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\NombreDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\TareaDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\dtos\UsuarioDTO.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Ausencias.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Chat.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\ChatAbierto.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Checkin.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Detallesdeusuario.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\DiasAusencias.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Documento.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Equipo.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\EquipoRelProyecto.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Estadoforo.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\EstadosTarea.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Evento.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Foro.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\GrupoChat.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\GrupoChatUsuario.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Login.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Mensaje.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\MensajeGrupo.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\MensajeLeido.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Notificacion.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Post.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Prioridades.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Proyecto.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Roles.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Sla.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Tarea.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Ticketing.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\TicketRelUsuario.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\Tipoevento.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\TipoNotificacion.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\TiposAusencias.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\entities\TipoTareas.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\loaders\DesarrolloDataLoader.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\loaders\LocalDataLoader.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\loaders\ProductionlDataLoader.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\AusenciasRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\ChatAbiertoRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\DetallesDeUsuarioRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\DocumentoRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\LoginRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\MensajeRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\ProyectoRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\RolesRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\TareaRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\TiposAusenciasRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\repositories\TiposTareasRepository.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\AbstractBusinessService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\AbstractBusinessServiceSoloEnt.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\AusenciasService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\ChatAbiertoService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\CustomUserDetailsService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\DetallesdeusuarioService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\DocumentoService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\LoginService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\mappers\AbstractServiceMapper.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\mappers\AusenciasMapper.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\mappers\DetallesdeusuarioMapper.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\MensajeService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\RolesService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\TareaService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\TiposAusenciasService.java
-Z:\Actualmente trabajando\Cosas\PASAR_DISCO_DUR\EOI_Java_course\PROYECTO\ProyectoFAAL\src\main\java\com\grupo01\java6\faal\services\TiposTareasService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\Application.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\CustomPrincipalHandshakeHandler.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\ModelMapperConfig.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\SecurityConfig.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\ThymeleafConfig.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\UserDetailsImpl.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\UserIdHandshakeInterceptor.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\UserInterceptor.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\WebConfig.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\config\WebSocketConfig.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\AdminController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\CalendarioController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\ChatController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\ChatWebSocketController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\CheckinController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\DefaultController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\DocumentacionController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\EquipoController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\ErrorController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\GestionController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\JustificacionController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\LoginController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\MensajeController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\PerfilController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\PrimerLoginController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\ProyectoController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\RegistroController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\TareaController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\TareasJefeController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\TicketController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\UsuarioController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\controllers\VacacionesController.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\AusenciaDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\CheckinDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\CompaneroDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\CreateTicketDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\DocumentoDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\EmpleadoConAusenciasDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\JustificacionDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\Mensaje2DTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\MensajeDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\NombreConAusenciasDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\NombreDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\NotBlank.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\ProyectoDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\TareaDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\TicketingDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\dtos\UsuarioDTO.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Ausencias.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Chat.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\ChatAbierto.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Checkin.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Detallesdeusuario.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\DiasAusencias.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Documento.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Equipo.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\EquipoRelProyecto.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Estadoforo.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\EstadosTarea.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Evento.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Foro.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\GrupoChat.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\GrupoChatUsuario.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Login.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Mensaje.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\MensajeGrupo.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\MensajeLeido.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Notificacion.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Post.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Prioridades.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Proyecto.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Roles.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Sla.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Tarea.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Ticketing.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TicketRelUsuario.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TipoCheckin.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\Tipoevento.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TipoNotificacion.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TiposAusencias.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\entities\TipoTareas.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\loaders\DesarrolloDataLoader.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\loaders\LocalDataLoader.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\loaders\ProductionlDataLoader.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\Mapper\TicketMapper.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\AusenciasRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\ChatAbiertoRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\CheckinRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\DetallesDeUsuarioRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\DocumentoRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\EquipoRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\LoginRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\MensajeRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\PrioridadesRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\ProyectoRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\RolesRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\SLATrackingRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\TareaRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\TicketingRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\TicketRelUsuarioRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\TiposAusenciasRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\repositories\TiposTareasRepository.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\AbstractBusinessService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\AbstractBusinessServiceSoloEnt.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\AusenciasService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\ChatAbiertoService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\CheckinService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\CustomUserDetailsService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\DetallesdeusuarioService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\DocumentoService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\EquipoService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\impl\TicketService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\impl\UseService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\LoginService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\mappers\AbstractServiceMapper.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\mappers\AusenciasMapper.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\mappers\DetallesdeusuarioMapper.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\MensajeService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\PriorityService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\ProyectoService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\RolesService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\TareaService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\TicketingService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\TiposAusenciasService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\TiposTareasService.java
+C:\Users\FX506\Desktop\proyectoEOIgrupo01\src\main\java\com\grupo01\java6\faal\services\UserServiceImpl.java
