@@ -128,6 +128,7 @@ public class LoginService {
             }
         }
 
-        return login;
+        return login;  // Devolver el Login con sus subordinados inicializados
+
     }
 }
