@@ -41,17 +41,35 @@
         </tbody>
     </table>
 
-    <!-- Optional actions -->
-    <div class="mt-3">
-        <a th:href="@{/ticket}" class="btn btn-primary">Crear Nuevo Ticket</a>
-    </div>
-    <div class="mt-3">
-        <a th:href="@{/home}" class="btn btn-primary">Volver al Dashboard</a>
+    <!-- Action buttons section -->
+    <div class="d-flex flex-wrap gap-3 mt-4 justify-content-center">
+        <a th:href="@{/ticket}" class="btn btn-primary px-4 py-2">
+            <i class="fas fa-plus me-2"></i>Crear Nuevo Ticket
+        </a>
+
+        <a th:href="@{/home}" class="btn btn-secondary px-4 py-2">
+            <i class="fas fa-home me-2"></i>Volver al Dashboard
+        </a>
+
+        <button type="button" class="btn btn-secondary px-4 py-2" onclick="window.print()">
+            <i class="fas fa-print me-2"></i>Imprimir Lista
+        </button>
+
+        <button type="button" class="btn btn-secondary px-4 py-2" onclick="location.reload()">
+            <i class="fas fa-sync-alt me-2"></i>Actualizar
+        </button>
     </div>
 
     <!-- User info -->
-    <p class="text-muted mt-3">Usuario: <span th:text="${userEmail}"></span></p>
+    <div class="text-center mt-4">
+        <p class="text-muted">
+            <i class="fas fa-user me-2"></i>Usuario: <span th:text="${userEmail}" class="fw-bold">usuario@ejemplo.com</span>
+        </p>
+    </div>
 </div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <!-- Add your JS at the end -->
 <script th:src="@{/js/app.js}"></script>

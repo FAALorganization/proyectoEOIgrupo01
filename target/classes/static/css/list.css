@@ -23,9 +23,20 @@ body {
 .btn-danger:hover {
     background-color:#01040f !important;
 }
+.btn-secondary {
+    background-color: #252323 !important;
+    color: #F5F1ED;
+    border: none !important;
+}
+
+.btn-secondary:hover {
+    background-color: #01040f !important;
+}
 
 h2 {
     color: #252323;
     font-size: 48px;
     margin-bottom: 30px;
+
+
 }
