@@ -109,16 +109,6 @@ public class DefaultController {
     }
 
 
-    @GetMapping("/checkin")
-    public String showCheckin()
-    {
-         return "checkin"; // View name
-    }
-    @GetMapping("/checkinjefe")
-    public String showCheckinjefe()
-    {
-        return "checkinjefe";}
-
 
 //    @GetMapping("/chat")
 //    public String showChat()
