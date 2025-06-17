@@ -6,7 +6,6 @@ body {
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
-    margin-top: 15px;
     background-color: #1B17FF !important;
 }
 
@@ -23,9 +22,20 @@ body {
 .btn-danger:hover {
     background-color:#01040f !important;
 }
+.btn-secondary {
+    background-color: #252323 !important;
+    color: #F5F1ED;
+    border: none !important;
+}
+
+.btn-secondary:hover {
+    background-color: #01040f !important;
+}
 
 h2 {
     color: #252323;
     font-size: 48px;
     margin-bottom: 30px;
+
+
 }
