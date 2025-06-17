@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 import java.util.List;
 
-@Slf4j
 @Controller
+@Slf4j
 public class CheckinController {
 
     @Autowired
@@ -26,48 +26,20 @@ public class CheckinController {
     @Autowired
     private LoginService loginService;
 
-    private Login getUsuarioAutenticado() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (username == null || username.equals("anonymousUser")) {
-            return null;
-        }
-        return loginService.obtainUser(username);
-    }
-
     @GetMapping("/checkin")
     public String listarCheckins(Model model) {
-        Login login = getUsuarioAutenticado();
-        if (login == null) {
-            return "redirect:/login";
-        }
+        Login login = checkinService.getUsuarioAutenticado();
+        if (login == null) return "redirect:/login";
 
-        List<CheckinDTO> checkinsDTO = checkinService.obtenerCheckinsPorUsuario(login);
-        model.addAttribute("checkins", checkinsDTO);
-
-        boolean tieneRolJefe = loginService.tieneRolJefe(login);
-        model.addAttribute("tieneRolJefe", tieneRolJefe);
-
-        if (tieneRolJefe) {
-            Login loginConSubordinados = loginService.obtenerPorIdConSubordinados(login.getId());
-            if (loginConSubordinados != null) {
-                List<Login> subordinadosSinJefe = loginConSubordinados.getSubordinados()
-                        .stream()
-                        .filter(sub -> !sub.getId().equals(login.getId()))
-                        .collect(Collectors.toList());
-
-                model.addAttribute("subordinados", subordinadosSinJefe);
-            }
-        }
-
-        return "checkin"; // o el nombre de tu vista
+        checkinService.cargarDatosCheckinParaVista(model, login);
+        model.addAttribute("usuarioActual", login); // Agregar esto
+        return "checkin";
     }
 
     @PostMapping("/checkin")
     public ResponseEntity<String> realizarCheckin(@RequestParam String tipo) {
-        Login login = getUsuarioAutenticado();
-        if (login == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado.");
-        }
+        Login login = checkinService.getUsuarioAutenticado();
+        if (login == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado.");
 
         try {
             String mensaje = checkinService.registrarCheckin(login, tipo);
@@ -79,10 +51,8 @@ public class CheckinController {
 
     @PostMapping("/checkout")
     public ResponseEntity<String> realizarCheckout() {
-        Login login = getUsuarioAutenticado();
-        if (login == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado.");
-        }
+        Login login = checkinService.getUsuarioAutenticado();
+        if (login == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado.");
 
         String mensaje = checkinService.registrarCheckout(login);
         if (mensaje.startsWith("No se encontró")) {
@@ -91,14 +61,11 @@ public class CheckinController {
 
         return ResponseEntity.ok(mensaje);
     }
+
     @GetMapping("/api/checkins/{idEmpleado}")
     @ResponseBody
     public List<CheckinDTO> obtenerCheckinsPorEmpleado(@PathVariable Integer idEmpleado) {
-        Login empleado = loginService.obtenerPorId(idEmpleado);
-        if (empleado == null) {
-            return List.of();
-        }
-        return checkinService.obtenerCheckinsPorUsuario(empleado);
+        return checkinService.obtenerCheckinsPorEmpleado(idEmpleado);
     }
 
 }
