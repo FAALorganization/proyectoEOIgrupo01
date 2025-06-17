@@ -46,6 +46,7 @@
     transition: 0.3s !important;
     font-weight: bold !important;
     font-size: 1.2rem !important;
+    margin-top: 10px;
 }
 
 .btn-primary:hover {
@@ -101,4 +102,6 @@
     flex-direction: column; /* si hay más de un elemento, los pone uno abajo del otro */
     height: 80vh; /* ocupa toda la pantalla */
     text-align: center;
+    overflow: auto;
+    padding-top: 200px;
 }
