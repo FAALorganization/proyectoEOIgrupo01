@@ -75,9 +75,9 @@
             <tbody id="historial-list" th:fragment="historialCheckins">
             <tr th:each="checkin : ${checkins}">
               <td th:text="${checkin.fechaFormatted}"></td>
-              <td th:text="${checkin.horaEntrada}"></td>
+              <td th:text="${checkin.horaEntradaFormatted}"></td>
               <td th:text="${checkin.tipo}"></td>
-              <td th:text="${checkin.horaSalida != null ? checkin.horaSalida : ''}"></td>
+              <td th:text="${checkin.horaSalidaFormatted}"></td>
             </tr>
             </tbody>
           </table>
@@ -119,9 +119,9 @@
                     <tbody id="empleadoHistorial">
                     <tr th:each="checkin : ${empleadoCheckins}">
                       <td th:text="${checkin.fechaFormatted}"></td>
-                      <td th:text="${checkin.horaEntrada}"></td>
+                      <td th:text="${checkin.horaEntradaFormatted}"></td>
                       <td th:text="${checkin.tipo}"></td>
-                      <td th:text="${checkin.horaSalida != null ? checkin.horaSalida : ''}"></td>
+                      <td th:text="${checkin.horaSalidaFormatted}"></td>
                     </tr>
                     </tbody>
                   </table>
