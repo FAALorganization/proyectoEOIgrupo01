@@ -30,11 +30,11 @@
                     <div class="row mt-2">
                         <div class="col-md-6">
                             <label class="labels">Nombre</label>
-                            <input type="text" class="form-control" th:field="*{nombre}" th:placeholder="${detallesdeusuario?.nombre != null ? '' : 'nombre'}">
+                            <input type="text" class="form-control bg-light text-muted" th:field="*{nombre}" th:placeholder="${detallesdeusuario?.nombre != null ? '' : 'nombre'}" readonly>
                         </div>
                         <div class="col-md-6">
                             <label class="labels">Apellidos</label>
-                            <input type="text" class="form-control" th:field="*{apellidos}" th:placeholder="${detallesdeusuario?.apellidos != null ? '' : 'apellido'}">
+                            <input type="text" class="form-control bg-light text-muted" th:field="*{apellidos}" th:placeholder="${detallesdeusuario?.apellidos != null ? '' : 'apellido'}" readonly>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -56,11 +56,11 @@
                         </div>
                         <div class="col-md-12">
                             <label class="labels">Email</label>
-                            <input type="email" class="form-control" th:field="*{emailPersonal}" th:placeholder="${detallesdeusuario?.emailPersonal != null ? '' : 'email'}">
+                            <input type="email" class="form-control bg-light text-muted" th:field="*{emailPersonal}" th:placeholder="${detallesdeusuario?.emailPersonal != null ? '' : 'email'}" readonly>
                         </div>
                         <div class="col-md-12">
                             <label class="labels">Contacto de emergencia</label>
-                            <input type="text" class="form-control" th:field="*{contactoEmergencia}" th:placeholder="${detallesdeusuario?.contactoEmergencia != null ? '' : 'contacto de emergencia'}">
+                            <input type="text" class="form-control " th:field="*{contactoEmergencia}" th:placeholder="${detallesdeusuario?.contactoEmergencia != null ? '' : 'contacto de emergencia'}">
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -162,11 +162,11 @@
                                         </tr>
                                         </thead>
                                         <tbody id="jefeMyTable">
-                                        <th:block th:each="usuario : ${usuarios}">
+                                        <th:block th:each="usuario : ${subordinados}">
                                             <tr>
                                                 <td th:text="${usuario.id}"></td>
                                                 <td th:text="${usuario.nombre}"></td>
-                                                <td th:text="${usuario.emailPersonal}"></td>
+                                                <td th:text="${usuario.email}"></td>
                                                 <td th:text="${usuario.tlf}"></td>
                                             </tr>
                                         </th:block>
