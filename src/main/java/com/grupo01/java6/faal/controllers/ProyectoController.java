@@ -99,4 +99,11 @@ public class ProyectoController {
         return "redirect:/documentacion";
     }
 
+    @GetMapping("/proyectos/todos")
+    @ResponseBody
+    public List<ProyectoDTO> obtenerTodosProyectos() {
+        return proyectoService.obtenerProyectosDTO();
+    }
+
+
 }
