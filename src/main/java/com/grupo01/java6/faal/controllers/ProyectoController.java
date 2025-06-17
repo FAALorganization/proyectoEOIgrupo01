@@ -67,4 +67,43 @@ public class ProyectoController {
         redirectAttributes.addFlashAttribute("mensaje", "Proyecto creado correctamente");
         return "redirect:/documentacion";
     }
+
+    @PostMapping("/proyectos/borrar")
+    public String borrarProyecto(@RequestParam Integer idProyecto, Principal principal, RedirectAttributes redirectAttributes) {
+        Proyecto proyecto = proyectoRepository.findById(idProyecto).orElse(null);
+        if (proyecto == null) {
+            redirectAttributes.addFlashAttribute("error", "❌ Proyecto no encontrado.");
+            return "redirect:/documentacion";
+        }
+
+        // Obtener usuario actual
+        Login usuarioActual = loginService.getUserByEmail(principal.getName());
+
+        // Comprobar que el usuario es Jefe
+        boolean esJefe = usuarioActual.getRoles().stream()
+                .anyMatch(r -> r.getNombre().trim().equalsIgnoreCase("Jefe"));
+
+        if (!esJefe) {
+            redirectAttributes.addFlashAttribute("error", "❌ No tienes permisos para eliminar proyectos.");
+            return "redirect:/documentacion";
+        }
+
+        // Borrar proyecto
+        try {
+            proyectoRepository.delete(proyecto);
+            redirectAttributes.addFlashAttribute("mensaje", "✅ Proyecto eliminado correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "❌ Error al eliminar el proyecto.");
+        }
+
+        return "redirect:/documentacion";
+    }
+
+    @GetMapping("/proyectos/todos")
+    @ResponseBody
+    public List<ProyectoDTO> obtenerTodosProyectos() {
+        return proyectoService.obtenerProyectosDTO();
+    }
+
+
 }
