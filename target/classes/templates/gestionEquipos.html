@@ -149,7 +149,10 @@
                     </div>
 
 
-                    <a href="/gestionEquipos/eliminar/2" class="btn btn-sm btn-danger">Eliminar</a>
+                    <form th:action="@{/gestionEquipos/eliminar/{id}(id=${equipo.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                    </form>
+
                 </td>
             </tr>
             </tbody>
