@@ -35,23 +35,23 @@ public class DocumentacionController {
 
     /** 🔹 Subir documento asociado a un proyecto */
     @PostMapping("/subir")
-    public String subirDocumentos(@RequestParam Long idProyecto,
-                                  @RequestParam("archivos") MultipartFile[] archivos,
-                                  RedirectAttributes redirectAttributes) {
-
-        Proyecto proyecto = proyectoRepository.findById(Math.toIntExact(idProyecto)).orElse(null);
+    @ResponseBody
+    public ResponseEntity<String> subirDocumentosAjax(@RequestParam Integer idProyecto,
+                                                      @RequestParam("archivos") MultipartFile[] archivos) {
+        Proyecto proyecto = proyectoRepository.findById(idProyecto).orElse(null);
         if (proyecto == null) {
-            redirectAttributes.addFlashAttribute("error", "❌ Proyecto no encontrado.");
-            return "redirect:/documentacion";
+            return ResponseEntity.badRequest().body("❌ Proyecto no encontrado.");
+        }
+
+        if (archivos == null || archivos.length == 0) {
+            return ResponseEntity.badRequest().body("⚠️ No se seleccionaron archivos para subir.");
         }
 
         boolean algunoFalló = false;
 
         for (MultipartFile archivo : archivos) {
             if (!archivo.isEmpty()) {
-                String nombreOriginal = archivo.getOriginalFilename();
-                String nombreLimpio = limpiarNombreArchivo(nombreOriginal);
-                // 🔧 Aquí podrías pasar el nombre limpio al servicio, si es necesario
+                String nombreLimpio = limpiarNombreArchivo(archivo.getOriginalFilename());
                 boolean guardado = documentoService.guardarDocumento(proyecto, archivo, nombreLimpio);
                 if (!guardado) {
                     algunoFalló = true;
@@ -59,15 +59,12 @@ public class DocumentacionController {
             }
         }
 
-        if (archivos.length == 0) {
-            redirectAttributes.addFlashAttribute("error", "⚠️ No se seleccionaron archivos para subir.");
-        } else if (algunoFalló) {
-            redirectAttributes.addFlashAttribute("error", "⚠️ Algunos documentos no se pudieron subir.");
-        } else {
-            redirectAttributes.addFlashAttribute("mensaje", "✅ Documentos subidos correctamente.");
+        if (algunoFalló) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("⚠️ Algunos documentos no se pudieron subir.");
         }
 
-        return "redirect:/documentacion";
+        return ResponseEntity.ok("✅ Documentos subidos correctamente.");
     }
 
     /** 🔹 Descargar documento */
