@@ -1,5 +1,4 @@
 package com.grupo01.java6.faal.services;
-import com.grupo01.java6.faal.entities.TicketRelUsuario;
 //import com.grupo01.java6.faal.repositories.TicketRelUsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -129,6 +126,43 @@ public class TicketingService implements TicketService {
         return convertToDto(saved);
     }
 
+    @Override
+    public TicketingDTO reopenTicket(Integer id, String reopenedBy, String reason) {
+        Ticketing ticket = ticketingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado con ID: " + id));
+
+        // Validate ticket status
+        if (!ticket.getStatus().equals(Ticketing.TicketStatus.CLOSED)) {
+            throw new IllegalStateException("Solo tickets cerrados pueden ser reabiertos");
+        }
+
+        // Update ticket properties
+        ticket.setStatus(Ticketing.TicketStatus.REOPENED);
+       // ticket.setFechaModificacion(LocalDateTime.now());
+        ticket.setUsuarioModificacion(reopenedBy);
+
+//        // Create a new history entry for the reopening
+//        TicketHistory history = new TicketHistory();
+//        history.setTicket(ticket);
+//        history.setAction("REOPENED");
+//        history.setDescription(reason != null ? reason : "Ticket reabierto sin especificar motivo");
+//        history.setChangedBy(reopenedBy);
+//        history.setChangedAt(LocalDateTime.now());
+//
+//        // Reset SLA tracking if needed
+//        if (ticket.getSlaTracking() != null) {
+//            ticket.getSlaTracking().setPaused(false);
+//            ticket.getSlaTracking().setPauseStartTime(null);
+//            ticket.getSlaTracking().setTotalPausedDuration(0L);
+//        }
+//
+//        // Save changes
+//        ticketingRepository.save(ticket);
+//        ticketHistoryRepository.save(history);
+
+        return convertToDto(ticketingRepository.save(ticket));
+    }
+
 
     // update priority media alta
     @Override
@@ -148,7 +182,7 @@ public class TicketingService implements TicketService {
     }
 //PUT /tickets/123 for future use upadter directement
 
-    public TicketingDTO updateTicket(Integer id, TicketingDTO ticketDTO) {
+    public TicketingDTO updateTicket(Integer id, TicketingDTO ticketDTO, String updatedBy) {
         ticketDTO.setId(id);
         Optional<TicketingDTO> existingTicket = Optional.ofNullable(findById(id));
         if (existingTicket.isEmpty()) {

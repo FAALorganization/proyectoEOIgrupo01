@@ -1,8 +1,6 @@
 package com.grupo01.java6.faal.services.impl;
 
-import com.grupo01.java6.faal.dtos.CreateTicketDTO;
 import com.grupo01.java6.faal.dtos.TicketingDTO;
-import com.grupo01.java6.faal.entities.Login;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,7 +13,7 @@ public interface TicketService {
     TicketingDTO findById(Integer id);
     List<TicketingDTO> findAll();
     TicketingDTO update(TicketingDTO dto);
-    TicketingDTO updateTicket (Integer id, TicketingDTO ticketDTO);
+    TicketingDTO updateTicket (Integer id, TicketingDTO ticketDTO, String updatedBy);
     TicketingDTO createTicket(TicketingDTO ticketDTO, String userEmail);
     void approveTicket(Integer id, String approverEmail);
     void rejectTicket(Integer id, String approverEmail);
@@ -25,4 +23,6 @@ public interface TicketService {
     List<TicketingDTO> findUserTickets(String userEmail);
 
     TicketingDTO save(@Valid TicketingDTO ticketingDTO,String userEmail);
+
+    TicketingDTO reopenTicket(Integer id, String reopenedBy, String reason);
 }

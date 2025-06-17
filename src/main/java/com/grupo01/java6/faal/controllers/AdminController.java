@@ -40,7 +40,7 @@ public class AdminController {
         log.info("Admin access attempted by: {}", authentication.getName());
         model.addAttribute("ticketingDTO", new TicketingDTO());
         model.addAttribute("priorities", priorityService.findAllPriorityValues());
-        model.addAttribute("ticketsList", ticketingService.findAll());
+        //model.addAttribute("ticketsList", ticketingService.findAll());
         return "admin-tickets";
     }
 //
@@ -67,6 +67,26 @@ public class AdminController {
         return "redirect:/admin/tickets";
     }
 
+// reopne
+
+    @PostMapping("/reopen/{id}")
+    public String reopenTicket(
+            @PathVariable Integer id,
+            @RequestParam(required = false) String reason,
+            Authentication authentication,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            String reopenedBy = authentication.getName();
+            ticketingService.reopenTicket(id, reopenedBy, reason);
+            redirectAttributes.addFlashAttribute("successMessage", "Ticket reabierto exitosamente");
+        } catch (Exception e) {
+            log.error("Error reopening ticket: ", e);
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al reabrir ticket: " + e.getMessage());
+        }
+
+        return "redirect:/admin/tickets";
+    }
 
 //    // Guardar el ticket
 
@@ -106,6 +126,25 @@ public ResponseEntity<TicketingDTO> closeTicket(
     TicketingDTO closedTicket = ticketingService.closeTicket(ticketId, loginId);
     return ResponseEntity.ok(closedTicket);
 }
+/// / update id
+    @PostMapping("/update/{id}")
+    public String updateTicket(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute TicketingDTO ticketingDTO,
+            BindingResult result,
+            Model model,
+            Authentication authentication) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("priorities", priorityService.findAllPriorityValues());
+            model.addAttribute("ticketsList", ticketingService.findAll());
+            return "admin-tickets";
+        }
+
+        String updatedBy = authentication.getName();
+        ticketingService.updateTicket(id, ticketingDTO, updatedBy);
+        return "redirect:/admin/tickets";
+    }
 
 
     //// my other implimentation if i decide to unify the html ////

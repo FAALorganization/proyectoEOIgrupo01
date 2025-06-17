@@ -3,15 +3,11 @@ package com.grupo01.java6.faal.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import javax.management.Notification;
 import java.io.Serializable;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -73,6 +69,12 @@ public class Ticketing implements Serializable {
 */
     @Enumerated(EnumType.STRING)
     private TicketStatus status = TicketStatus.OPEN;
+
+    // en teoria quin modifca debe ser el usuarioCreador
+    public Login setUsuarioModificacion(String reopenedBy) {
+        return getUsuarioCreador();
+
+    }
 
     public enum TicketStatus {
         OPEN, IN_PROGRESS, PENDING_REVIEW, RESOLVED, CLOSED, REOPENED

@@ -584,7 +584,8 @@
     <!-- LEFT SECTION -->
     <div class="left-section">
         <div class="main-block">
-            <form th:action="@{/admin/ticket/save}" th:object="${ticketingDTO}" method="post" enctype="multipart/form-data">                <h1>Sistema de Tickets</h1>
+            <form th:action="@{/admin}" th:object="${ticketingDTO}" method="get" enctype="multipart/form-data">
+                <h1>Sistema de Tickets</h1>
 
                 <fieldset>
                     <legend><h3>Información Personal</h3></legend>
@@ -767,7 +768,8 @@
                         <i class="fa-solid fa-lock-open"></i>
                         Reabrir Ticket
                     </button>
-                    <select id="close-reason" th:disabled="${ticket?.status == 'CLOSED'}">                        <option disabled selected>Motivo de Cierre</option>
+                    <select id="close-reason" th:disabled="${ticket?.status == 'CLOSED'}">
+                        <option disabled selected>Motivo de Cierre</option>
                         <option>Resuelto</option>
                         <option>Usuario No Responde</option>
                         <option>Duplicado</option>

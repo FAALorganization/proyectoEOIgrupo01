@@ -82,6 +82,9 @@ public class Sla implements Serializable{
     private Ticketing ticket;
 
 
+    public void setPauseStartTime(Object o) {
+    }
 
-
+    public void setTotalPausedDuration(long l) {
+    }
 }
