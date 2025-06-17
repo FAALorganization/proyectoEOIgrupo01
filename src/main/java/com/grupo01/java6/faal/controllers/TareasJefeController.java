@@ -32,13 +32,13 @@ public class TareasJefeController {
     public String mostrarFormularioAsignarTarea(Model model) {
         model.addAttribute("nuevaTarea", new Tarea());
 
-       // List<UsuarioDTO> usuarios = loginService.getUsuariosDTOConRolUsuarioOVisitante();
+        List<UsuarioDTO> usuarios = loginService.getUsuariosDTOConRolUsuarioOVisitante();
 
         // LOG para depurar
-//        System.out.println("Usuarios cargados: " + usuarios.size());
-//        usuarios.forEach(u -> System.out.println(u.getId() + ": " + u.getNombre() + " - " + u.getEmail()));
+        System.out.println("Usuarios cargados: " + usuarios.size());
+        usuarios.forEach(u -> System.out.println(u.getId() + ": " + u.getNombre() + " - " + u.getEmail()));
 
-     //   model.addAttribute("usuarios", usuarios);
+        model.addAttribute("usuarios", usuarios);
 
         List<TipoTareas> tipos = tipoTareasRepository.findAll();
         model.addAttribute("tiposTarea", tipos);
