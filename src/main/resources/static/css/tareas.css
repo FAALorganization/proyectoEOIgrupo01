@@ -51,7 +51,7 @@
     cursor: pointer;
     border: none;
     color: #fff;
-    background-color: #007bff;
+    background-color: #252323;
     transition: background-color 0.3s ease;
     display: inline-flex;
     align-items: center;
@@ -59,7 +59,7 @@
 }
 
 .btn-gestion:hover {
-    background-color: #0056b3;
+    background-color: #252323;
 }
 
 .btn-gestion.btn-sm {
@@ -304,4 +304,8 @@ body {
 .task-actions .btn-gestion {
     font-size: 1rem;
     padding: 0.4rem 0.8rem;
+}
+
+.calendar-container {
+    margin-top: 100px;
 }
