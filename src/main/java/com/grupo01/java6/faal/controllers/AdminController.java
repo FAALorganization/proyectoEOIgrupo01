@@ -127,24 +127,24 @@ public ResponseEntity<TicketingDTO> closeTicket(
     return ResponseEntity.ok(closedTicket);
 }
 /// / update id
-//    @PostMapping("/update/{id}")
-//    public String updateTicket(
-//            @PathVariable Integer id,
-//            @Valid @ModelAttribute TicketingDTO ticketingDTO,
-//            BindingResult result,
-//            Model model,
-//            Authentication authentication) {
-//
-//        if (result.hasErrors()) {
-//            model.addAttribute("priorities", priorityService.findAllPriorityValues());
-//            model.addAttribute("ticketsList", ticketingService.findAll());
-//            return "admin-tickets";
-//        }
-//
-//        String updatedBy = authentication.getName();
-//        ticketingService.updateTicket(id, ticketingDTO, updatedBy);
-//        return "redirect:/admin/tickets";
-//    }
+    @PostMapping("/update/{id}")
+    public String updateTicket(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute TicketingDTO ticketingDTO,
+            BindingResult result,
+            Model model,
+            Authentication authentication) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("priorities", priorityService.getAllPriorityValues());
+            model.addAttribute("ticketsList", ticketingService.findAll());
+            return "admin-tickets";
+        }
+
+        String updatedBy = authentication.getName();
+        ticketingService.updateTicket(id, ticketingDTO, updatedBy);
+        return "redirect:/admin/tickets";
+    }
 
 
 

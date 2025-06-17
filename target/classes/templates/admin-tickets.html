@@ -759,11 +759,12 @@
 <!--                    <button type="button" class="btn btn-success flex-grow-1" id="resumeSlaBtn"-->
 <!--                            th:disabled="${ticket?.status == 'CLOSED' || !ticket?.slaTracking?.isPaused}">-->
 <!--                        <i class="fas fa-play me-2"></i>Reanudar SLA-->
-<!--                    </button> UPDATE TICKET CONTROLLER -->
-<!--                    <button type="button" id="modifyTicketBtn">-->
-<!--                        <i class="fa-solid fa-pen-to-square"></i>-->
-<!--                        Modificar Ticket-->
-<!--                    </button>-->
+                <form th:action="@{/update/{id}(id=${ticketingDTO.id})}" method="post" th:object="${ticketingDTO}">
+                    <button type="submit" id="modifyTicketBtn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Modificar Ticket
+                    </button>
+                </form>
                 <form id="reopenTicketForm" th:action="@{'/reopen/' + ${ticketingDTO.id}}" method="post" th:if="${ticketingDTO?.estado == 'CLOSED'}" style="display: none;">
                     <input type="hidden" name="reason" value="Reopened from UI"/>
                 </form>
@@ -837,6 +838,8 @@
         document.getElementById('contactModal').style.display = 'flex';
     });
 
-
+    function submitUpdateForm() {
+        document.getElementById('updateForm').submit();
+    }
 </script>
 </body>
