@@ -1,3 +1,5 @@
+<!-- JS PARA CONTROLAR LA FUNCIONALIDAD DE SUBIR DOCUMENTACIÓN POR PARTE DEL JEFE -->
+
 document.addEventListener('DOMContentLoaded', () => {
     const uploadForms = document.querySelectorAll('form[action$="/documentacion/subir"]');
 
