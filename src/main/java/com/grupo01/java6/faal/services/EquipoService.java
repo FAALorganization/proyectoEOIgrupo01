@@ -127,4 +127,9 @@ public class EquipoService {
         nuevoEquipo.setListaLogin(new HashSet<>(miembros));
         equipoRepository.save(nuevoEquipo);
     }
+    @Transactional
+    public void eliminarEquipo(Integer equipoId) {
+        equipoRepository.deleteById(equipoId);
+    }
+
 }
