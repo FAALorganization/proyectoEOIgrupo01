@@ -17,5 +17,8 @@
     </div>
     <div th:replace="fragments/calendar-modal :: calendar-modal"></div>
 </section>
+<th:block layout:fragment="scripts">
+    <script th:src="@{/js/calendario.js}"></script>
+</th:block>
 </body>
 </html>
