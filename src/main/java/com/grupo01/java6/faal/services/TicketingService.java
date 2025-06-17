@@ -125,6 +125,7 @@ public class TicketingService implements TicketService {
 
         return convertToDto(saved);
     }
+//  REABRIR EL TICKET
 
     @Override
     public TicketingDTO reopenTicket(Integer id, String reopenedBy, String reason) {

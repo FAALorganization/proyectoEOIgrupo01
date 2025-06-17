@@ -17,14 +17,11 @@ public class PriorityService {
         return prioridadesRepository.findAllPriorityValues();
     }
 
-    public Object findAllPriorityValues() {
-        return prioridadesRepository.findAll();
-
-    }
-
     public String getDisplayNameForValue(String value) {
+        System.out.println( "PRIORIDADES:" + prioridadesRepository.findAllPriorityValues());
         return prioridadesRepository.findDisplayNameByValue(value.toLowerCase())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid priority value"));
+
     }
 
     public void validatePriority(String value) {

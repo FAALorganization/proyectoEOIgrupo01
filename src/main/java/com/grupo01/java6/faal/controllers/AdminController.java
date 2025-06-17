@@ -39,7 +39,7 @@ public class AdminController {
     public String showAdminTickets(Model model, Authentication authentication) {
         log.info("Admin access attempted by: {}", authentication.getName());
         model.addAttribute("ticketingDTO", new TicketingDTO());
-        model.addAttribute("priorities", priorityService.findAllPriorityValues());
+        model.addAttribute("priorities", priorityService.getAllPriorityValues());
         //model.addAttribute("ticketsList", ticketingService.findAll());
         return "admin-tickets";
     }
@@ -47,25 +47,25 @@ public class AdminController {
 //
     //// aprove a Ticket  usuarioAprobador esta en el ux
 //
-    @PostMapping("/approve/{id}")
-    public String approveTicket(
-            @PathVariable Integer id,@RequestParam("usuarioAprobador") String usuarioAprobador,
-            Authentication authentication,
-            RedirectAttributes redirectAttributes) {
-        // just to check
-        log.info("Quien ha Aprobado el Ticket: {}", usuarioAprobador);
-
-        try {
-            String approvedEmail = authentication.getName();
-            ticketingService.approveTicket(id, approvedEmail);
-            redirectAttributes.addFlashAttribute("successMessage", "Ticket aprobado exitosamente");
-        } catch (Exception e) {
-            log.error("Error approving ticket: ", e);
-            redirectAttributes.addFlashAttribute("errorMessage", "Error al aprobar ticket: " + e.getMessage());
-        }
-
-        return "redirect:/admin/tickets";
-    }
+//    @PostMapping("/approve/{id}")
+//    public String approveTicket(
+//            @PathVariable Integer id,@RequestParam("usuarioAprobador") String usuarioAprobador,
+//            Authentication authentication,
+//            RedirectAttributes redirectAttributes) {
+//        // just to check
+//        log.info("Quien ha Aprobado el Ticket: {}", usuarioAprobador);
+//
+//        try {
+//            String approvedEmail = authentication.getName();
+//            ticketingService.approveTicket(id, approvedEmail);
+//            redirectAttributes.addFlashAttribute("successMessage", "Ticket aprobado exitosamente");
+//        } catch (Exception e) {
+//            log.error("Error approving ticket: ", e);
+//            redirectAttributes.addFlashAttribute("errorMessage", "Error al aprobar ticket: " + e.getMessage());
+//        }
+//
+//        return "redirect:/admin/tickets";
+//    }
 
 // reopne
 
@@ -90,28 +90,28 @@ public class AdminController {
 
 //    // Guardar el ticket
 
-    @PostMapping("/save")
-    public String saveTicket(@Valid @ModelAttribute TicketingDTO ticketingDTO,
-                             BindingResult result, @RequestParam("telefono") String telefono,
-                             @RequestParam("correoGerente") String correoGerente, @RequestParam("fechaqueja") LocalDate fechaqueja,
-                             Model model,
-                             Authentication authentication) {
-
-        if (result.hasErrors()) {
-            model.addAttribute("ticketsList", ticketingService.findAll());
-            return "admin-tickets";
-        }
-
-        /// to do : modify later the entities
-        log.info("Teléfono: {}", telefono);
-        log.info("Correo del gerente: {}", correoGerente);
-        log.info("Fecha queja : {}", fechaqueja);
-
-        String userEmail = authentication.getName(); //  current user's email
-        ticketingService.save(ticketingDTO, userEmail);
-
-        return "redirect:/tickets/list";
-    }
+//    @PostMapping("/save")
+//    public String saveTicket(@Valid @ModelAttribute TicketingDTO ticketingDTO,
+//                             BindingResult result, @RequestParam("telefono") String telefono,
+//                             @RequestParam("correoGerente") String correoGerente, @RequestParam("fechaqueja") LocalDate fechaqueja,
+//                             Model model,
+//                             Authentication authentication) {
+//
+//        if (result.hasErrors()) {
+//            model.addAttribute("ticketsList", ticketingService.findAll());
+//            return "admin-tickets";
+//        }
+//
+//        /// to do : modify later the entities
+//        log.info("Teléfono: {}", telefono);
+//        log.info("Correo del gerente: {}", correoGerente);
+//        log.info("Fecha queja : {}", fechaqueja);
+//
+//        String userEmail = authentication.getName(); //  current user's email
+//        ticketingService.save(ticketingDTO, userEmail);
+//
+//        return "redirect:/tickets/list";
+//    }
 //    // later implement restfull method apart
 //// cerrar el ticket
 
@@ -127,24 +127,39 @@ public ResponseEntity<TicketingDTO> closeTicket(
     return ResponseEntity.ok(closedTicket);
 }
 /// / update id
-    @PostMapping("/update/{id}")
-    public String updateTicket(
-            @PathVariable Integer id,
-            @Valid @ModelAttribute TicketingDTO ticketingDTO,
-            BindingResult result,
-            Model model,
-            Authentication authentication) {
+//    @PostMapping("/update/{id}")
+//    public String updateTicket(
+//            @PathVariable Integer id,
+//            @Valid @ModelAttribute TicketingDTO ticketingDTO,
+//            BindingResult result,
+//            Model model,
+//            Authentication authentication) {
+//
+//        if (result.hasErrors()) {
+//            model.addAttribute("priorities", priorityService.findAllPriorityValues());
+//            model.addAttribute("ticketsList", ticketingService.findAll());
+//            return "admin-tickets";
+//        }
+//
+//        String updatedBy = authentication.getName();
+//        ticketingService.updateTicket(id, ticketingDTO, updatedBy);
+//        return "redirect:/admin/tickets";
+//    }
 
-        if (result.hasErrors()) {
-            model.addAttribute("priorities", priorityService.findAllPriorityValues());
-            model.addAttribute("ticketsList", ticketingService.findAll());
-            return "admin-tickets";
-        }
 
-        String updatedBy = authentication.getName();
-        ticketingService.updateTicket(id, ticketingDTO, updatedBy);
-        return "redirect:/admin/tickets";
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //// my other implimentation if i decide to unify the html ////

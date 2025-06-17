@@ -751,52 +751,52 @@
                     Tiempo SLA:
                     <strong id="slaTimer">04:25:13</strong>
                 </div>
-                <div class="btn-group">
-                    <button type="button" id="pauseSlaBtn" th:disabled="${ticket?.status == 'CLOSED' || ticket?.slaTracking?.isPaused}">
-                        <i class="fa-solid fa-pause"></i>
-                        Pausar SLA
-                    </button>
-                    <button type="button" class="btn btn-success flex-grow-1" id="resumeSlaBtn"
-                            th:disabled="${ticket?.status == 'CLOSED' || !ticket?.slaTracking?.isPaused}">
-                        <i class="fas fa-play me-2"></i>Reanudar SLA
-                    </button>
-                    <button type="button" id="modifyTicketBtn">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        Modificar Ticket
-                    </button>
-                    <button type="button" id="reopenTicketBtn" th:disabled="${ticket?.status != 'CLOSED'}">
-                        <i class="fa-solid fa-lock-open"></i>
-                        Reabrir Ticket
-                    </button>
-                    <select id="close-reason" th:disabled="${ticket?.status == 'CLOSED'}">
-                        <option disabled selected>Motivo de Cierre</option>
-                        <option>Resuelto</option>
-                        <option>Usuario No Responde</option>
-                        <option>Duplicado</option>
-                        <option>Irrelevante</option>
-                    </select>
-                    <button type="button" id="closeTicketBtn" th:disabled="${ticket?.status == 'CLOSED'}">
-                        <i class="fa-solid fa-lock"></i>
-                        Cerrar Ticket
-                    </button>
-                </div>
+<!--                <div class="btn-group">-->
+<!--                    <button type="button" id="pauseSlaBtn" th:disabled="${ticket?.status == 'CLOSED' || ticket?.slaTracking?.isPaused}">-->
+<!--                        <i class="fa-solid fa-pause"></i>-->
+<!--                        Pausar SLA-->
+<!--                    </button>-->
+<!--                    <button type="button" class="btn btn-success flex-grow-1" id="resumeSlaBtn"-->
+<!--                            th:disabled="${ticket?.status == 'CLOSED' || !ticket?.slaTracking?.isPaused}">-->
+<!--                        <i class="fas fa-play me-2"></i>Reanudar SLA-->
+<!--                    </button> UPDATE TICKET CONTROLLER -->
+<!--                    <button type="button" id="modifyTicketBtn">-->
+<!--                        <i class="fa-solid fa-pen-to-square"></i>-->
+<!--                        Modificar Ticket-->
+<!--                    </button>-->
+                <form id="reopenTicketForm" th:action="@{'/reopen/' + ${ticketingDTO.id}}" method="post" th:if="${ticketingDTO?.estado == 'CLOSED'}" style="display: none;">
+                    <input type="hidden" name="reason" value="Reopened from UI"/>
+                </form>
+
+                <button type="button" id="reopenTicketBtn" th:disabled="${ticketingDTO?.estado != 'CLOSED'}" onclick="document.getElementById('reopenTicketForm').submit();">
+                    <i class="fa-solid fa-lock-open"></i>
+                    Reabrir Ticket
+                </button>
+                <select id="close-reason" th:disabled="${ticketingDTO?.estado == 'CLOSED'}">
+                    <option disabled selected>Motivo de Cierre</option>
+                    <option>Resuelto</option>
+                    <option>Usuario No Responde</option>
+                    <option>Duplicado</option>
+                    <option>Irrelevante</option>
+                </select>
+
+                <button type="button" id="closeTicketBtn" th:disabled="${ticketingDTO?.estado == 'CLOSED'}">
+                    <i class="fa-solid fa-lock"></i> Cerrar Ticket
+                </button>
+              </div>
             </div>
         </div>
 
         <div class="open-tickets">
             <h3>Tickets Asignados a mi equipo</h3>
-            <select size="8" multiple>
-                <option th:each="ticket : ${tickets}"
-                        th:value="${ticket.id}"
-                        th:attr="data-status=${ticket.status}, data-priority=${ticket.prioridad?.value}">
-                    <span th:classappend="${ticket.prioridad?.value == 'high' ? 'status-high' :
-                                         (ticket.prioridad?.value == 'medium' ? 'status-medium' : 'status-low')}"
-                          class="status-indicator"></span>
-                    #<span th:text="${ticket.id}"></span> -
-                    <span th:text="${ticket.asunto}"></span>
-                    <small class="text-muted d-block" th:text="${ticket.status}"></small>
-                </option>
-            </select>
+            <form th:action="@{/ticket/list}" method="get">
+                <select name="ticketId" size="5" onchange="this.form.submit()">
+                    <option th:each="ticket : ${tickets}"
+                            th:value="${ticket.id}"
+                            th:text="'Ticket #' + ${ticket.id} + ' - ' + ${ticket.asunto}">
+                    </option>
+                </select>
+            </form>
         </div>
     </div>
 </div>
@@ -839,5 +839,4 @@
 
 
 </script>
-
 </body>

@@ -86,5 +86,6 @@ public class Sla implements Serializable{
     }
 
     public void setTotalPausedDuration(long l) {
+
     }
 }
