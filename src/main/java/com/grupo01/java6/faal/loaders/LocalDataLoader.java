@@ -78,7 +78,8 @@ public class LocalDataLoader {
         int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         String[] emailsTrabajo = {"ana.admin@correo.com", null, "luis.jefe1@correo.com", "marta.jefe2@correo.com", "carlos.user1@correo.com", "elena.user2@correo.com", "javier.user3@correo.com", "lucia.user4@correo.com", "pedro.visit1@correo.com", "sara.visit2@correo.com"};
         String[] passwords = {"adminpass", null, "jefe1pass", "jefe2pass", "user1pass", "user2pass", "user3pass", "user4pass", "visit1pass", "visit2pass"};
-        String[] tokens = {"YwjMfw1uvr", null, "qzBtqljuMz", "1LejMYDL0u", "dLOXgZpHB4", "Wf1eFZFJmc", "8wkTOK2cmu", "q9BRzXd4yG", "vnsD5ecOsG","XVBxHo87NJ"};
+
+        String[] tokens = {"YwjMfw1uvr", null, "qzBtqljuMz", "1LejMYDL0u", "dLOXgZpHB4", "Wf1eFZFJmc", "8wkTOK2cmu", "q9BRzXd4yG", "vnsD5ecOsG", "XVBxHo87NJ"};
         String[] fechasRegistro = {"2025-05-20", null, "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20"};
         Integer[] idJefe = {1, null, 3, 4, 3, 3, 4, 4, 3, 3};
         int[] personaIds = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};

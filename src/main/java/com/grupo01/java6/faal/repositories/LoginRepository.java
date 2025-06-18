@@ -36,6 +36,7 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     SELECT new com.grupo01.java6.faal.dtos.NombreConAusenciasDTO(
         d.nombre,
         d.apellidos,
+        sub.token,
         a.fechaInicio,
         a.fechaFin,
         a.aprobado,

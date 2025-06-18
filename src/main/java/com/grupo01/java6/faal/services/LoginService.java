@@ -46,7 +46,7 @@ public class LoginService {
 
             EmpleadoConAusenciasDTO empleado = map.get(key);
             if (empleado == null) {
-                empleado = new EmpleadoConAusenciasDTO(dto.getNombre(), dto.getApellidos());
+                empleado = new EmpleadoConAusenciasDTO(dto.getNombre(), dto.getApellidos(), dto.getToken());
                 map.put(key, empleado);
             }
             empleado.agregarAusencia(dto.getFechaInicio(), dto.getFechaFin(), dto.isAprobado(), dto.getIdAusencia(), dto.getJustificacion());

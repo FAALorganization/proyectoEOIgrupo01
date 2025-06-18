@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class NombreConAusenciasDTO {
     private String nombre;
     private String apellidos;
+    private String token;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private boolean aprobado;
