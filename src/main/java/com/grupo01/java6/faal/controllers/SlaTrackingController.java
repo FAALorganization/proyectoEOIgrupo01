@@ -1,48 +1,41 @@
-package com.grupo01.java6.faal.controllers;
-
-import com.grupo01.java6.faal.services.SlaTrackingService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@RequestMapping("/api/sla")
-public class SlaTrackingController {
-
-    private final SlaTrackingService slaTrackingService;
-
-    public SlaTrackingController(SlaTrackingService slaTrackingService) {
-        this.slaTrackingService = slaTrackingService;
-    }
-
-    @PostMapping("/{ticketId}/pause")
-    public ResponseEntity<?> pauseSla(
-            @PathVariable Integer ticketId,
-            Authentication authentication) {
-
-        try {
-            String modifiedBy = authentication.getName();
-            slaTrackingService.pauseSla(ticketId, modifiedBy);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PostMapping("/{ticketId}/resume")
-    public ResponseEntity<?> resumeSla(
-            @PathVariable Integer ticketId,
-            Authentication authentication) {
-
-        try {
-            String modifiedBy = authentication.getName();
-            slaTrackingService.resumeSla(ticketId, modifiedBy);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-}
+//package com.grupo01.java6.faal.controllers;
+//
+//import com.grupo01.java6.faal.dtos.SlaDTO;
+//import com.grupo01.java6.faal.dtos.TicketingDTO;
+//import com.grupo01.java6.faal.services.SlaTrackingService;
+//import com.grupo01.java6.faal.services.TicketingService;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.web.bind.annotation.*;
+//
+//@RestController
+//@RequestMapping("/api/sla")
+//public class SlaTrackingController {
+//
+//    private final SlaTrackingService slaTrackingService;
+//    private final TicketingService ticketingService;
+//
+//    public SlaTrackingController(SlaTrackingService slaTrackingService, TicketingService ticketingService) {
+//        this.slaTrackingService = slaTrackingService;
+//        this.ticketingService = ticketingService;
+//    }
+//
+//    @GetMapping("/{id}/sla")
+//    public ResponseEntity<SlaDTO> getTicketSla(@PathVariable Integer id) {
+//        TicketingDTO ticket = ticketingService.findById(id);
+//        ticket.getSlaDTO().calculateRemaining();
+//        return ResponseEntity.ok(ticket.getSlaDTO());
+//    }
+//
+//    @PostMapping("/{id}/pause-sla")
+//    public ResponseEntity<Void> pauseSla(@PathVariable Integer id) {
+//        ticketingService.pauseSla(id);
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    @PostMapping("/{id}/resume-sla")
+//    public ResponseEntity<Void> resumeSla(@PathVariable Integer id) {
+//        ticketingService.resumeSla(id);
+//        return ResponseEntity.ok().build();
+//    }
+//}

@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/admin/tickets")
@@ -40,10 +42,50 @@ public class AdminController {
         log.info("Admin access attempted by: {}", authentication.getName());
         model.addAttribute("ticketingDTO", new TicketingDTO());
         model.addAttribute("priorities", priorityService.getAllPriorityValues());
-        //model.addAttribute("ticketsList", ticketingService.findAll());
+        if (authentication != null) {
+            List<TicketingDTO> tickets = ticketingService.findUserTickets(authentication.getName());
+            model.addAttribute("tickets", tickets);
+        }
         return "admin-tickets";
     }
-//
+// crear el ticket
+@PostMapping("/ticket/submit")
+public String createTicket(
+        @Valid @ModelAttribute TicketingDTO ticketingDTO,
+        BindingResult bindingResult,
+        Authentication authentication,
+        RedirectAttributes redirectAttributes,
+        Model model) {
+    // Validate priority
+    try {
+        priorityService.validatePriority(ticketingDTO.getPrioridad());
+    } catch (IllegalArgumentException e) {
+        bindingResult.rejectValue("prioridad", "invalid.priority", e.getMessage());
+    }
+
+    if (bindingResult.hasErrors()) {
+        log.warn("Validation errors in ticket creation: {}", bindingResult.getAllErrors());
+        model.addAttribute("priorities", priorityService.getAllPriorityValues());
+        return "ticket";
+    }
+
+    try {
+        String userEmail = authentication.getName();
+        TicketingDTO created = ticketingService.createTicket(ticketingDTO, userEmail);
+
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Ticket creado exitosamente con ID: " + created.getId());
+
+        return "redirect:/ticket/list";
+
+    } catch (Exception e) {
+        log.error("Error creating ticket: ", e);
+        model.addAttribute("errorMessage", "Error al crear el ticket: " + e.getMessage());
+        model.addAttribute("priorities", priorityService.getAllPriorityValues());
+        model.addAttribute("ticketForm", ticketingDTO);
+        return "admin-tickets";
+    }}
+
 //
     //// aprove a Ticket  usuarioAprobador esta en el ux
 //

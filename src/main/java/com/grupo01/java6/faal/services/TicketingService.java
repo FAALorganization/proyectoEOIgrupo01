@@ -164,7 +164,6 @@ public class TicketingService implements TicketService {
         return convertToDto(ticketingRepository.save(ticket));
     }
 
-
     // update priority media alta
     @Override
     public TicketingDTO update(TicketingDTO dto) {

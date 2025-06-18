@@ -876,9 +876,9 @@
             <h3>Tickets Asignados a mi equipo</h3>
             <form th:action="@{/ticket/list}" method="get">
                 <select name="ticketId" size="5" onchange="this.form.submit()">
-                    <option th:each="ticket : ${ticketingDTO}"
-                            th:value="${ticketingDTO.id}"
-                            th:text="'Ticket #' + ${ticketingDTO.id} + ' - ' + ${ticketingDTO.asunto}">
+                    <option th:each="ticket : ${tickets}"
+                            th:value="${ticket.id}"
+                            th:text="'Ticket #' + ${ticket.id} + ' - ' + ${ticket.asunto}">
                     </option>
                 </select>
             </form>
