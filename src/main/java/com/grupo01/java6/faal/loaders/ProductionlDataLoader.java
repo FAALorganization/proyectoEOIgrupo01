@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import jakarta.annotation.PostConstruct;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +20,7 @@ import java.util.Optional;
 
 @Configuration
 @Log4j2
-@Profile("produccion")
+@Profile("produccionRESETDATA")
 public class ProductionlDataLoader {
 
     private final DetallesDeUsuarioRepository detallesDeUsuarioRepository;
@@ -50,8 +52,10 @@ public class ProductionlDataLoader {
     }
 
 
+
+    
     @PostConstruct
-    public void loadDataLocal() {
+    public void loadDataProduccion() {
         //int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         String[] nombres = {"Ana", "General", "Luis", "Marta", "Carlos", "Elena", "Javier", "Lucía", "Pedro", "Sara"};
         String[] apellidos = {"Pérez Gómez", "general general", "Martínez López", "Sánchez Ruiz", "Díaz Torres", "García Fernández", "López Martín", "Ramírez Castro", "Moreno Gil", "Jiménez Ortiz"};
