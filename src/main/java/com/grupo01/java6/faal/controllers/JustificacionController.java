@@ -192,10 +192,13 @@ public class JustificacionController {
 
     @PostMapping("/gestionVRes/resolucion")
     public ResponseEntity<?> recibirResolucion(@RequestBody Map<String, Map<String, Boolean>> respuestas) {
+
         respuestas.forEach((nombre, decisiones) -> decisiones.forEach((fecha, valor) -> {
+            //System.out.println("Respuesta: " + nombre + "," + decisiones + "," + valor + "," + fecha);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             try {
+
                 List<String> fechas = List.of(fecha.split("\\."));
                 LocalDate fechaIni = LocalDate.parse(fechas.getFirst(), formatter);
                 LocalDate fechaFin = LocalDate.parse(fechas.getLast(), formatter);
@@ -203,7 +206,23 @@ public class JustificacionController {
                 Optional<Ausencias> ausenciaOpt = ausenciaService.obtainAusenciaByFechaInicioFechaFinId(fechaIni, fechaFin,nombre.replace(".","-"));
                 if (ausenciaOpt.isPresent()) {
                     Ausencias ausencia = ausenciaOpt.get();
-                    ausenciaService.cambiarAprobado(ausencia,valor);
+                    System.out.println("Ausencia: " + ausencia.getTiposAusencias().getId() + "," + ausencia.getAprobado() + "," + valor);
+                    if (ausencia.getTiposAusencias().getId() == 1) {
+                        if (Boolean.TRUE.equals(valor)) {
+                            ausenciaService.cambiarAprobado(ausencia, true);
+                        } else {
+                            ausenciaService.eliminateHoliday(ausencia);
+                        }
+                    } else if (ausencia.getTiposAusencias().getId() == 2) {
+                        if (Boolean.TRUE.equals(valor)) {
+                            ausenciaService.cambiarAprobado(ausencia, true);
+                        } else {
+                            ausencia.setJustificacion(null);
+                            ausencia.setDocumentos(null);
+                            ausenciaService.guardarEntidadDto(ausencia);
+                        }
+                    }
+
                     //System.out.println(nombre + " ||| Fecha Ini: " + fechas.getFirst() + " ||| Fecha Fin: " + fechas.getLast() + " ||| Valor: " + valor);
                 }
             } catch (Exception e) {

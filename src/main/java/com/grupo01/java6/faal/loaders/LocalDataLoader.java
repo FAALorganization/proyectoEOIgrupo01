@@ -27,9 +27,11 @@ public class LocalDataLoader {
     private final MensajeRepository mensajeRepository;
     private final PasswordEncoder passwordEncoder;
     private final PrioridadesRepository prioridadesRepository;
+    private final TiposTareasRepository tiposTareasRepository;
+    private final TareaRepository tareaRepository;
+    private final FrasesRepository frasesRepository;
 
-
-    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository, PrioridadesRepository prioridadesRepository) {
+    public LocalDataLoader(DetallesDeUsuarioRepository detallesDeUsuarioRepository, LoginRepository loginRepository, RolesRepository rolesRepository, TiposTareasRepository tiposTareasRepository, TiposAusenciasRepository tiposAusenciasRepository, AusenciasRepository ausenciaRepository, PasswordEncoder passwordEncoder, ChatAbiertoRepository chatAbiertoRepository, MensajeRepository mensajeRepository, PrioridadesRepository prioridadesRepository, TiposTareasRepository tiposTareasRepository1, TareaRepository tareaRepository, FrasesRepository frasesRepository) {
         this.detallesDeUsuarioRepository = detallesDeUsuarioRepository;
         this.loginRepository = loginRepository;
         this.rolesRepository = rolesRepository;
@@ -39,6 +41,9 @@ public class LocalDataLoader {
         this.chatAbiertoRepository = chatAbiertoRepository;
         this.mensajeRepository = mensajeRepository;
         this.prioridadesRepository = prioridadesRepository;
+        this.tiposTareasRepository = tiposTareasRepository1;
+        this.tareaRepository = tareaRepository;
+        this.frasesRepository = frasesRepository;
     }
 
     @PostConstruct
@@ -254,6 +259,151 @@ public class LocalDataLoader {
             pr.setDisplayName(p[1]);
             prioridadesRepository.save(pr);
         }
+
+        String[] listaTareas = {"Desarrollo", "Corrección de errores", "Documentación", "Testing", "Revisión de código", "Reunión", "Evento"};
+        for (String tipo : listaTareas) {
+            TipoTareas tipoTarea = new TipoTareas();
+            tipoTarea.setTarea(tipo);
+            tiposTareasRepository.save(tipoTarea);
+        }
+
+        String[] titulos = {"Implementar módulo base", "Corregir errores críticos", "Pruebas integración final", "Evento de lanzamiento", "Demo para stakeholders", "Reunión con cliente"};
+        String[] descripciones = {"Crear la estructura principal del nuevo módulo del sistema.", "Revisar y corregir errores reportados por QA la semana pasada.", "Realizar pruebas de integración entre los microservicios nuevos.", "Presentar los avances del proyecto y próximos pasos.", "Mostrar prototipo funcional a los principales interesados.", "Discutir requerimientos pendientes y aclarar dudas técnicas."};
+        String[] fechasInicioTareas = {"2025-06-10", "2025-06-15", "2025-06-01", "2025-06-12", "2025-06-14", "2025-06-05"};
+        String[] fechasFinTareas = {"2025-06-20", "2025-06-25", "2025-06-30", "2025-06-19", "2025-06-21", "2025-06-22"};
+        int[] tipoTareaId = {1, 2, 3, 7, 7, 7};
+        int[] idsLogin = {3, 3, 3, 3, 3, 3};
+        //String[] estado = {"pendiente", "pendiente", "pendiente", "pendiente", "pendiente", "pendiente"};
+        //LocalDate[] fechaEliminada = {null, null, null, null, null, null};
+
+        for (int i = 0; i < titulos.length; i++) {
+            Tarea tarea = new Tarea();
+            tarea.setTitulo(titulos[i]);
+            tarea.setDescripcion(descripciones[i]);
+            tarea.setEstado("pendiente");
+            tarea.setFechaEliminada(null);
+            tarea.setFechaInicio(LocalDate.parse(fechasInicioTareas[i], formatter));
+            tarea.setFechaLimite(LocalDate.parse(fechasFinTareas[i], formatter));
+            tarea.setLoginTarea(loginRepository.getReferenceById(idsLogin[i]));
+            tarea.setTipoTarea(tiposTareasRepository.getReferenceById(tipoTareaId[i]));
+
+            tareaRepository.save(tarea);
+        }
+
+        String[] frases = {
+                "La diferencia entre los que se rinden y los que perseveran, es que estos últimos saben que pueden.",
+                "El éxito es la suma de pequeños esfuerzos repetidos día tras día.",
+                "Cree en ti y todo será posible.",
+                "No cuentes los días, haz que los días cuenten.",
+                "Nunca es tarde para ser lo que podrías haber sido.",
+                "El único límite a tus logros es tu propia imaginación.",
+                "La disciplina tarde o temprano vencerá al talento.",
+                "Haz hoy lo que otros no quieren, y mañana vivirás como otros no pueden.",
+                "Cada fracaso es una lección disfrazada.",
+                "Si puedes soñarlo, puedes lograrlo.",
+                "El futuro pertenece a quienes creen en la belleza de sus sueños.",
+                "No importa lo lento que vayas, siempre y cuando no te detengas.",
+                "La motivación te inicia, el hábito te mantiene.",
+                "Los grandes logros requieren grandes sacrificios.",
+                "No sueñes tu vida, vive tu sueño.",
+                "La vida comienza donde termina tu zona de confort.",
+                "Actúa como si lo que haces marca la diferencia. Porque lo hace.",
+                "Persiste hasta que lo logres.",
+                "El único fracaso es no intentarlo.",
+                "El dolor es temporal, la gloria es eterna.",
+                "Nunca subestimes el poder de empezar hoy.",
+                "Cada día es una nueva oportunidad para cambiar tu vida.",
+                "Cambia tus pensamientos y cambiarás tu mundo.",
+                "Todo lo que siempre has querido está al otro lado del miedo.",
+                "No tienes que ser grande para empezar, pero tienes que empezar para ser grande.",
+                "Los límites solo están en tu mente.",
+                "Hazlo con miedo, pero hazlo.",
+                "La acción vence al miedo.",
+                "Levántate con determinación, acuéstate con satisfacción.",
+                "Sé más fuerte que tu excusa.",
+                "La única batalla que se pierde es la que no se libra.",
+                "Cada pequeño paso cuenta.",
+                "No te rindas. Lo mejor aún está por venir.",
+                "Cree en el proceso.",
+                "Con esfuerzo, todo es posible.",
+                "Hoy es un buen día para empezar algo grande.",
+                "Haz que valga la pena.",
+                "A veces ganarás, a veces aprenderás.",
+                "Tu actitud determina tu altitud.",
+                "Enfócate en el progreso, no en la perfección.",
+                "Tú puedes más de lo que imaginas.",
+                "La persistencia es la clave del éxito.",
+                "No busques excusas, busca resultados.",
+                "El éxito no es para los que piensan en rendirse.",
+                "Transforma los obstáculos en oportunidades.",
+                "Tú eres tu mejor inversión.",
+                "No pares hasta estar orgulloso.",
+                "Hazlo por ti.",
+                "Donde hay pasión, hay posibilidad.",
+                "Tu esfuerzo definirá tu destino.",
+                "El cambio empieza contigo.",
+                "Sigue adelante, incluso cuando sea difícil.",
+                "El secreto del éxito está en comenzar.",
+                "La mejor forma de predecir el futuro es crearlo.",
+                "Confía en tu capacidad de crecer.",
+                "Levántate cada vez que caigas.",
+                "Visualiza el éxito y trabaja por él.",
+                "No necesitas suerte, necesitas constancia.",
+                "Tú decides hasta dónde llegar.",
+                "Hoy puede ser el primer día del resto de tu vida.",
+                "Trabaja en silencio, deja que el éxito haga el ruido.",
+                "El esfuerzo de hoy es el éxito de mañana.",
+                "Cada día es una nueva página en blanco.",
+                "Nunca sabrás lo que puedes lograr si no lo intentas.",
+                "Cree que puedes y estarás a medio camino.",
+                "Los sueños no funcionan a menos que tú trabajes por ellos.",
+                "Sé la energía que quieres atraer.",
+                "Nada que valga la pena es fácil.",
+                "El progreso es progreso, sin importar su tamaño.",
+                "Hazlo con pasión o no lo hagas.",
+                "Sé constante, no perfecto.",
+                "Da siempre lo mejor de ti, y lo mejor vendrá.",
+                "Tus metas no tienen fecha de caducidad.",
+                "El primer paso no te lleva donde quieres ir, pero te saca de donde estás.",
+                "Agradece lo que tienes mientras trabajas por lo que deseas.",
+                "Todo esfuerzo tiene su recompensa.",
+                "Empieza donde estás, usa lo que tienes, haz lo que puedas.",
+                "La verdadera motivación viene de dentro.",
+                "No esperes a que sea perfecto para comenzar.",
+                "Hazlo por la persona en la que te estás convirtiendo.",
+                "Cree, actúa, logra.",
+                "Ningún mar en calma hizo experto a un marinero.",
+                "Las metas grandes requieren valor.",
+                "No es magia, es trabajo duro.",
+                "Encuentra el propósito y el camino aparecerá.",
+                "No te detengas hasta que estés orgulloso.",
+                "Todo comienzo es difícil, pero vale la pena.",
+                "En cada paso hay fuerza.",
+                "Cada reto te hace más fuerte.",
+                "Esfuérzate más que ayer si quieres un mañana diferente.",
+                "No se trata de tener tiempo, se trata de hacer tiempo.",
+                "Transforma tu rutina en tu impulso.",
+                "Construye una vida de la que no quieras escapar.",
+                "Sé el cambio que quieres ver.",
+                "No eres lo que logras, eres lo que superas.",
+                "El camino es duro, pero la recompensa es grande.",
+                "Lo imposible solo tarda un poco más.",
+                "Nunca dejes que el miedo decida tu destino.",
+                "Confía en tu camino.",
+                "La constancia rompe límites.",
+                "Solo tú tienes el poder de cambiar tu historia.",
+                "El esfuerzo de hoy es tu victoria de mañana.",
+                "Cuando dudes, recuerda por qué empezaste."
+        };
+
+        for (int i = 0; i < frases.length; i++) {
+            Frases frase = new Frases();
+            frase.setFrase(frases[i]);
+            frasesRepository.save(frase);
+        }
+
+
+
     }
 
 

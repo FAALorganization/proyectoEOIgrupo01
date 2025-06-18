@@ -1,467 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forum empresa</title>
-    <!-- ======= Styles ====== -->
-    <link rel="stylesheet" th:href="@{css/forum.css}">
-    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
-    <link rel="stylesheet" href="https://fontawesome.com/icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foro de Empresa</title>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+        <link rel="stylesheet" th:href="@{/css/forum.css}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    </th:block>
 </head>
 
 <body>
-<!-- =============== Navigation ================ -->
-<div class="container">
-    <div class="navigation">
-        <ul>
-            <li>
-                <a href="#">
-                        <span class="icon">
-                             <!-- incase we want to creat an icon or put r our faal  -->
-                        </span>
-                    <img  th:src = "@{images/image.png}" width="150" height="150">
-                    <span class="title"></span>
-                </a>
-            </li>
+<div layout:fragment="content"
+     class="content-container height-100 d-flex flex-wrap">
 
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-house"></i>
-                        </span>
-                    <span class="title">Home</span>
-                </a>
-            </li>
+    <!-- Sección principal del foro -->
+    <div class="card flex-grow-2">
 
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-address-card"></i>
-                        </span>
-                    <span class="title">Perfil</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-clock"></i>
-                        </span>
-                    <span class="title">Checking</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-calendar-days"></i>
-                        </span>
-                    <span class="title">Calendario</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-file-pen"></i>
-                        </span>
-                    <span class="title">Gestion</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-paperclip"></i>
-                        </span>
-                    <span class="title">Documentacion</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-file-invoice"></i>
-                        </span>
-                    <span class="title">Ticketing</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-comment-dots"></i>
-                        </span>
-                    <span class="title">Chat</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-users"></i>
-                        </span>
-                    <span class="title">Foro</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <i class="fa-solid fa-right-to-bracket"></i>
-                        </span>
-                    <span class="title">Sign Out</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <!-- ========================= Main ==================== -->
-    <div class="main">
-        <div class="topbar">
-            <div class="toggle">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-
+        <div class="topbar d-flex">
             <div class="search">
                 <label>
-                    <input type="text" placeholder="Buscar una persona">
-                    <ion-icon name="search-outline"></ion-icon>
+                    <input type="text" placeholder="Buscar una persona" />
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </label>
             </div>
-
             <div class="user">
-                <img th:src = "@{images/image.png}" alt="">
+                <img th:src="@{/images/image.png}" alt="Usuario" />
             </div>
         </div>
 
-        <!-- ======================= Cards ================== -->
-        <div class="cardBox">
-            <div class="card">
+        <div class="d-flex flex-wrap">
+            <div class="card card-stats blue">
                 <div>
                     <div class="numbers">1,504</div>
-                    <div class="cardName">Daily Views</div>
+                    <div class="cardName">Visitas Diarias</div>
                 </div>
-
-                <div class="iconBx">
-                    <ion-icon name="eye-outline"></ion-icon>
-                </div>
+                <div class="iconBx"><i class="fa-regular fa-eye"></i></div>
             </div>
 
-            <div class="card">
+            <div class="card card-stats dark">
                 <div>
                     <div class="numbers">580</div>
-                    <div class="cardName">Reactions</div>
-
+                    <div class="cardName">Reacciones</div>
                 </div>
-
-                <div class="iconBx">
-                    <i class="fa-regular fa-heart"></i>
-                </div>
+                <div class="iconBx"><i class="fa-regular fa-heart"></i></div>
             </div>
 
-            <div class="card">
+            <div class="card card-stats blue">
                 <div>
                     <div class="numbers">284</div>
-                    <div class="cardName">Comments</div>
+                    <div class="cardName">Comentarios</div>
                 </div>
-
-                <div class="iconBx">
-                    <i class="fa-regular fa-comment"></i>
-                </div>
+                <div class="iconBx"><i class="fa-regular fa-comment"></i></div>
             </div>
 
-            <div class="card">
+            <div class="card card-stats dark">
                 <div>
                     <div class="numbers">7,842</div>
-                    <div class="cardName">Membres</div>
+                    <div class="cardName">Miembros</div>
                 </div>
-
-                <div class="iconBx">
-                    <i class="fa-solid fa-user-group"></i>
-                </div>
+                <div class="iconBx"><i class="fa-solid fa-user-group"></i></div>
             </div>
         </div>
 
-        <!-- ================ foum  Details ================= -->
+        <div class="forum-posts card">
+            <div class="cardHeader"><h2>Foro de la Empresa</h2></div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td width="60px">
+                        <div class="imgBx">
+                            <img th:src="@{/images/image.png}" alt="User" />
+                        </div>
+                    </td>
+                    <td>
+                        <h4>Alan Turbc</h4>
+                        <div class="post-details">
+                            <span>jason.aalbers95</span> • <span>9 h</span> • <span>6 respuestas</span>
+                        </div>
+                    </td>
+                    <td class="comment-count"><i class="fa-regular fa-comment"></i> <span>6</span></td>
+                </tr>
 
-        <div class="content-wrapper">
-            <!-- Forum Posts (Left Side) -->
-            <div class="forum-posts">
-                <div class="cardHeader">
-                    <h2>Forum de la emresa </h2>
-                </div>
-
-                <table>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img src="static/images/302688.jpg" alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Alan turbc</h4>
-                            <div class="post-details">
-                                <span>jason.aalbers95</span>
-                                <span class="separator">•</span>
-                                <span>9 h ago</span>
-                                <span class="separator">•</span>
-                                <span>6 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>6</span>
-                        </td>
-                    </tr>
-
-                    <!-- Additional forum posts -->
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Sarah Johnson</h4>
-                            <div class="post-details">
-                                <span>sarah.j</span>
-                                <span class="separator">•</span>
-                                <span>5 h ago</span>
-                                <span class="separator">•</span>
-                                <span>3 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>3</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Sarah Johnson</h4>
-                            <div class="post-details">
-                                <span>sarah.j</span>
-                                <span class="separator">•</span>
-                                <span>5 h ago</span>
-                                <span class="separator">•</span>
-                                <span>3 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>3</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}"alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Sarah Johnson</h4>
-                            <div class="post-details">
-                                <span>sarah.j</span>
-                                <span class="separator">•</span>
-                                <span>5 h ago</span>
-                                <span class="separator">•</span>
-                                <span>3 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>3</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}"alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Sarah Johnson</h4>
-                            <div class="post-details">
-                                <span>sarah.j</span>
-                                <span class="separator">•</span>
-                                <span>5 h ago</span>
-                                <span class="separator">•</span>
-                                <span>3 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>3</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Sarah Johnson</h4>
-                            <div class="post-details">
-                                <span>sarah.j</span>
-                                <span class="separator">•</span>
-                                <span>5 h ago</span>
-                                <span class="separator">•</span>
-                                <span>3 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>3</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Sarah Johnson</h4>
-                            <div class="post-details">
-                                <span>sarah.j</span>
-                                <span class="separator">•</span>
-                                <span>5 h ago</span>
-                                <span class="separator">•</span>
-                                <span>3 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>3</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Sarah Johnson</h4>
-                            <div class="post-details">
-                                <span>sarah.j</span>
-                                <span class="separator">•</span>
-                                <span>5 h ago</span>
-                                <span class="separator">•</span>
-                                <span>3 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>3</span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt="User"></div>
-                        </td>
-                        <td>
-                            <h4>Mike Peterson</h4>
-                            <div class="post-details">
-                                <span>mike.p</span>
-                                <span class="separator">•</span>
-                                <span>2 h ago</span>
-                                <span class="separator">•</span>
-                                <span>8 replies</span>
-                            </div>
-                        </td>
-                        <td width="60px" class="comment-count">
-                            <i class="fas fa-comment"></i>
-                            <span>8</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- ================= Recent joiners  ================ -->
-            <div class="recentJoiners">
-                <div class="cardHeader">
-                    <h2>Recent Joiners</h2>
-                </div>
-
-                <table>
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
-                        </td>
-                        <td>
-                            <h4>David <br> <span>Italy</span></h4>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
-                        </td>
-                        <td>
-                            <h4>Amit <br> <span>India</span></h4>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
-                        </td>
-                        <td>
-                            <h4>David <br> <span>Italy</span></h4>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
-                        </td>
-                        <td>
-                            <h4>Amit <br> <span>India</span></h4>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
-                        </td>
-                        <td>
-                            <h4>David <br> <span>Italy</span></h4>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
-                        </td>
-                        <td>
-                            <h4>Amit <br> <span>India</span></h4>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
-                        </td>
-                        <td>
-                            <h4>David <br> <span>Italy</span></h4>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="60px">
-                            <div class="imgBx"><img th:src = "@{images/image.png}" alt=""></div>
-                        </td>
-                        <td>
-                            <h4>Amit <br> <span>India</span></h4>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                <tr>
+                    <td width="60px">
+                        <div class="imgBx">
+                            <img th:src="@{/images/image.png}" alt="User" />
+                        </div>
+                    </td>
+                    <td>
+                        <h4>Mike Peterson</h4>
+                        <div class="post-details">
+                            <span>mike.p</span> • <span>2 h</span> • <span>8 respuestas</span>
+                        </div>
+                    </td>
+                    <td class="comment-count"><i class="fa-regular fa-comment"></i> <span>8</span></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
+
+    <!-- Miembros recientes -->
+    <div class="recentJoiners card">
+        <div class="cardHeader"><h2>Miembros Recientes</h2></div>
+        <table class="table">
+            <tbody>
+            <tr>
+                <td width="60px">
+                    <div class="imgBx">
+                        <img th:src="@{/images/image.png}" alt="David" />
+                    </div>
+                </td>
+                <td><h4>David<br /><span>Italia</span></h4></td>
+            </tr>
+            <tr>
+                <td width="60px">
+                    <div class="imgBx">
+                        <img th:src="@{/images/image.png}" alt="Amit" />
+                    </div>
+                </td>
+                <td><h4>Amit<br /><span>India</span></h4></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- =========== Scripts =========  -->
-<script th:src="@{js/forum.js}"></script>
-
-<!-- ====== ionicons ======= -->
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
 </body>
-
 </html>

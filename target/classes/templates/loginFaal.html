@@ -8,77 +8,78 @@
     <link rel="stylesheet" th:href="@{/css/loginFaal.css}">
 </head>
 <body>
-    <div class="fondo">
-       <div class="container2">
-    <div class="texto-lateral">
-        <h1>Bienvenido</h1>
-        <p>Ingresa tus credenciales o regístrate para acceder.</p>
+<div class="fondo">
+    <div class="container2">
+        <div class="texto-lateral">
+            <h1>Bienvenido</h1>
+            <p>Ingresa tus credenciales o regístrate para acceder.</p>
+        </div>
     </div>
-       </div>
-            <!-- el inicio -->
-             <div class="container">
-            <div class="formulario login">
-                <h3 class="text-center">Iniciar Sesión</h3>
-                <form th:action="@{/login}" method="post">
+    <!-- el inicio -->
+    <div class="container">
+        <div class="formulario login">
+            <h3 class="text-center">Iniciar Sesión</h3>
+            <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" name="correo" class="form-control" id="email" placeholder="Correo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" name="contrasena" class="form-control" id="password" placeholder="Contraseña">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+                <button type="button" class="btn btn-danger w-100 mt-2" onclick="mostrarRegistro()">¿Primera vez?</button>
+            </form>
+            <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+        </div>
+        <!-- el registro -->
+        <div class="formulario registro">
+            <h3 class="text-center">Primer ingreso</h3>
+            <form onsubmit="validarToken(event)">
+                <div class="mb-3">
+                    <label for="emailRegistro" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="emailRegistro" placeholder="Correo">
+                </div>
+                <div class="mb-3">
+                    <label for="code" class="form-label">Código</label>
+                    <input type="text" class="form-control" id="code" placeholder="Código">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                <button type="button" class="btn btn-danger w-100 mt-2" onclick="mostrarLogin()">Atrás</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal fade" id="modalCambioPass" tabindex="-1" aria-labelledby="modalCambioPassLabel" data-bs-backdrop="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCambioPassLabel">Cambio de Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Ingrese su nueva contraseña</h4>
+                <form id="formCambioPass">
+                    <input type="hidden" id="emailCambioPass">
                     <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" name="correo" class="form-control" id="email" placeholder="Correo" required>
+                        <label for="nuevaPass" class="form-label">Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="nuevaPass" placeholder="********">
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" name="contrasena" class="form-control" id="password" placeholder="Contraseña">
+                        <label for="confirmarPass" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" id="confirmarPass" placeholder="********">
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
-                    <button type="button" class="btn btn-danger w-100 mt-2" onclick="mostrarRegistro()">¿Primera vez?</button>
+                    <button type="submit" class="btn btn-primary w-100">Actualizar Contraseña</button>
                 </form>
-                <p th:if="${error}" th:text="${error}" style="color: red;"></p>
-            </div>
-                  <!-- el registro -->
-                  <div class="formulario registro">
-                    <h3 class="text-center">Primer ingreso</h3>
-                    <form onsubmit="validarToken(event)">
-                        <div class="mb-3">
-                            <label for="emailRegistro" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="emailRegistro" placeholder="Correo">
-                        </div>
-                        <div class="mb-3">
-                            <label for="code" class="form-label">Código</label>
-                            <input type="text" class="form-control" id="code" placeholder="Código">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
-                        <button type="button" class="btn btn-danger w-100 mt-2" onclick="mostrarLogin()">Atrás</button>
-                    </form>
-                    </div>  
-                </div>
-        </div>
-        <!-- modal -->
-        <div class="modal fade" id="modalCambioPass" tabindex="-1" aria-labelledby="modalCambioPassLabel" data-bs-backdrop="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalCambioPassLabel">Cambio de Contraseña</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h4 class="text-center">Ingrese su nueva contraseña</h4>
-                        <form id="formCambioPass">
-                            <div class="mb-3">
-                                <label for="nuevaPass" class="form-label">Nueva Contraseña</label>
-                                <input type="password" class="form-control" id="nuevaPass" placeholder="********">
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmarPass" class="form-label">Confirmar Contraseña</label>
-                                <input type="password" class="form-control" id="confirmarPass" placeholder="********">
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Actualizar Contraseña</button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
-        <!-- los scripts-->
-        <script th:src="@{js/loginFaal.js}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+</div>
+<!-- los scripts-->
+<script th:src="@{js/loginFaal.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

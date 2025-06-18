@@ -37,7 +37,10 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
         d.nombre,
         d.apellidos,
         a.fechaInicio,
-        a.fechaFin
+        a.fechaFin,
+        a.aprobado,
+        a.tiposAusencias,
+        a.justificacion
 )
     FROM Login usuario
     JOIN Login jefe ON usuario.jefeLogin.id = jefe.id
@@ -45,9 +48,10 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     JOIN Detallesdeusuario d ON d.usuarioLogin.id = sub.id
     JOIN Ausencias a ON a.loginAusencias.id = sub.id
     WHERE usuario.emailPrimario = :email
-      AND a.tiposAusencias.id = 1
-      AND a.aprobado = true
+     
 """)
+//    AND a.tiposAusencias.id = 1
+//    AND a.aprobado = true
     List<NombreConAusenciasDTO> obtenerCompanerosConAusencias(@Param("email") String email);
 
     Integer id(Integer id);

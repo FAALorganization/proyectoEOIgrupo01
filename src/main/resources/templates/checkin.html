@@ -19,6 +19,8 @@
 
         <!-- Título -->
         <h3 class="text-center mb-3">Registro de Check-in</h3>
+        <input type="hidden" id="userId" th:value="${usuarioActual.id}">
+
 
         <!-- Reloj -->
         <div class="mb-3 text-center">
@@ -73,9 +75,9 @@
             <tbody id="historial-list" th:fragment="historialCheckins">
             <tr th:each="checkin : ${checkins}">
               <td th:text="${checkin.fechaFormatted}"></td>
-              <td th:text="${checkin.horaEntrada}"></td>
+              <td th:text="${checkin.horaEntradaFormatted}"></td>
               <td th:text="${checkin.tipo}"></td>
-              <td th:text="${checkin.horaSalida != null ? checkin.horaSalida : ''}"></td>
+              <td th:text="${checkin.horaSalidaFormatted}"></td>
             </tr>
             </tbody>
           </table>
@@ -117,9 +119,9 @@
                     <tbody id="empleadoHistorial">
                     <tr th:each="checkin : ${empleadoCheckins}">
                       <td th:text="${checkin.fechaFormatted}"></td>
-                      <td th:text="${checkin.horaEntrada}"></td>
+                      <td th:text="${checkin.horaEntradaFormatted}"></td>
                       <td th:text="${checkin.tipo}"></td>
-                      <td th:text="${checkin.horaSalida != null ? checkin.horaSalida : ''}"></td>
+                      <td th:text="${checkin.horaSalidaFormatted}"></td>
                     </tr>
                     </tbody>
                   </table>

@@ -26,9 +26,6 @@ public class Tarea implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-//    @Column(name="tipo_tarea")
-//    private Integer tipoTarea;
-
     @ManyToOne
     @JoinColumn(name = "tipo_tareas", referencedColumnName = "id")
     private TipoTareas tipoTarea;

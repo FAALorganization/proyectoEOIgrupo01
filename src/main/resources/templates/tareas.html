@@ -13,15 +13,13 @@
 
 <body>
 <div layout:fragment="content" class="content-container">
-    <!-- botón para añadir tareas (Jefe) -->
-    <div class="mb-3 text-center" th:if="${esJefe}">
-        <a th:href="@{/tareas/jefe/asignar}" class="btn-gestion">
-            <i class="bi bi-arrow-right-circle"></i> Ir a Añadir Tarea
-        </a>
-    </div>
-
-    <!-- Botón para abrir modal de nueva tarea personal -->
-    <div class="mb-3 text-center">
+    <!-- Botones flotantes a la derecha -->
+    <div class="floating-buttons">
+        <div th:if="${esJefe}">
+            <a th:href="@{/tareas/jefe/asignar}" class="btn-gestion mb-2">
+                <i class="bi bi-arrow-right-circle"></i> Ir a Añadir Tarea
+            </a>
+        </div>
         <button type="button" class="btn-gestion" data-bs-toggle="modal" data-bs-target="#modalAgregarTarea">
             <i class="bi bi-plus-circle"></i> Añadir Nueva Tarea
         </button>
@@ -145,6 +143,6 @@
     </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+</div>
 </body>
 </html>
