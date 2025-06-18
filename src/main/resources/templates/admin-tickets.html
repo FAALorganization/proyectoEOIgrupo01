@@ -1,586 +1,660 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Ticket Control</title>
-    <link rel="icon" href="Resources/images/icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <th:block layout:fragment="styles">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Ticket Control</title>
+        <link rel="icon" href="Resources/images/icon.png" type="image/x-icon">
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f5f1ed;
-            color: #252323;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            align-items: start;
-        }
-
-        h1, h3, legend {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: #252323;
-        }
-
-        h1 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            font-weight: 700;
-            margin-bottom: 2rem;
-        }
-
-        h3 {
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
-            font-weight: 600;
-        }
-
-        .main-block {
-            background-color: #fff;
-            padding: clamp(20px, 4vw, 40px);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            animation: slideInUp 0.6s ease-out;
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .main-block:hover {
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .left-section {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .right-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* Form Styling */
-        fieldset {
-            border: none;
-            margin-bottom: 30px;
-            padding: 0;
-        }
-
-        legend {
-            padding: 0 20px;
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        legend::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background-color: #252323;
-            border-radius: 2px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin: 15px 0 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #252323;
-        }
-
-        input[type="text"],
-        input[type="tel"],
-        input[type="email"],
-        input[type="file"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            background-color: #fafafa;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #252323;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 3px rgba(37, 35, 35, 0.1);
-            transform: translateY(-1px);
-        }
-
-        input[type="file"] {
-            padding: 10px;
-            background-color: #ffffff;
-            border: 2px dashed #e0e0e0;
-        }
-
-        input[type="file"]:hover {
-            border-color: #252323;
-            background-color: #fafafa;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .date-block {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .date-block select {
-            margin-bottom: 0;
-        }
-
-        /* Button Styling */
-        button {
-            background-color: #252323;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        button:hover {
-            background-color: #444;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 35, 35, 0.3);
-        }
-
-        button:hover::before {
-            left: 100%;
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        #form-action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        #form-action-buttons button {
-            min-width: 140px;
-            padding: 14px 30px;
-        }
-
-        button[type="reset"] {
-            background-color: transparent;
-            color: #252323;
-            border: 2px solid #252323;
-        }
-
-        button[type="reset"]:hover {
-            background-color: #252323;
-            color: #fff;
-        }
-
-        /* Admin Controls */
-        .admin-controls {
-            background-color: #f5f1ed;
-            border: 2px solid #e0e0e0;
-            border-radius: 20px;
-        }
-
-        .admin-controls .main-block {
-            background-color: transparent;
-            box-shadow: none;
-            padding: 20px;
-        }
-
-        .admin-controls:hover {
-            border-color: #252323;
-        }
-
-        .sla {
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            font-size: 1.1rem;
-        }
-
-        .sla strong {
-            color: #252323;
-            font-size: 1.3rem;
-            display: block;
-            margin-top: 5px;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn-group button,
-        .btn-group select {
-            width: 100%;
-            min-height: 48px;
-        }
-
-        .btn-group select {
-            background-color: #fff;
-            cursor: pointer;
-        }
-
-        .btn-group select:focus {
-            border-color: #252323;
-        }
-
-        /* Open Tickets Section */
-        .open-tickets {
-            background-color: #f5f1ed;
-            border: 2px solid #e0e0e0;
-            border-radius: 20px;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .open-tickets:hover {
-            border-color: #252323;
-        }
-
-        .open-tickets h3 {
-            margin-bottom: 20px;
-        }
-
-        .open-tickets select[size] {
-            width: 100%;
-            min-height: 200px;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            background-color: #fff;
-            font-size: 0.95rem;
-        }
-
-        .open-tickets select[size] option {
-            padding: 10px;
-            margin: 2px 0;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .open-tickets select[size] option:hover {
-            background-color: #f0f0f0;
-        }
-
-        .open-tickets select[size] option:checked {
-            background-color: #252323;
-            color: #fff;
-        }
-
-        /* Modal Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: #fff;
-            padding: 40px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            animation: modalSlideIn 0.4s ease-out;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #666;
-            transition: color 0.3s ease, transform 0.3s ease;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .close-modal:hover {
-            color: #252323;
-            background-color: #f0f0f0;
-            transform: rotate(90deg);
-        }
-
-        .modal form {
-            margin-top: 20px;
-        }
-
-        .modal button[type="submit"] {
-            width: 100%;
-            margin-top: 20px;
-            padding: 15px;
-            font-size: 1rem;
-        }
-
-        /* Animations */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .container {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-        }
-
-        @media (max-width: 768px) {
             body {
-                padding: 15px;
+                font-family: 'Montserrat', sans-serif;
+                background-color: #f5f1ed;
+                color: #252323;
+                line-height: 1.6;
+                min-height: 100vh;
+                padding: 20px;
             }
 
             .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 20px;
+                align-items: start;
+            }
+
+            h1, h3, legend {
+                text-align: center;
+                margin-bottom: 1.5rem;
+                color: #252323;
+            }
+
+            h1 {
+                font-size: clamp(1.8rem, 4vw, 2.5rem);
+                font-weight: 700;
+                margin-bottom: 2rem;
+            }
+
+            h3 {
+                font-size: clamp(1.2rem, 3vw, 1.5rem);
+                font-weight: 600;
+            }
+
+            .main-block {
+                background-color: #fff;
+                padding: clamp(20px, 4vw, 40px);
+                border-radius: 20px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                animation: slideInUp 0.6s ease-out;
+                transition: box-shadow 0.3s ease, transform 0.3s ease;
+                margin-bottom: 20px;
+            }
+
+            .main-block:hover {
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+                transform: translateY(-2px);
+            }
+
+            .left-section {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .right-section {
+                display: flex;
+                flex-direction: column;
                 gap: 20px;
             }
 
+            /* Form Styling */
+            fieldset {
+                border: none;
+                margin-bottom: 30px;
+                padding: 0;
+            }
+
+            legend {
+                padding: 0 20px;
+                position: relative;
+                margin-bottom: 25px;
+            }
+
+            legend::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 50px;
+                height: 3px;
+                background-color: #252323;
+                border-radius: 2px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+                position: relative;
+            }
+
             .form-row {
-                grid-template-columns: 1fr;
-                gap: 15px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-bottom: 20px;
             }
 
-            .date-block {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            #form-action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            #form-action-buttons button {
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 30px 20px;
+            label {
+                display: block;
+                margin: 15px 0 8px;
+                font-weight: 600;
+                font-size: 0.95rem;
+                color: #252323;
             }
 
             input[type="text"],
             input[type="tel"],
             input[type="email"],
+            input[type="file"],
             select,
             textarea {
-                font-size: 16px; /* Prevents zoom on iOS */
+                width: 100%;
+                padding: 12px 16px;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+                margin-bottom: 15px;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 0.95rem;
+                transition: all 0.3s ease;
+                background-color: #fafafa;
             }
-        }
 
-        @media (max-width: 480px) {
-            .main-block {
-                padding: 20px 15px;
+            input:focus,
+            select:focus,
+            textarea:focus {
+                outline: none;
+                border-color: #252323;
+                background-color: #ffffff;
+                box-shadow: 0 0 0 3px rgba(37, 35, 35, 0.1);
+                transform: translateY(-1px);
+            }
+
+            input[type="file"] {
+                padding: 10px;
+                background-color: #ffffff;
+                border: 2px dashed #e0e0e0;
+            }
+
+            input[type="file"]:hover {
+                border-color: #252323;
+                background-color: #fafafa;
+            }
+
+            textarea {
+                resize: vertical;
+                min-height: 120px;
+            }
+
+            .date-block {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 12px;
+                margin-bottom: 15px;
+            }
+
+            .date-block select {
+                margin-bottom: 0;
+            }
+
+            /* Button Styling */
+            button {
+                background-color: #252323;
+                color: #fff;
+                padding: 12px 20px;
+                border-radius: 12px;
+                border: none;
+                cursor: pointer;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
+                font-size: 0.95rem;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s ease;
+            }
+
+            button:hover {
+                background-color: #444;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(37, 35, 35, 0.3);
+            }
+
+            button:hover::before {
+                left: 100%;
+            }
+
+            button:active {
+                transform: translateY(0);
+            }
+
+            #form-action-buttons {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                margin-top: 30px;
+                flex-wrap: wrap;
+            }
+
+            #form-action-buttons button {
+                min-width: 140px;
+                padding: 14px 30px;
+            }
+
+            button[type="reset"] {
+                background-color: transparent;
+                color: #252323;
+                border: 2px solid #252323;
+            }
+
+            button[type="reset"]:hover {
+                background-color: #252323;
+                color: #fff;
+            }
+
+            /* Admin Controls */
+            .admin-controls {
+                background-color: #f5f1ed;
+                border: 2px solid #e0e0e0;
+                border-radius: 20px;
+            }
+
+            .admin-controls .main-block {
+                background-color: transparent;
+                box-shadow: none;
+                padding: 20px;
+            }
+
+            .admin-controls:hover {
+                border-color: #252323;
             }
 
             .sla {
-                font-size: 1rem;
+                text-align: center;
+                margin: 20px 0;
+                padding: 15px;
+                background-color: #fff;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                font-size: 1.1rem;
             }
 
             .sla strong {
-                font-size: 1.2rem;
+                color: #252323;
+                font-size: 1.3rem;
+                display: block;
+                margin-top: 5px;
             }
 
-            legend::after {
-                width: 30px;
-                height: 2px;
+            .btn-group {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
             }
-        }
 
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+            .btn-group button,
+            .btn-group select {
+                width: 100%;
+                min-height: 48px;
             }
-        }
 
-        button:focus,
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: 2px solid #252323;
-            outline-offset: 2px;
-        }
+            .btn-group select {
+                background-color: #fff;
+                cursor: pointer;
+            }
 
-        /* Status indicators */
-        .status-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
+            .btn-group select:focus {
+                border-color: #252323;
+            }
 
-        .status-high { background-color: #ff4757; }
-        .status-medium { background-color: #ffa502; }
-        .status-low { background-color: #2ed573; }
+            /* Open Tickets Section */
+            .open-tickets {
+                background-color: #f5f1ed;
+                border: 2px solid #e0e0e0;
+                border-radius: 20px;
+                padding: 20px;
+                background-color: #fff;
+                transition: all 0.3s ease;
+            }
 
-        /* Enhanced checkbox styling */
-        .terms-mailing {
-            background-color: initial;
-            cursor: default;
-            appearance: auto;
-            box-sizing: border-box;
-            margin: 3px 3px 3px 4px;
-            padding: initial;
-            border: initial;
-        }
+            .btn.btn-success.flex-grow-1 {
+                background-color: #252323;
+                color: #fff;
+                padding: 12px 20px;
+                border-radius: 12px;
+                border: none;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
+                font-size: 0.95rem;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
 
-        /* Loading states */
-        .loading {
-            position: relative;
-            pointer-events: none;
-        }
 
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #252323;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+            button {
+                background-color: #252323;
+                color: #fff;
+                padding: 12px 20px;
+                border-radius: 12px;
+                border: none;
+                cursor: pointer;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
+                font-size: 0.95rem;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+            .open-tickets:hover {
+                border-color: #252323;
+            }
+
+            .open-tickets h3 {
+                margin-bottom: 20px;
+            }
+
+            .open-tickets select[size] {
+                width: 100%;
+                min-height: 200px;
+                padding: 15px;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+            ;
+                font-size: 0.95rem;
+            }
+
+            .open-tickets select[size] option {
+                padding: 10px;
+                margin: 2px 0;
+                border-radius: 6px;
+                transition: all 0.2s ease;
+            }
+
+            .open-tickets select[size] option:hover {
+                background-color: #f0f0f0;
+            }
+
+            .open-tickets select[size] option:checked {
+                background-color: #252323;
+                color: #fff;
+            }
+
+            /* Modal Styling */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(5px);
+                align-items: center;
+                justify-content: center;
+                animation: fadeIn 0.3s ease-out;
+            }
+
+            .modal.show {
+                display: flex;
+            }
+
+            .modal-content {
+                background: #fff;
+                padding: 40px;
+                border-radius: 20px;
+                width: 90%;
+                max-width: 500px;
+                animation: modalSlideIn 0.4s ease-out;
+                position: relative;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            }
+
+            .close-modal {
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                background: none;
+                border: none;
+                font-size: 1.8rem;
+                cursor: pointer;
+                color: #666;
+                transition: color 0.3s ease, transform 0.3s ease;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+            }
+
+            .close-modal:hover {
+                color: #252323;
+                background-color: #f0f0f0;
+                transform: rotate(90deg);
+            }
+
+            .modal form {
+                margin-top: 20px;
+            }
+
+            .modal button[type="submit"] {
+                width: 100%;
+                margin-top: 20px;
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            /* Animations */
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes modalSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            /* Responsive Design */
+            @media (max-width: 1200px) {
+                .container {
+                    grid-template-columns: 1fr;
+                    gap: 30px;
+                }
+
+                .right-section {
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                }
+
+                .admin-controls,
+                .open-tickets {
+                    flex: 1 1 400px;
+                }
+            }
+
+            @media (max-width: 992px) {
+                .right-section {
+                    flex-direction: column;
+                }
+            }
+
+            @media (max-width: 768px) {
+                body {
+                    padding: 15px;
+                }
+
+                .container {
+                    gap: 20px;
+                }
+
+                .form-row {
+                    grid-template-columns: 1fr;
+                    gap: 15px;
+                }
+
+                .date-block {
+                    grid-template-columns: 1fr;
+                    gap: 8px;
+                }
+
+                #form-action-buttons {
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                #form-action-buttons button {
+                    width: 100%;
+                    max-width: 300px;
+                }
+
+                .modal-content {
+                    width: 95%;
+                    padding: 30px 20px;
+                }
+
+                input[type="text"],
+                input[type="tel"],
+                input[type="email"],
+                select,
+                textarea {
+                    font-size: 16px; /* Prevents zoom on iOS */
+                }
+
+                .btn-group button,
+                .btn-group select {
+                    min-height: 44px;
+                    padding: 10px 15px;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .main-block {
+                    padding: 20px 15px;
+                }
+
+                .sla {
+                    font-size: 1rem;
+                }
+
+                .sla strong {
+                    font-size: 1.2rem;
+                }
+
+                legend::after {
+                    width: 30px;
+                    height: 2px;
+                }
+
+                #form-action-buttons button {
+                    padding: 12px 20px;
+                }
+
+                .modal-content {
+                    padding: 25px 15px;
+                }
+            }
+
+            /* Accessibility */
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            }
+
+            button:focus,
+            input:focus,
+            select:focus,
+            textarea:focus {
+                outline: 2px solid #252323;
+                outline-offset: 2px;
+            }
+
+            /* Status indicators */
+            .status-indicator {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                margin-right: 8px;
+            }
+
+            .status-high { background-color: #ff4757; }
+            .status-medium { background-color: #ffa502; }
+            .status-low { background-color: #2ed573; }
+
+            /* Enhanced checkbox styling */
+            .terms-mailing {
+                background-color: initial;
+                cursor: default;
+                appearance: auto;
+                box-sizing: border-box;
+                margin: 3px 3px 3px 4px;
+                padding: initial;
+                border: initial;
+            }
+
+            /* Loading states */
+            .loading {
+                position: relative;
+                pointer-events: none;
+            }
+
+            .loading::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 20px;
+                height: 20px;
+                margin: -10px 0 0 -10px;
+                border: 2px solid #f3f3f3;
+                border-top: 2px solid #252323;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    </th:block>
 </head>
 <body>
 
-<div class="container">
+<div class="container" layout:fragment="content">
     <!-- LEFT SECTION -->
     <div class="left-section">
         <div class="main-block">
@@ -751,41 +825,50 @@
                     Tiempo SLA:
                     <strong id="slaTimer">04:25:13</strong>
                 </div>
-<!--                <div class="btn-group">-->
-<!--                    <button type="button" id="pauseSlaBtn" th:disabled="${ticket?.status == 'CLOSED' || ticket?.slaTracking?.isPaused}">-->
-<!--                        <i class="fa-solid fa-pause"></i>-->
-<!--                        Pausar SLA-->
-<!--                    </button>-->
-<!--                    <button type="button" class="btn btn-success flex-grow-1" id="resumeSlaBtn"-->
-<!--                            th:disabled="${ticket?.status == 'CLOSED' || !ticket?.slaTracking?.isPaused}">-->
-<!--                        <i class="fas fa-play me-2"></i>Reanudar SLA-->
-
-                <form th:action="@{/update/{id}(id=${ticketingDTO.id})}" method="post" th:object="${ticketingDTO}">
-                    <button type="submit" id="modifyTicketBtn">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        Modificar Ticket
+                <div class="btn-group">
+                    <!-- Pause SLA Button -->
+                    <button type="button"
+                            id="pauseSlaBtn"
+                            th:disabled="${ticketingDTO?.estado == 'CLOSED'} or ${ticketingDTO?.slaDTO?.isPaused}"
+                            th:onclick="|pauseSla(${ticketingDTO.id})|">
+                        <i class="fa-solid fa-pause"></i>
+                        Pausar SLA
                     </button>
-                </form>
-                <form id="reopenTicketForm" th:action="@{'/reopen/' + ${ticketingDTO.id}}" method="post" th:if="${ticketingDTO?.estado == 'CLOSED'}" style="display: none;">
-                    <input type="hidden" name="reason" value="Reopened from UI"/>
-                </form>
+                    <!-- Resume SLA Button -->
+                    <button type="button"
+                            class="btn btn-success flex-grow-1"
+                            id="resumeSlaBtn"
+                            th:disabled="${ticketingDTO?.estado == 'CLOSED'} or ${ticketingDTO?.slaDTO?.isPaused == false}"
+                            th:onclick="|resumeSla(${ticketingDTO.id})|">
+                        <i class="fas fa-play me-2"></i>
+                        Reanudar SLA
+                    </button>
+                    <form th:action="@{/update/{id}(id=${ticketingDTO.id})}" method="post" th:object="${ticketingDTO}">
+                        <button type="submit" id="modifyTicketBtn">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            Modificar Ticket
+                        </button>
+                    </form>
+                    <form id="reopenTicketForm" th:action="@{'/reopen/' + ${ticketingDTO.id}}" method="post" th:if="${ticketingDTO?.estado == 'CLOSED'}" style="display: none;">
+                        <input type="hidden" name="reason" value="Reopened from UI"/>
+                    </form>
 
-                <button type="button" id="reopenTicketBtn" th:disabled="${ticketingDTO?.estado != 'CLOSED'}" onclick="document.getElementById('reopenTicketForm').submit();">
-                    <i class="fa-solid fa-lock-open"></i>
-                    Reabrir Ticket
-                </button>
-                <select id="close-reason" th:disabled="${ticketingDTO?.estado == 'CLOSED'}">
-                    <option disabled selected>Motivo de Cierre</option>
-                    <option>Resuelto</option>
-                    <option>Usuario No Responde</option>
-                    <option>Duplicado</option>
-                    <option>Irrelevante</option>
-                </select>
+                    <button type="button" id="reopenTicketBtn" th:disabled="${ticketingDTO?.estado != 'CLOSED'}" onclick="document.getElementById('reopenTicketForm').submit();">
+                        <i class="fa-solid fa-lock-open"></i>
+                        Reabrir Ticket
+                    </button>
+                    <select id="close-reason" th:disabled="${ticketingDTO?.estado == 'CLOSED'}">
+                        <option disabled selected>Motivo de Cierre</option>
+                        <option>Resuelto</option>
+                        <option>Usuario No Responde</option>
+                        <option>Duplicado</option>
+                        <option>Irrelevante</option>
+                    </select>
 
-                <button type="button" id="closeTicketBtn" th:disabled="${ticketingDTO?.estado == 'CLOSED'}">
-                    <i class="fa-solid fa-lock"></i> Cerrar Ticket
-                </button>
-              </div>
+                    <button type="button" id="closeTicketBtn" th:disabled="${ticketingDTO?.estado == 'CLOSED'}">
+                        <i class="fa-solid fa-lock"></i> Cerrar Ticket
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -793,9 +876,9 @@
             <h3>Tickets Asignados a mi equipo</h3>
             <form th:action="@{/ticket/list}" method="get">
                 <select name="ticketId" size="5" onchange="this.form.submit()">
-                    <option th:each="ticket : ${tickets}"
-                            th:value="${ticket.id}"
-                            th:text="'Ticket #' + ${ticket.id} + ' - ' + ${ticket.asunto}">
+                    <option th:each="ticket : ${ticketingDTO}"
+                            th:value="${ticketingDTO.id}"
+                            th:text="'Ticket #' + ${ticketingDTO.id} + ' - ' + ${ticketingDTO.asunto}">
                     </option>
                 </select>
             </form>
@@ -844,3 +927,4 @@
     }
 </script>
 </body>
+</html>

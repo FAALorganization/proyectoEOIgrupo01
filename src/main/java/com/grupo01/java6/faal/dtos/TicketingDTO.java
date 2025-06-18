@@ -25,6 +25,7 @@ public class TicketingDTO {
 
     private String tipoTicket;
 
+   private SlaDTO slaDTO;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;

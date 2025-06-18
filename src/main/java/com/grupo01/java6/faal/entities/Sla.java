@@ -44,7 +44,6 @@ public class Sla implements Serializable{
     private LocalDateTime pauseTime;
     private Duration pausedDuration = Duration.ZERO;
     private Duration frozenRemainingTime = null; // duración congelada al pausar
-
     @Transient
     public Duration getRemainingTime() {
         if (isPaused) {
@@ -55,7 +54,10 @@ public class Sla implements Serializable{
             return Duration.between(LocalDateTime.now(), deadline.minus(pausedDuration));
         }
     }
-
+    @Column(name = "modified_by", length = 100)
+    private String modifiedBy;
+    @Column(name = "modified_at")
+    private LocalDateTime modifiedAt;
     // Método para pausar
     public void pause() {
         if (!isPaused) {
@@ -87,5 +89,9 @@ public class Sla implements Serializable{
 
     public void setTotalPausedDuration(long l) {
 
+    }
+
+    public String setModifiedBy(String modifiedBy) {
+        return modifiedBy;
     }
 }

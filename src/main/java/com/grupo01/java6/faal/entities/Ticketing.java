@@ -2,6 +2,7 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -75,7 +77,19 @@ public class Ticketing implements Serializable {
         return getUsuarioCreador();
 
     }
+    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Sla sla;
 
+    public Sla getSla() {
+        return this.sla;
+    }
+
+    public void setSla(Sla sla) {
+        this.sla = sla;
+        if (sla != null) {
+            sla.setTicket(this); // Maintain the bidirectional relationship
+        }
+    }
     public enum TicketStatus {
         OPEN, IN_PROGRESS, PENDING_REVIEW, RESOLVED, CLOSED, REOPENED
     }
