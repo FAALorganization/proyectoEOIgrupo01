@@ -309,3 +309,20 @@ body {
 .calendar-container {
     margin-top: 100px;
 }
+
+.floating-buttons {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 999;
+}
+
+.floating-buttons .btn-gestion {
+    margin-bottom: 10px;
+    min-width: 200px;
+    text-align: center;
+}

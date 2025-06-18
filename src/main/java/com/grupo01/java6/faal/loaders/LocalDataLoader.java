@@ -78,7 +78,7 @@ public class LocalDataLoader {
         int[] ids = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         String[] emailsTrabajo = {"ana.admin@correo.com", null, "luis.jefe1@correo.com", "marta.jefe2@correo.com", "carlos.user1@correo.com", "elena.user2@correo.com", "javier.user3@correo.com", "lucia.user4@correo.com", "pedro.visit1@correo.com", "sara.visit2@correo.com"};
         String[] passwords = {"adminpass", null, "jefe1pass", "jefe2pass", "user1pass", "user2pass", "user3pass", "user4pass", "visit1pass", "visit2pass"};
-        String[] tokens = {"tokenadmin", null, "tokenjefe1", "tokenjefe2", "tokenuser1", "tokenuser2", "tokenuser3", "tokenuser4", "tokenvisit1", "tokenvisit2"};
+        String[] tokens = {"YwjMfw1uvr", null, "qzBtqljuMz", "1LejMYDL0u", "dLOXgZpHB4", "Wf1eFZFJmc", "8wkTOK2cmu", "q9BRzXd4yG", "vnsD5ecOsG","XVBxHo87NJ"};
         String[] fechasRegistro = {"2025-05-20", null, "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20", "2025-05-20"};
         Integer[] idJefe = {1, null, 3, 4, 3, 3, 4, 4, 3, 3};
         int[] personaIds = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -154,9 +154,8 @@ public class LocalDataLoader {
         String[] fechasInicio = {"2025-07-20", "2025-05-28", "2025-04-24", "2025-07-04", "2025-05-15", "2025-05-13", "2025-05-19", "2025-04-04", "2025-04-14", "2025-07-23", "2025-07-16", "2025-05-21", "2025-03-13", "2025-07-14", "2025-08-18", "2025-05-07", "2025-05-12"};
         int[] idLogin = {1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 6, 6, 6, 6};
         int[] idTiposAusencias = {1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 1};
-        String[] documentos = {null, null, null, null, null, null, null, null, null, null, null, "tokenuser1.21_05_2025.23_05_2025.0.just.pdf|tokenuser1.21_05_2025.23_05_2025.1.just.pdf", "tokenuser1.13_03_2025.0.just.pdf|tokenuser1.13_03_2025.1.just.pdf", null, null, null, null};
-        String[] comentarios = {null, null, null, null, null, null, null, null, null, null, null, "2//Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur rid", "4//Soy un maquina", null, null, null, null};
-
+        String[] documentos = {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null};
+        String[] comentarios = {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null};
         for (int i = 0; i < totalDias.length; i++) {
             Ausencias ausencia = new Ausencias();
             ausencia.setAprobado(aprobado[i]);
