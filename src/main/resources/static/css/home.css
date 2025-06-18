@@ -105,3 +105,26 @@
     overflow: auto;
     padding-top: 200px;
 }
+
+/* Estilos para la alerta de checkout pendiente */
+.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+    color: #664d03;
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.alert-warning .alert-link {
+    color: #664d03;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.alert-warning i {
+    margin-right: 8px;
+}

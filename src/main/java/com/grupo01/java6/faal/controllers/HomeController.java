@@ -23,12 +23,14 @@ public class HomeController {
     private final DetallesdeusuarioService detallesdeusuarioService;
     private final TareaService tareaService;
     private final FrasesService frasesService;
+    private final CheckinService checkinService;
 
-    public HomeController(LoginService loginService, DetallesdeusuarioService detallesdeusuarioService, TareaService tareaService, FrasesService frasesService) {
+    public HomeController(LoginService loginService, DetallesdeusuarioService detallesdeusuarioService, TareaService tareaService, FrasesService frasesService, CheckinService checkinService) {
         this.loginService = loginService;
         this.detallesdeusuarioService = detallesdeusuarioService;
         this.tareaService = tareaService;
         this.frasesService = frasesService;
+        this.checkinService = checkinService;
     }
 
 
@@ -37,6 +39,9 @@ public class HomeController {
     {
         String correoUser = principal.getName();
         Login loginUser = loginService.obtainUser(correoUser);
+
+        boolean checkoutPendiente = checkinService.tieneCheckoutPendiente(loginUser);
+        model.addAttribute("checkoutPendiente", checkoutPendiente);
 
         String nombreUsuario = detallesdeusuarioService.findByEmail(correoUser).getNombre();
         Integer idUser = loginUser.getId();
