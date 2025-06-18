@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     divName5.classList = "aus-circle-decorativePNG";
 
                     let divImg = document.createElement("img");
-                    divImg.src = "/images/perfil.png";
+                    divImg.src = "/images/personal/" + ausencias[index].token + ".png";
                     divImg.alt = "perfil";
 
                     divName5.appendChild(divImg);
