@@ -141,13 +141,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/admin-tickets").hasRole( "ADMIN")
                         .requestMatchers("/login", "/loginFaal", "/login?error", "/login?logout", "/css/**", "/js/**", "/images/**", "/gestionVRes/aprobar-justificacion","/login/validar-token", "login/cambiar-password").permitAll()
                         .requestMatchers("/admin-only").hasRole("ADMIN")
                         .requestMatchers("/jefe-only").hasRole("JEFE")
                         .requestMatchers("/usuario-only").hasRole("USUARIO")
                         .requestMatchers("/visitante-only").hasRole("VISITANTE")
                         .requestMatchers("/ticket").hasAnyRole("USUARIO","ADMIN","VISITANTE", "JEFE")
-                        .requestMatchers("/admin-tickets").hasAnyRole( "ADMIN")
+
 
                         .anyRequest().authenticated()  // siempre al final
 

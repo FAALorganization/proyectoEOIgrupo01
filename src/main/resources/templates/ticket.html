@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layoutNavBar}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open a Ticket</title>
-    <link rel="icon" th:href="@{/resources/static/images/faal.png}" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Import your CSS file -->
-    <link rel="stylesheet" th:href="@{/css/ticket.css}">
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/app.css}" />
+        <link rel="stylesheet" th:href="@{/css/ticket.css}">
+    </th:block>
 </head>
 <body>
-<div class="container">
+<div class="container" layout:fragment="content">
     <div class="main-block">
         <!-- Updated form action to match your controller -->
         <form th:action="@{/ticket/submit}" method="post" th:object="${ticketForm}">
@@ -189,7 +187,7 @@
 
 <p id="copy">&copy; 2025 | Todos los derechos reservados a faal</p>
 
-<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/ticket.js}"></script>
 
 </body>
 </html>
