@@ -135,8 +135,9 @@ public class JustificacionController {
             if (ausenciaOpt.isPresent()) {
                 Ausencias ausencia = ausenciaOpt.get();
                 String[] archivosList = ausencia.getDocumentos().split("\\|");
-                String userHome = System.getProperty("user.home");
-                Path filesPath = Paths.get(userHome, "files");
+                // Path filesPath = Paths.get(System.getProperty("user.home"), "files");
+
+                Path filesPath = Paths.get("/var/lib/data/");
 
                 // Crear zip en memoria con ByteArrayOutputStream
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
