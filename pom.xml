@@ -186,10 +186,6 @@
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -201,11 +197,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.4.3</version>
-                <configuration>
-                    <image>
-                        <name>${project.name}:${env.VERSION}</name>
-                    </image>
-                </configuration>
             </plugin>
 
             <!-- Jacoco Plugin -->
