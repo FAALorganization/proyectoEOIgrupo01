@@ -30,7 +30,7 @@ public class TicketController {
         this.priorityService = priorityService;
         this.ticketingService = ticketingService;
     }
-                         // visitor panel  : can Admin also creat a ticket yes bcs admi is also an user //
+    // visitor panel  : can Admin also creat a ticket yes bcs admi is also an user //
     @GetMapping("/ticket")
     public String showTicketForm(Model model,Authentication authentication) {
         model.addAttribute("ticketForm", new TicketingDTO());
@@ -81,7 +81,7 @@ public class TicketController {
         }}
 
 
-//Gets all tickets submitted by the current user.
+    //Gets all tickets submitted by the current user.
     @GetMapping("ticket/list")
     public String listTickets(Model model, Authentication authentication) {
         String userEmail = authentication.getName();

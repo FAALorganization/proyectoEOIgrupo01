@@ -789,9 +789,8 @@ function getColor(index) {
     return colors[index % colors.length];
 }
 
-
-document.querySelector(".btn-ind-vac").addEventListener("click", (event) => {
-    if (window.location.pathname === '/gestion') {
+if (window.location.pathname === '/gestion') {
+    document.querySelector(".btn-ind-vac").addEventListener("click", (event) => {
         let ausencias = [];
 
         fetch('/gestion/ausencias')
@@ -815,8 +814,9 @@ document.querySelector(".btn-ind-vac").addEventListener("click", (event) => {
                 pintarAusencias(ausencias);
             });
         });
-    }
-});
+    });
+}
+
 
 /*******************************************REST NOMBRES***************************************/
 // Opcional: función para variar colores
@@ -1024,9 +1024,17 @@ function createAusenciaLaboral(string, historial) {
         return trElemento;
     }
 }
+function isEmptyObject(obj) {
+    return obj && Object.keys(obj).length === 0 && obj.constructor === Object;
+}
 
 function calcularDiasControl(ausencias, boolean) {
-
+    if (ausencias.length === 0) {
+        document.querySelector('.contador-totales').innerHTML = "Totales: " + "25"
+        document.querySelector('.contador-aceptados').innerHTML = "Aceptados: " + "-"
+        document.querySelector('.contador-aprobar').innerHTML = "Por aprobar: " + "-"
+        document.querySelector('.contador-disfrutados').innerHTML = "Disfrutados: " + "-";
+    }
     let selectedYear = parseInt(document.getElementById('yearSelect').value);
 
     let fechas = crearFechasDirAusencias(ausencias);
@@ -1072,15 +1080,23 @@ function calcularDiasControl(ausencias, boolean) {
                     }
                 }
             })
-            contadores[year] = {
-                "totales": contadorTotales,
-                "aceptados": contadorAceptados,
-                "aprobar": contadorAprobar,
-                "disfrutados": contadorDisfrutados
+            if (ausencias.length > 0) {
+                contadores[year] = {
+                    "totales": contadorTotales,
+                    "aceptados": contadorAceptados,
+                    "aprobar": contadorAprobar,
+                    "disfrutados": contadorDisfrutados
+                }
+            } else {
+                contadores[year] = {
+                    "totales": 25,
+                    "aceptados": 0,
+                    "aprobar": 0,
+                    "disfrutados": 0
+                }
             }
         })
 
-        //console.log(contadores);
         if (boolean === true) {
             document.querySelector('.contador-totales').innerHTML = "Totales: " + (contadores[selectedYear]["totales"] ?? "-")
             document.querySelector('.contador-aceptados').innerHTML = "Aceptados: " + (contadores[selectedYear]["aceptados"] ?? "-")
@@ -1546,9 +1562,30 @@ if (window.location.pathname === "/gestion") {
                         tdElementAction.innerHTML = "-";
                     }
 
+
+/********************************GESTION CALENDARIO***********************************/
+function marcarDiaConPunto(fechaLista, yearSelected, monthSelected) {
+    const date = new Date(fechaLista);
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    if (yearSelected === year && monthSelected === month) {
+        if (![0, 6].includes(date.getDay())) {
+            const dayElement = document.querySelector(`.day[data-date="${day}"]`);
+            if (dayElement) {
+                // No añadir otro punto si ya existe
+                if (!dayElement.querySelector('span.dot')) {
+                    const puntoSpan = document.createElement("span");
+                    puntoSpan.className = "dot";
+                    dayElement.appendChild(puntoSpan);
+                }
+            }
+        }
+    }
+}
                     trElement.appendChild(tdElementName);
                     trElement.appendChild(tdElementAction);
-
                     tbodyElement.appendChild(trElement);
 
                 }
@@ -1612,7 +1649,3 @@ if (window.location.pathname === "/gestion") {
         }
     });
 }
-
-
-
-

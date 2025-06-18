@@ -61,8 +61,11 @@ public class JustificacionController {
 
         try {
 
-            String userHome = System.getProperty("user.home");// Definir ruta carpeta 'files' en home usuario
-            Path carpeta = Paths.get(userHome, "files");
+//            String userHome = System.getProperty("user.home");// Definir ruta carpeta 'files' en home usuario
+//            Path carpeta = Paths.get(userHome, "files");
+            // Path filesPath = Paths.get(System.getProperty("user.home"), "files");
+
+            Path carpeta = Paths.get("/var/lib/data/");
             if (!Files.exists(carpeta)) {// Crear carpeta si no existe
                 Files.createDirectories(carpeta);
             }
@@ -85,18 +88,6 @@ public class JustificacionController {
                         archivosNombresBuilder.append(nuevoNombre).append("|");// Añadir al string builder
                         contador += 1;
                     }
-//                    try {
-//                        String nombreArchivoTxt = token + "." + fecha + "." + contador + "." + "descripcion.txt";
-//                        nombreArchivoTxt = nombreArchivoTxt.replace("-", "_").replace(" al ", ".");
-//                        Path archivoTxt = carpeta.resolve(nombreArchivoTxt);
-//
-//                        String[] asuntoNames = {"Enfermedad o Incapacidad temporal","Cita Médica","Permiso Personal","Permiso retribuido","Huelga","Baja maternidad","Reducción de jornada"};
-//                        String asuntoName = asuntoNames[Integer.parseInt(asunto) - 1];
-//                        Files.writeString(archivoTxt, "Asunto:\n " + asuntoName + "\nDescripción:\n" + descripcion, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        // Opcional: puedes retornar error o continuar
-//                    }
                 }
             }
 
@@ -135,8 +126,9 @@ public class JustificacionController {
             if (ausenciaOpt.isPresent()) {
                 Ausencias ausencia = ausenciaOpt.get();
                 String[] archivosList = ausencia.getDocumentos().split("\\|");
-                String userHome = System.getProperty("user.home");
-                Path filesPath = Paths.get(userHome, "files");
+                // Path filesPath = Paths.get(System.getProperty("user.home"), "files");
+
+                Path filesPath = Paths.get("/var/lib/data/");
 
                 // Crear zip en memoria con ByteArrayOutputStream
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -192,10 +184,13 @@ public class JustificacionController {
 
     @PostMapping("/gestionVRes/resolucion")
     public ResponseEntity<?> recibirResolucion(@RequestBody Map<String, Map<String, Boolean>> respuestas) {
+
         respuestas.forEach((nombre, decisiones) -> decisiones.forEach((fecha, valor) -> {
+            //System.out.println("Respuesta: " + nombre + "," + decisiones + "," + valor + "," + fecha);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             try {
+
                 List<String> fechas = List.of(fecha.split("\\."));
                 LocalDate fechaIni = LocalDate.parse(fechas.getFirst(), formatter);
                 LocalDate fechaFin = LocalDate.parse(fechas.getLast(), formatter);
@@ -203,7 +198,23 @@ public class JustificacionController {
                 Optional<Ausencias> ausenciaOpt = ausenciaService.obtainAusenciaByFechaInicioFechaFinId(fechaIni, fechaFin,nombre.replace(".","-"));
                 if (ausenciaOpt.isPresent()) {
                     Ausencias ausencia = ausenciaOpt.get();
-                    ausenciaService.cambiarAprobado(ausencia,valor);
+                    System.out.println("Ausencia: " + ausencia.getTiposAusencias().getId() + "," + ausencia.getAprobado() + "," + valor);
+                    if (ausencia.getTiposAusencias().getId() == 1) {
+                        if (Boolean.TRUE.equals(valor)) {
+                            ausenciaService.cambiarAprobado(ausencia, true);
+                        } else {
+                            ausenciaService.eliminateHoliday(ausencia);
+                        }
+                    } else if (ausencia.getTiposAusencias().getId() == 2) {
+                        if (Boolean.TRUE.equals(valor)) {
+                            ausenciaService.cambiarAprobado(ausencia, true);
+                        } else {
+                            ausencia.setJustificacion(null);
+                            ausencia.setDocumentos(null);
+                            ausenciaService.guardarEntidadDto(ausencia);
+                        }
+                    }
+
                     //System.out.println(nombre + " ||| Fecha Ini: " + fechas.getFirst() + " ||| Fecha Fin: " + fechas.getLast() + " ||| Valor: " + valor);
                 }
             } catch (Exception e) {

@@ -8,6 +8,7 @@
     <th:block layout:fragment="styles">
         <link rel="stylesheet" th:href="@{/css/app.css}"/>
         <link rel="stylesheet" th:href="@{/css/documentacion.css}"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     </th:block>
 </head>
 
@@ -47,10 +48,16 @@
 
     <!-- Buscador de proyectos -->
     <form class="mb-4" method="get" th:action="@{/documentacion}">
-        <div class="input-group">
-            <input type="text" name="nombreProyecto" class="form-control" placeholder="Buscar por nombre"
-                   th:value="${param.nombreProyecto}" />
+        <div class="input-group" style="position: relative;">
+            <input type="text" id="buscadorProyectos" name="nombreProyecto" class="form-control" placeholder="Buscar por nombre"
+                   th:value="${param.nombreProyecto}" autocomplete="off" />
             <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+
+            <!-- Contenedor desplegable para proyectos -->
+            <ul id="listaProyectos"
+                style="display:none; position: absolute; top: 100%; left: 0; right: 0; max-height: 150px; overflow-y: auto; border: 1px solid #ccc; background: white; z-index: 1000; list-style: none; margin: 0; padding: 0;">
+                <!-- Se llenará dinámicamente con JS -->
+            </ul>
         </div>
     </form>
 
@@ -66,13 +73,29 @@
                         <p><strong>Inicio:</strong> <span th:text="${proyecto.fechaInicio}"></span></p>
                         <p><strong>Fin:</strong> <span th:text="${proyecto.fechaFin}"></span></p>
 
-                        <!-- Subir documentos (solo jefes) -->
+                        <!-- Acciones del proyecto (solo jefes) -->
                         <div th:if="${esJefe}" class="mt-3">
-                            <form th:action="@{/documentacion/subir}" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="idProyecto" th:value="${proyecto.id}" />
-                                <input type="file" name="archivos" multiple class="form-control mb-2" required />
-                                <button type="submit" class="btn btn-sm btn-outline-primary">Subir Documentos</button>
-                            </form>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <!-- Subir documentos -->
+                                <form th:action="@{/documentacion/subir}" method="post" enctype="multipart/form-data"
+                                      class="d-flex align-items-center gap-2">
+                                    <input type="hidden" name="idProyecto" th:value="${proyecto.id}" />
+                                    <input type="file" name="archivos" multiple class="form-control form-control-sm" required />
+                                    <button type="submit" class="btn btn-outline-primary btn-sm" title="Subir archivos">
+                                        <i class="fas fa-arrow-up-from-bracket"></i>
+                                    </button>
+                                </form>
+
+                                <!-- Borrar proyecto -->
+                                <form th:action="@{/proyectos/borrar}" method="post"
+                                      onsubmit="return confirm('¿Seguro que quieres borrar este proyecto? Esta acción no se puede deshacer.')"
+                                      class="d-flex align-items-center">
+                                    <input type="hidden" name="idProyecto" th:value="${proyecto.id}" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Borrar proyecto">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
 
                         <!-- Lista de documentos -->
@@ -90,7 +113,6 @@
                                 </div>
                             </li>
                         </ul>
-
                     </div>
                 </div>
             </div>
@@ -102,5 +124,9 @@
         <p class="text-muted">No se encontraron proyectos con ese nombre.</p>
     </div>
 </section>
+<th:block layout:fragment="scripts">
+    <script th:src="@{/js/buscadorProyectos.js}"></script>
+    <script th:src="@{/js/documentacion.js}"></script>
+</th:block>
 </body>
 </html>

@@ -2,18 +2,16 @@ package com.grupo01.java6.faal.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
-import javax.management.Notification;
 import java.io.Serializable;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -74,6 +72,24 @@ public class Ticketing implements Serializable {
     @Enumerated(EnumType.STRING)
     private TicketStatus status = TicketStatus.OPEN;
 
+    // en teoria quin modifca debe ser el usuarioCreador
+    public Login setUsuarioModificacion(String reopenedBy) {
+        return getUsuarioCreador();
+
+    }
+    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Sla sla;
+
+    public Sla getSla() {
+        return this.sla;
+    }
+
+    public void setSla(Sla sla) {
+        this.sla = sla;
+        if (sla != null) {
+            sla.setTicket(this); // Maintain the bidirectional relationship
+        }
+    }
     public enum TicketStatus {
         OPEN, IN_PROGRESS, PENDING_REVIEW, RESOLVED, CLOSED, REOPENED
     }

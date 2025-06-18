@@ -145,13 +145,13 @@ public class DefaultController {
 //        return "chat"; // View name
 //    }
 
-    @GetMapping("/home")
-    public String showhome()
-    {
-
-        return "home"; // View name
-
-    }
+//    @GetMapping("/home")
+//    public String showhome()
+//    {
+//
+//        return "home"; // View name
+//
+//    }
     @GetMapping("/Ticketdesplay")
     public String showTicketdesplay()
     {

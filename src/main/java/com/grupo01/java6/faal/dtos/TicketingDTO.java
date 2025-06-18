@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Transient;
+
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -25,6 +27,7 @@ public class TicketingDTO {
 
     private String tipoTicket;
 
+   private SlaDTO slaDTO;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;
@@ -66,6 +69,25 @@ public class TicketingDTO {
     public String getEstado() {
         if (aprobado == null) return "PENDIENTE";
         return aprobado ? "APROBADO" : "RECHAZADO";
+    }
+
+    // calcular el sla
+    public Duration calculateSlaDuration() {
+        if (slaDTO == null) return Duration.ZERO;
+        return Duration.between(slaDTO.getStartTime(),
+                slaDTO.getDeadline());
+    }
+
+    public String getSlaStatus() {
+        if (slaDTO == null) return "NOT_TRACKED";
+        if (slaDTO.isPaused()) return "PAUSED";
+        if (slaDTO.getRemainingTime().isNegative()) return "BREACHED";
+        if (slaDTO.getRemainingTime().toHours() < 4) return "URGENT";
+        return "ACTIVE";
+    }
+
+    public String getFormattedSlaTime() {
+        return slaDTO != null ? slaDTO.getFormattedRemainingTime() : "--:--:--";
     }
 }
 

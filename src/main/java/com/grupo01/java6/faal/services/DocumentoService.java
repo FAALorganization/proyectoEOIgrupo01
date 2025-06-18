@@ -22,7 +22,7 @@ public class DocumentoService {
 
     private final DocumentoRepository documentoRepository;
     private final ProyectoRepository proyectoRepository;
-    private final String CARPETA_SUBIDA = "uploads/";
+    private final String CARPETA_SUBIDA = "C:/uploads/";
 
     /** 🔹 Obtener un documento por su ID */
     public Documento obtenerPorId(Integer id) {

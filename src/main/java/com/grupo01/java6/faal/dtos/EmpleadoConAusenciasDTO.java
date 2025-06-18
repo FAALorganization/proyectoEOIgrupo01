@@ -17,15 +17,17 @@ import java.util.List;
 public class EmpleadoConAusenciasDTO {
     private String nombre;
     private String apellidos;
+    private String token;
     private List<RangoAusenciaDTO> ausencias = new ArrayList<>();
 
     public void agregarAusencia(LocalDate inicio, LocalDate fin, boolean aprobado, TiposAusencias tipoAusencia, String justificacion) {
         this.ausencias.add(new RangoAusenciaDTO(inicio, fin, aprobado, tipoAusencia, justificacion));
     }
 
-    public EmpleadoConAusenciasDTO(String nombre, String apellidos) {
+    public EmpleadoConAusenciasDTO(String nombre, String apellidos, String token) {
         this.nombre = nombre;
         this.apellidos = apellidos;
+        this.token = token;
         this.ausencias = new ArrayList<>();
     }
 

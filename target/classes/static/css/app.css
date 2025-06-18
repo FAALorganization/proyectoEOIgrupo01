@@ -321,7 +321,7 @@ a{
 }
 
 .day {
-    background-color: #F5F1ED;
+    background-color: #f4f2f2;
     border-radius: 8px;
     padding: 5px 10px 0 5px;
     text-align: right;
@@ -382,7 +382,7 @@ a{
 }
 
 .dayAus {
-    background-color: rgba(60, 69, 170, 0.83);
+    background-color: rgba(142, 34, 71, 0.7);
 }
 
 .dayNorm {
