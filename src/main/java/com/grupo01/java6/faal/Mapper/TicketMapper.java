@@ -11,15 +11,31 @@ import com.grupo01.java6.faal.entities.Ticketing;
 @Component
 
 public class TicketMapper {
-    @Autowired
     private ModelMapper modelMapper;
-
 
     public Ticketing toEntity(TicketingDTO dto, Prioridades prioridad) {
         Ticketing entity = modelMapper.map(dto, Ticketing.class);
         entity.setIdPrior(prioridad);
         return entity;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //    public TicketingDTO toDto (Ticketing entity) {
 //        return new TicketingDTO(
 //                entity.getId(),
